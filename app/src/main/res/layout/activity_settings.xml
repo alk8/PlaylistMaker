@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_margin="15dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="left"
+                android:src="@drawable/ic_vectorstrelka"></ImageView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="@string/settings"
+                android:textColor="#000000"
+                android:textSize="20dp"></TextView>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:gravity="start"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dark"
+                android:textColor="@color/black"
+                android:textSize="20dp"></TextView>
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible"></Switch>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="@string/share"
+                android:textColor="@color/black"
+                android:textSize="20dp">
+
+            </TextView>
+
+            <ImageView
+                android:layout_width="@dimen/imageHeightWeight"
+                android:layout_height="@dimen/imageHeightWeight"
+                android:src="@drawable/ic_vectorshare"
+                android:layout_gravity="right"
+                android:layout_marginRight="10dp"
+                ></ImageView>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:gravity="start"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/write"
+                android:textColor="@color/black"
+                android:textSize="20dp">
+
+            </TextView>
+
+            <ImageView
+                android:layout_width="@dimen/imageHeightWeight"
+                android:layout_height="@dimen/imageHeightWeight"
+                android:layout_gravity="end"
+                android:src="@drawable/ic_vectorhelpdesk"
+                android:layout_marginRight="10dp"
+                ></ImageView>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:gravity="start"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/doc"
+                android:textColor="@color/black"
+                android:textSize="20dp">
+
+            </TextView>
+
+            <ImageView
+                android:layout_width="@dimen/imageHeightWeight"
+                android:layout_height="@dimen/imageHeightWeight"
+                android:src="@drawable/ic_vectordoc"
+                android:layout_gravity="end"
+                android:layout_marginRight="10dp"
+                ></ImageView>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+
+</FrameLayout>
