@@ -14,13 +14,13 @@
         android:theme="@style/Theme.PlaylistMaker"
         tools:targetApi="31">
         <activity
-            android:name=".activity_search"
+            android:name=".ActivitySearch"
             android:exported="false" />
         <activity
-            android:name=".media"
+            android:name=".Media"
             android:exported="false" />
         <activity
-            android:name=".settings"
+            android:name=".Settings"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
