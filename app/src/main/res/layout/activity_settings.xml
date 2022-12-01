@@ -17,12 +17,8 @@
             app:drawableStartCompat="@drawable/ic_vectorstrelka"
             />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_15"
-        android:gravity="start"
-        android:orientation="horizontal">
+    <FrameLayout
+        style="@style/FrameLayoutStyle">
 
         <Switch
             android:layout_width="match_parent"
@@ -31,81 +27,50 @@
             android:textColor="@color/black"
             android:textSize="@dimen/text_size"/>
 
-    </LinearLayout>
+    </FrameLayout>
 
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_15"
-        android:orientation="horizontal">
+        style="@style/FrameLayoutStyle">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:text="@string/share"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size">
+            style="@style/TextViewStyle"
+            android:text="@string/share">
 
         </TextView>
 
         <ImageView
-            android:layout_width="@dimen/imageHeightWeight"
-            android:layout_height="@dimen/imageHeightWeight"
-            android:layout_gravity="right"
-            android:layout_marginEnd="@dimen/margin_right"
+            style="@style/ImageViewStyle"
             android:src="@drawable/ic_vectorshare" />
 
     </FrameLayout>
 
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_15"
-        android:gravity="start"
-        android:orientation="horizontal">
+        style="@style/FrameLayoutStyle">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:text="@string/write"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size">
+            style="@style/TextViewStyle"
+            android:text="@string/write">
 
         </TextView>
 
         <ImageView
-            android:layout_width="@dimen/imageHeightWeight"
-            android:layout_height="@dimen/imageHeightWeight"
-            android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/margin_right"
+            style="@style/ImageViewStyle"
             android:src="@drawable/ic_vectorhelpdesk" />
 
     </FrameLayout>
 
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_15"
-        android:gravity="start"
-        android:orientation="horizontal">
+
+        style="@style/FrameLayoutStyle">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:text="@string/doc"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size">
+            style="@style/TextViewStyle"
+            android:text="@string/doc">
 
         </TextView>
 
         <ImageView
-            android:layout_width="@dimen/imageHeightWeight"
-            android:layout_height="@dimen/imageHeightWeight"
-            android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/margin_right"
+            style="@style/ImageViewStyle"
             android:src="@drawable/ic_vectordoc" />
 
     </FrameLayout>
