@@ -6,31 +6,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_15"
-            android:layout_marginTop="30dp"
-            android:text="@string/settings"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size"
-            app:drawableStartCompat="@drawable/ic_vectorstrelka"
-            />
+    <TextView
+        style="@style/TextSettings"
+        android:text="@string/settings"
+        app:drawableStartCompat="@drawable/ic_vectorstrelka" />
 
-    <FrameLayout
-        style="@style/FrameLayoutStyle">
+    <FrameLayout style="@style/FrameLayoutStyle">
 
         <Switch
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Темная тема"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size"/>
+            style="@style/SwitchStyle"
+            android:text="Темная тема" />
 
     </FrameLayout>
 
-    <FrameLayout
-        style="@style/FrameLayoutStyle">
+    <FrameLayout style="@style/FrameLayoutStyle">
 
         <TextView
             style="@style/TextViewStyle"
@@ -44,8 +33,7 @@
 
     </FrameLayout>
 
-    <FrameLayout
-        style="@style/FrameLayoutStyle">
+    <FrameLayout style="@style/FrameLayoutStyle">
 
         <TextView
             style="@style/TextViewStyle"

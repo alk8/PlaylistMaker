@@ -25,7 +25,7 @@
         app:cornerRadius="@dimen/cornerRadius"
         app:icon="@drawable/ic_vectorsearch"
         app:iconGravity="textStart"
-        app:iconTint="@color/black"/>
+        app:iconTint="@color/black" />
     <Button
         android:id="@+id/media"
         style="@style/ButtonStyle"
