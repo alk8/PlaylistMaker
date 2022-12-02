@@ -49,8 +49,6 @@ class ActivitySearch : AppCompatActivity() {
     }
 
 
-
-
     private fun visibleInvisibleClearButton(search: EditText,clear: Button){
 
         if (search.text.isEmpty()){
