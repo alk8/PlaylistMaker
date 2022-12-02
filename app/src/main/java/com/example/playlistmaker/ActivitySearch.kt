@@ -42,23 +42,14 @@ class ActivitySearch : AppCompatActivity() {
 
     }
 
-    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
-        super.onSaveInstanceState(outState, outPersistentState)
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
         val search = findViewById<EditText>(R.id.edit_search)
-        outState.putString("textSearch", search.text.toString())
+        outState.putString("textSearch",search.text.toString())
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        val search = findViewById<EditText>(R.id.edit_search)
-
-        val text = savedInstanceState.getString("textSearch")
-        if (!text.isNullOrEmpty()){
-            search.setText(text)
-        }
 
 
-    }
 
     private fun visibleInvisibleClearButton(search: EditText,clear: Button){
 
