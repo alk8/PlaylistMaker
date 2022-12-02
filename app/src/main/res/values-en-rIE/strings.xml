@@ -9,4 +9,6 @@
     <string name="share">Share</string>
     <string name="write">Write on a helpdesk</string>
     <string name="doc">Documentation</string>
+    <string name="textSearch">Input search request</string>
+    <string name="textClear">Clear</string>
 </resources>

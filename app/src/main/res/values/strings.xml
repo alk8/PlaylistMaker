@@ -8,4 +8,6 @@
     <string name="share">Поделиться приложением</string>
     <string name="write">Написать в поддержку</string>
     <string name="doc">Пользовательское соглашение</string>
+    <string name="textSearch">Введите поисковый запрос</string>
+    <string name="textClear">Очистка</string>
 </resources>
