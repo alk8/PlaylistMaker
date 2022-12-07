@@ -11,4 +11,8 @@
     <string name="doc">Documentation</string>
     <string name="textSearch">Input search request</string>
     <string name="textClear">Clear</string>
+    <string name="site">https://practicum.yandex.ru/android-developer/</string>
+    <string name="subject_mail">Message to the developers of the Playlist Maker app</string>
+    <string name="text_mail">Thanks to the developers for the cool app!</string>
+    <string name="url_site">https://yandex.ru/legal/practicum_offer/</string>
 </resources>

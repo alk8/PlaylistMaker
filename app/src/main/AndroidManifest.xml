@@ -17,10 +17,10 @@
             android:name=".ActivitySearch"
             android:exported="false" />
         <activity
-            android:name=".Media"
+            android:name=".ActivityMedia"
             android:exported="false" />
         <activity
-            android:name=".Settings"
+            android:name=".ActivitySettings"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 
-class Settings : AppCompatActivity() {
+class ActivitySettings : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -15,25 +15,23 @@ class Settings : AppCompatActivity() {
 
             val intent = Intent(Intent.ACTION_SEND)
             intent.setType("text/plain")
-            intent.putExtra(Intent.EXTRA_TEXT,"https://practicum.yandex.ru/android-developer/")
+            intent.putExtra(Intent.EXTRA_TEXT,getString(R.string.site))
             startActivity(intent)
-
         }
 
         findViewById<ImageView>(R.id.qa).setOnClickListener{
 
             val intent = Intent(Intent.ACTION_SENDTO)
-            intent.putExtra("mail","alk68@yandex.ru")
-            intent.putExtra("subject","Сообщение разработчикам и разработчицам приложения Playlist Maker")
-            intent.putExtra("text","Спасибо разработчикам и разработчицам за крутое приложение!")
-
+            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("alk68@yandex.ru"))
+            intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.subject_mail))
+            intent.putExtra(Intent.EXTRA_TEXT,getString(R.string.text_mail))
             startActivity(Intent.createChooser(intent,"Send Email"))
         }
 
         findViewById<ImageView>(R.id.temp).setOnClickListener{
 
             val intent = Intent(Intent.ACTION_VIEW)
-            intent.setData(Uri.parse("https://yandex.ru/legal/practicum_offer/"))
+            intent.setData(Uri.parse(getString(R.string.url_site)))
             startActivity(intent)
 
         }

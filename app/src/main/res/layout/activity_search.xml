@@ -21,7 +21,7 @@
             android:text="@string/search"
             android:textSize="@dimen/text_size" />
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
@@ -30,27 +30,26 @@
                 android:id="@+id/edit_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_margin="@dimen/margin_15"
                 android:hint="@string/textSearch"
-                android:maxLines="1">
+                android:maxLines="1"
+                >
 
             </EditText>
 
-            <Button
+            <ImageView
                 android:id="@+id/clear_search"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:text="@string/textClear"
+                android:layout_width="@dimen/padding_15"
+                android:layout_height="@dimen/padding_15"
+                android:layout_gravity="right"
+                android:layout_margin="28dp"
                 android:textSize="7sp"
-                android:gravity="center"
+                android:src="@drawable/delete"
                 android:visibility="invisible">
 
-            </Button>
+            </ImageView>
 
-        </LinearLayout>
-
+        </FrameLayout>
 
     </LinearLayout>
 

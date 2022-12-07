@@ -10,4 +10,8 @@
     <string name="doc">Пользовательское соглашение</string>
     <string name="textSearch">Введите поисковый запрос</string>
     <string name="textClear">Очистка</string>
+    <string name="site">https://practicum.yandex.ru/android-developer/</string>
+    <string name="subject_mail">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="text_mail">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="url_site">https://yandex.ru/legal/practicum_offer/</string>
 </resources>
