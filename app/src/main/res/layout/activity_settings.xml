@@ -10,7 +10,8 @@
     <TextView
         style="@style/TextSettings"
         android:text="@string/settings"
-        app:drawableStartCompat="@drawable/ic_vectorstrelka" />
+        app:drawableStartCompat="@drawable/ic_vectorstrelka"
+        android:drawableTint="@color/white"/>
 
     <FrameLayout style="@style/FrameLayoutStyle">
 
