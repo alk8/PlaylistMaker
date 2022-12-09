@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActivitySearch">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_15"
+            android:fontFamily="@font/ys_display_bold"
+            android:gravity="center"
+            android:text="@string/search"
+            android:textSize="@dimen/text_size" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edit_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_15"
+                android:hint="@string/textSearch"
+                android:maxLines="1"
+                >
+
+            </EditText>
+
+            <ImageView
+                android:id="@+id/clear_search"
+                android:layout_width="@dimen/padding_15"
+                android:layout_height="@dimen/padding_15"
+                android:layout_gravity="right"
+                android:layout_margin="28dp"
+                android:textSize="7sp"
+                android:src="@drawable/delete"
+                android:visibility="invisible">
+
+            </ImageView>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
