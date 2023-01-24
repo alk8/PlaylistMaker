@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/TextSettings"
+        android:text="@string/settings"
+        app:drawableStartCompat="@drawable/ic_vectorstrelka"
+        android:drawableTint="@color/white"/>
+
+    <FrameLayout style="@style/FrameLayoutStyle">
+
+        <Switch
+            style="@style/SwitchStyle"
+            android:text="@string/dark"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    </FrameLayout>
+
+    <FrameLayout style="@style/FrameLayoutStyle">
+
+        <TextView
+            style="@style/TextViewStyle"
+            android:text="@string/share">
+
+        </TextView>
+
+        <ImageView
+            android:id="@+id/share"
+            style="@style/ImageViewStyle"
+            android:src="@drawable/ic_vectorshare" />
+
+    </FrameLayout>
+
+    <FrameLayout style="@style/FrameLayoutStyle">
+
+        <TextView
+            style="@style/TextViewStyle"
+            android:text="@string/write">
+
+        </TextView>
+
+        <ImageView
+            android:id="@+id/qa"
+            style="@style/ImageViewStyle"
+            android:src="@drawable/ic_vectorhelpdesk" />
+
+    </FrameLayout>
+
+    <FrameLayout
+
+        style="@style/FrameLayoutStyle">
+
+        <TextView
+            style="@style/TextViewStyle"
+            android:text="@string/doc">
+
+        </TextView>
+
+        <ImageView
+            android:id="@+id/temp"
+            style="@style/ImageViewStyle"
+            android:src="@drawable/ic_vectordoc" />
+
+    </FrameLayout>
+
+</LinearLayout>
+
