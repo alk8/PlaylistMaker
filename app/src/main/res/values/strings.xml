@@ -14,4 +14,8 @@
     <string name="subject_mail">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="text_mail">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="url_site">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="NoInternet">Отсутствует соединение</string>
+    <string name="trackName">Трек:</string>
+    <string name="ArtistName">Артист:</string>
+    <string name="duration">Длительность:</string>
 </resources>
