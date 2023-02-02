@@ -4,26 +4,17 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
-import android.view.RoundedCorner
-import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 class ActivitySearch : AppCompatActivity() {
 
-    companion object {
-        var text: String? = "";
-    }
+    var text: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +38,7 @@ class ActivitySearch : AppCompatActivity() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 visibleInvisibleClearButton(search, clear)
-                text = p0.toString();
+                text = p0.toString()
             }
 
             override fun afterTextChanged(p0: Editable?) {}
@@ -121,48 +112,6 @@ class ActivitySearch : AppCompatActivity() {
                 "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg"
             )
         )
-
         return listTrack
     }
-}
-
-class MusicViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-    private val trackName: TextView
-    private val artistName: TextView
-    private val trackTime: TextView
-    private val artworkUrl100: ImageView
-
-    init {
-        trackName = itemView.findViewById(R.id.trackName)
-        artistName = itemView.findViewById(R.id.artistName)
-        trackTime = itemView.findViewById(R.id.trackTime)
-        artworkUrl100 = itemView.findViewById(R.id.artworkUrl100)
-    }
-
-    fun bind(model: Track) {
-
-        trackName.text = model.getTrackName()
-        artistName.text = model.getArtistName()
-        trackTime.text = model.getTrackTime()
-        // Работа с библиотекой
-        Glide.with(itemView).load(model.getArtworkUrl100()).centerCrop()
-            .placeholder(R.drawable.ic_baseline_music_off_24).transform(RoundedCorners(15))
-            .into(artworkUrl100)
-
-    }
-
-}
-
-class MusicAdapter(private val music: List<Track>) : RecyclerView.Adapter<MusicViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MusicViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.track_layout, parent, false)
-        return MusicViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: MusicViewHolder, position: Int) {
-        holder.bind(music[position])
-    }
-
-    override fun getItemCount() = music.size
 }
