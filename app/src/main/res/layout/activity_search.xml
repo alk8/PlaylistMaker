@@ -60,11 +60,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="44dp"
+            android:paddingTop="30dp"
             android:visibility="invisible">
 
             <ImageView style="@style/NothingFound" />
             <TextView style="@style/NothingFoundText" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/nothingConnection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="30dp"
+            android:visibility="invisible">
+
+            <ImageView style="@style/NothingConnection" />
+            <TextView style="@style/NothingConnectionText" />
+            <Button
+                style="@style/refreshButton"
+                android:id="@+id/refreshButton"/>
 
         </LinearLayout>
 

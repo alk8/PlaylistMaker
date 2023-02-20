@@ -19,4 +19,6 @@
     <string name="duration">Длительность:</string>
     <string name="NothingSearch">Ничего не нашлось</string>
     <string name="NoInternet">Нет соединения</string>
+    <string name="problemConnection">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="refresh">Обновить</string>
 </resources>

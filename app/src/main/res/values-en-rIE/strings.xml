@@ -20,4 +20,6 @@
     <string name="ArtistName">Artist:</string>
     <string name="duration">Duration:</string>
     <string name="NothingSearch">Nothing find</string>
+    <string name="problemConnection">Communication problems\n\nThe download failed. Check your internet connection</string>
+    <string name="refresh">Refresh</string>
 </resources>

@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -37,6 +38,8 @@ class ActivitySearch : AppCompatActivity() {
         val clear = findViewById<ImageView>(R.id.clear_search)
         val recycler = findViewById<RecyclerView>(R.id.musicList)
         val nothingSearch = findViewById<LinearLayout>(R.id.nothingSearch)
+        val noConnection = findViewById<LinearLayout>(R.id.nothingConnection)
+        val refreshButton = findViewById<Button>(R.id.refreshButton)
         recycler.layoutManager = LinearLayoutManager(this)
 
         if (savedInstanceState != null) {
@@ -45,34 +48,15 @@ class ActivitySearch : AppCompatActivity() {
                 search.setText(text)
             }
         }
+
+        refreshButton.setOnClickListener{
+            evaluateRequest(noConnection,nothingSearch,recycler)
+        }
+
         search.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 // ВЫПОЛНЯЙТЕ ПОИСКОВЫЙ ЗАПРОС ЗДЕСЬ
-                val response = musicAPI.getMusic(text).enqueue(object : Callback<TrackResponse>{
-                    override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                        t.printStackTrace()
-                        // Ошибка сервера
-                    }
-                    override fun onResponse(
-                        call: Call<TrackResponse>,
-                        response: Response<TrackResponse>
-                    ) {
-                        if (response.isSuccessful){
-                            val trackJSON = response.body()?.results
-                            if (trackJSON != null) {
-                                if (trackJSON.isNotEmpty()) {
-                                    nothingSearch.visibility = View.INVISIBLE
-                                    recycler.adapter = MusicAdapter(trackJSON)
-                                }else{
-                                    // не дал результатов
-                                    nothingSearch.visibility = View.VISIBLE
-                                }
-                            }
-                        }else{
-                            val error = response.errorBody()?.string()
-                        }
-                    }
-                })
+                    evaluateRequest(noConnection,nothingSearch,recycler)
                 true
             }
             false
@@ -93,6 +77,7 @@ class ActivitySearch : AppCompatActivity() {
         clear.setOnClickListener {
             search.text.clear()
             nothingSearch.visibility = View.INVISIBLE
+            noConnection.visibility = View.INVISIBLE
             recycler.adapter = MusicAdapter(arrayListOf())
             this.currentFocus?.let { view ->
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
@@ -112,4 +97,34 @@ class ActivitySearch : AppCompatActivity() {
         clear.isVisible = search.text.isNotEmpty()
     }
 
+    private fun evaluateRequest(noConnection: LinearLayout,nothingSearch: LinearLayout,recycler:RecyclerView){
+        musicAPI.getMusic(text).enqueue(object : Callback<TrackResponse>{
+            override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+                t.printStackTrace()
+                // Ошибка сервера
+                noConnection.visibility = View.VISIBLE
+            }
+            override fun onResponse(
+                call: Call<TrackResponse>,
+                response: Response<TrackResponse>
+            ) {
+                if (response.isSuccessful){
+                    val trackJSON = response.body()?.results
+                    if (trackJSON != null) {
+                        if (trackJSON.isNotEmpty()) {
+                            nothingSearch.visibility = View.INVISIBLE
+                            noConnection.visibility = View.INVISIBLE
+                            recycler.adapter = MusicAdapter(trackJSON)
+                        }else{
+                            // не дал результатов
+                            nothingSearch.visibility = View.VISIBLE
+                            noConnection.visibility = View.INVISIBLE
+                        }
+                    }
+                }else{
+                    val error = response.errorBody()?.string()
+                }
+            }
+        })
+    }
 }
