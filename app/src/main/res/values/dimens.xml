@@ -8,6 +8,5 @@
     <dimen name="margin_15">15dp</dimen>
     <dimen name="margin_right">10dp</dimen>
     <dimen name="text_size">20sp</dimen>
-    <dimen name="height_track">100dp</dimen>
-    <dimen name="height_trackList">100dp</dimen>
+    <dimen name="height_trackList">61dp</dimen>
 </resources>

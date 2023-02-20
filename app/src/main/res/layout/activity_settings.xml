@@ -11,7 +11,7 @@
         style="@style/TextSettings"
         android:text="@string/settings"
         app:drawableStartCompat="@drawable/ic_vectorstrelka"
-        android:drawableTint="@color/white"/>
+        android:drawableTint="@color/black"/>
 
     <FrameLayout style="@style/FrameLayoutStyle">
 
