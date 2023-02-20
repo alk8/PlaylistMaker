@@ -62,6 +62,19 @@
         <item name="android:textSize">@dimen/text_size</item>
     </style>
 
+    <style name="NothingFound">
+        <item name="android:src">@drawable/ic_light_mode</item>
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_height">120dp</item>
+    </style>
 
+    <style name="NothingFoundText">
+        <item name="android:layout_width">130dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:text">"@string/NothingSearch"</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 
 </resources>
