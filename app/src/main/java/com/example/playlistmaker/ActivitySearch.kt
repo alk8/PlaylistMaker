@@ -7,26 +7,25 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
+
 
 class ActivitySearch : AppCompatActivity() {
 
     var text: String? = ""
+    var musicAdapter = MusicAdapter()
 
     // Инициализация подключения
-    private val retrofit = Retrofit.Builder().
-        baseUrl("https://itunes.apple.com/").
-        addConverterFactory(GsonConverterFactory.create()).
-        build()
+    private val retrofit = Retrofit.Builder().baseUrl("https://itunes.apple.com/")
+        .addConverterFactory(GsonConverterFactory.create()).build()
 
     //Инициализация API
     private val musicAPI = retrofit.create<SearchAPI>()
@@ -40,7 +39,23 @@ class ActivitySearch : AppCompatActivity() {
         val nothingSearch = findViewById<LinearLayout>(R.id.nothingSearch)
         val noConnection = findViewById<LinearLayout>(R.id.nothingConnection)
         val refreshButton = findViewById<Button>(R.id.refreshButton)
+        val clearHistory = findViewById<Button>(R.id.clearHistory)
+        val textClear = findViewById<TextView>(R.id.historySearch)
+        val type = object : TypeToken<List<Track?>?>() {}.type
+        val sharedPreferences = getSharedPreferences("SearchActivity", MODE_PRIVATE)
+        val gson = Gson()
+
+        var historyTrack = gson.fromJson<ArrayList<Track>>(
+            sharedPreferences.getString("tracksHistory", null),
+            type
+        )
+
+        if (historyTrack == null) {
+            historyTrack = ArrayList()
+        }
+
         recycler.layoutManager = LinearLayoutManager(this)
+        recycler.adapter = musicAdapter
 
         if (savedInstanceState != null) {
             text = savedInstanceState.getString("textSearch")
@@ -49,17 +64,63 @@ class ActivitySearch : AppCompatActivity() {
             }
         }
 
-        refreshButton.setOnClickListener{
-            evaluateRequest(noConnection,nothingSearch,recycler)
+        clearHistory.setOnClickListener {
+            historyTrack.clear()
+            musicAdapter.music = historyTrack
+            clearHistory.visibility = View.INVISIBLE
+            textClear.visibility = View.INVISIBLE
+            sharedPreferences.edit().putString("tracksHistory", Gson().toJson(historyTrack, type))
+                .apply()
+        }
+
+        search.setOnFocusChangeListener { _, hasFocus ->
+            //Видимость элементов
+            if (hasFocus) {
+
+                if (historyTrack.size > 0) {
+                    clearHistory.visibility = View.VISIBLE
+                    textClear.visibility = View.VISIBLE
+                    musicAdapter.music = historyTrack
+                }
+            }
+            else{
+                clearHistory.visibility = View.INVISIBLE
+                textClear.visibility = View.INVISIBLE
+            }
+        }
+
+        musicAdapter.itemClickListener = { _, track ->
+            historyTrack.remove(track)
+            historyTrack.add(0, track)
+
+            if (historyTrack.size > 10) {
+                historyTrack.removeLast()
+            }
+            sharedPreferences.edit().putString("tracksHistory", Gson().toJson(historyTrack, type))
+                .apply()
+        }
+
+        refreshButton.setOnClickListener {
+            evaluateRequest(noConnection, nothingSearch)
         }
 
         search.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 // ВЫПОЛНЯЙТЕ ПОИСКОВЫЙ ЗАПРОС ЗДЕСЬ
-                    evaluateRequest(noConnection,nothingSearch,recycler)
+                evaluateRequest(noConnection, nothingSearch)
                 true
             }
             false
+        }
+
+        clearHistory.setOnClickListener {
+            historyTrack.clear()
+            musicAdapter.music = historyTrack
+            musicAdapter.notifyDataSetChanged()
+            clearHistory.visibility = View.INVISIBLE
+            textClear.visibility = View.INVISIBLE
+            sharedPreferences.edit().putString("tracksHistory", Gson().toJson(historyTrack, type))
+                .apply()
         }
 
         val simpleTextWatcher = object : TextWatcher {
@@ -69,23 +130,23 @@ class ActivitySearch : AppCompatActivity() {
                 visibleInvisibleClearButton(search, clear)
                 text = p0.toString()
             }
-            override fun afterTextChanged(p0: Editable?) {
 
-            }
+            override fun afterTextChanged(p0: Editable?) {}
         }
         search.addTextChangedListener(simpleTextWatcher)
         clear.setOnClickListener {
             search.text.clear()
             nothingSearch.visibility = View.INVISIBLE
             noConnection.visibility = View.INVISIBLE
-            recycler.adapter = MusicAdapter(arrayListOf())
+            musicAdapter.music = ArrayList()
+            musicAdapter.notifyDataSetChanged()
+            recycler.adapter = musicAdapter
             this.currentFocus?.let { view ->
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                 imm?.hideSoftInputFromWindow(view.windowToken, 0)
             }
             visibleInvisibleClearButton(search, clear)
         }
-
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -97,31 +158,36 @@ class ActivitySearch : AppCompatActivity() {
         clear.isVisible = search.text.isNotEmpty()
     }
 
-    private fun evaluateRequest(noConnection: LinearLayout,nothingSearch: LinearLayout,recycler:RecyclerView){
-        musicAPI.getMusic(text).enqueue(object : Callback<TrackResponse>{
+    private fun evaluateRequest(
+        noConnection: LinearLayout,
+        nothingSearch: LinearLayout,
+    ) {
+        musicAPI.getMusic(text).enqueue(object : Callback<TrackResponse> {
             override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
                 t.printStackTrace()
                 // Ошибка сервера
                 noConnection.visibility = View.VISIBLE
             }
+
             override fun onResponse(
                 call: Call<TrackResponse>,
                 response: Response<TrackResponse>
             ) {
-                if (response.isSuccessful){
+                if (response.isSuccessful) {
                     val trackJSON = response.body()?.results
                     if (trackJSON != null) {
                         if (trackJSON.isNotEmpty()) {
                             nothingSearch.visibility = View.INVISIBLE
                             noConnection.visibility = View.INVISIBLE
-                            recycler.adapter = MusicAdapter(trackJSON)
-                        }else{
+                            musicAdapter.music = trackJSON
+                            musicAdapter.notifyDataSetChanged()
+                        } else {
                             // не дал результатов
                             nothingSearch.visibility = View.VISIBLE
                             noConnection.visibility = View.INVISIBLE
                         }
                     }
-                }else{
+                } else {
                     val error = response.errorBody()?.string()
                 }
             }
