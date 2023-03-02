@@ -50,39 +50,66 @@
 
         </FrameLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/musicList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/textHistory"
+        android:id="@+id/historySearch"
+        android:text="@string/storySearch"
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="@font/ys_display_light"
+        android:visibility="invisible"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/clearHistory"
+        style="@style/buttonHistory"
+        android:text="@string/clearHistory"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/margin_15"
+        android:visibility="invisible"/>
 
-        <LinearLayout
-            android:id="@+id/nothingSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="30dp"
-            android:visibility="invisible">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/musicList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-            <ImageView style="@style/NothingFound" />
-            <TextView style="@style/NothingFoundText" />
 
-        </LinearLayout>
+    <LinearLayout
+        android:id="@+id/nothingSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="30dp"
+        android:visibility="invisible">
 
-        <LinearLayout
-            android:id="@+id/nothingConnection"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="30dp"
-            android:visibility="invisible">
+        <ImageView style="@style/NothingFound" />
+        <TextView style="@style/NothingFoundText" />
 
-            <ImageView style="@style/NothingConnection" />
-            <TextView style="@style/NothingConnectionText" />
-            <Button
-                style="@style/refreshButton"
-                android:id="@+id/refreshButton"/>
+    </LinearLayout>
 
-        </LinearLayout>
+    <LinearLayout
+        android:id="@+id/nothingConnection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="30dp"
+        android:visibility="invisible">
+
+        <ImageView style="@style/NothingConnection" />
+        <TextView style="@style/NothingConnectionText" />
+        <Button
+            style="@style/refreshButton"
+            android:id="@+id/refreshButton"/>
+
+    </LinearLayout>
+</LinearLayout>
+
 
     </LinearLayout>
 

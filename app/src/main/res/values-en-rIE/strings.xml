@@ -22,4 +22,6 @@
     <string name="NothingSearch">Nothing find</string>
     <string name="problemConnection">Communication problems\n\nThe download failed. Check your internet connection</string>
     <string name="refresh">Refresh</string>
+    <string name="storySearch">Story search</string>
+    <string name="clearHistory">Clean story</string>
 </resources>

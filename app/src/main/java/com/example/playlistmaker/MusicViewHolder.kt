@@ -26,12 +26,10 @@ class MusicViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         trackName.text = model.trackName
         artistName.text = model.artistName
-        trackTime.text = model.trackTime
+        trackTime.text = model.trackTimeMillis
         // Работа с библиотекой
         Glide.with(itemView).load(model.artworkUrl100).centerCrop()
             .placeholder(R.drawable.ic_noconnection).transform(RoundedCorners(15))
             .into(artworkUrl100)
-
     }
-
 }
