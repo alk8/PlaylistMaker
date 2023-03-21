@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         }
         // Кнопка Медиа
         findViewById<Button>(R.id.media).setOnClickListener {
-            startActivity(Intent(this, ActivityMedia::class.java))
+
         }
         // Кнопка настройки
         findViewById<Button>(R.id.settings).setOnClickListener {

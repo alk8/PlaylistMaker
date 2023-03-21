@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -98,6 +99,11 @@ class ActivitySearch : AppCompatActivity() {
             }
             sharedPreferences.edit().putString("tracksHistory", Gson().toJson(historyTrack, type))
                 .apply()
+
+            // Переход на экран плеера
+            val intentMedia = Intent(this, ActivityMedia::class.java)
+            intentMedia.putExtra("track",gson.toJson(track))
+            startActivity(intentMedia)
         }
 
         refreshButton.setOnClickListener {
