@@ -110,4 +110,16 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="textMedia">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="playButton">
+        <item name= "android:src">@drawable/play_button</item>
+    </style>
+
+    <style name="strelkaStyle">
+        <item name="android:src">@drawable/ic_vectorstrelka</item>
+    </style>
+
 </resources>
