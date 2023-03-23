@@ -11,8 +11,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.*
 
 class ActivityMedia : AppCompatActivity() {
@@ -37,13 +35,13 @@ class ActivityMedia : AppCompatActivity() {
 
         trackName.text = track.trackName
         artistName.text = track.artistName
-        time.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis.toLong())
+        time.text = FormatterTime.formatTime(track.trackTimeMillis)
         album.text = track.collectionName
-        year.text = track.releaseDate.split("-")[0]
+        year.text = FormatterTime.getYear(track.releaseDate)
         genre.text = track.primaryGenreName
         country.text = track.country
 
-        Glide.with(picture).load(track.artworkUrl100).centerCrop()
+        Glide.with(picture).load(track.artworkUrl100.replaceAfterLast('/',"512x512bb.jpg")).centerCrop()
             .placeholder(R.drawable.ic_noconnection).transform(RoundedCorners(15))
             .into(picture)
 
