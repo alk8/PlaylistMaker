@@ -111,7 +111,7 @@
     </style>
 
     <style name="textMedia">
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/color_track</item>
     </style>
 
     <style name="playButton">
