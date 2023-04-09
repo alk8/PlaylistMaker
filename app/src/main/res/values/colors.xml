@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="background_screen">#3772E7</color>
     <color name="color_track">#1A1B22</color>
+    <color name="color_progressBar">#6200EE</color>
+
 </resources>
