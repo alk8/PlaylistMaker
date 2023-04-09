@@ -31,8 +31,6 @@ class ActivitySearch : AppCompatActivity() {
 
     private var text: String? = ""
     private var musicAdapter = MusicAdapter()
-    private val handler = Handler(Looper.getMainLooper())
-    private val runnable = Runnable { evaluateRequest() }
     private val nothingSearch = findViewById<LinearLayout>(R.id.nothingSearch)
     private val noConnection = findViewById<LinearLayout>(R.id.nothingConnection)
     private val search = findViewById<EditText>(R.id.edit_search)
@@ -46,6 +44,9 @@ class ActivitySearch : AppCompatActivity() {
     private val gson = Gson()
     private val progressBar = findViewById<ProgressBar>(R.id.progressBar)
     private var isClick = true
+
+    private val handler = Handler(Looper.getMainLooper())
+    private val runnable = Runnable { evaluateRequest() }
 
     // Инициализация подключения
     private val retrofit = Retrofit.Builder().baseUrl("https://itunes.apple.com/")
