@@ -31,22 +31,23 @@ class ActivitySearch : AppCompatActivity() {
 
     private var text: String? = ""
     private var musicAdapter = MusicAdapter()
-    private val nothingSearch = findViewById<LinearLayout>(R.id.nothingSearch)
-    private val noConnection = findViewById<LinearLayout>(R.id.nothingConnection)
-    private val search = findViewById<EditText>(R.id.edit_search)
-    private val clear = findViewById<ImageView>(R.id.clear_search)
-    private val recycler = findViewById<RecyclerView>(R.id.musicList)
-    private val refreshButton = findViewById<Button>(R.id.refreshButton)
-    private val clearHistory = findViewById<Button>(R.id.clearHistory)
-    private val textClear = findViewById<TextView>(R.id.historySearch)
-    private val type = object : TypeToken<List<Track?>?>() {}.type
-    private val sharedPreferences = getSharedPreferences("SearchActivity", MODE_PRIVATE)
-    private val gson = Gson()
-    private val progressBar = findViewById<ProgressBar>(R.id.progressBar)
-    private var isClick = true
 
+    private val type = object : TypeToken<List<Track?>?>() {}.type
+    private val gson = Gson()
+
+    private var isClick = true
     private val handler = Handler(Looper.getMainLooper())
     private val runnable = Runnable { evaluateRequest() }
+
+    lateinit var nothingSearch: LinearLayout
+    lateinit var noConnection: LinearLayout
+    lateinit var search: EditText
+    lateinit var clear: ImageView
+    lateinit var recycler: RecyclerView
+    private lateinit var refreshButton: Button
+    private lateinit var clearHistory: Button
+    private lateinit var textClear: TextView
+    lateinit var progressBar: ProgressBar
 
     // Инициализация подключения
     private val retrofit = Retrofit.Builder().baseUrl("https://itunes.apple.com/")
@@ -59,6 +60,17 @@ class ActivitySearch : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        val sharedPreferences = getSharedPreferences("SearchActivity", MODE_PRIVATE)
+        nothingSearch = findViewById(R.id.nothingSearch)
+        noConnection = findViewById(R.id.nothingConnection)
+        search = findViewById(R.id.edit_search)
+        clear = findViewById(R.id.clear_search)
+        recycler = findViewById(R.id.musicList)
+        refreshButton = findViewById(R.id.refreshButton)
+        clearHistory = findViewById(R.id.clearHistory)
+        textClear = findViewById(R.id.historySearch)
+        progressBar = findViewById(R.id.progressBar)
 
         var historyTrack = gson.fromJson<ArrayList<Track>>(
             sharedPreferences.getString("tracksHistory", null),

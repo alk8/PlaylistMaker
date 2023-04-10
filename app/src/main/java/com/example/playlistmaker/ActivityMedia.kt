@@ -20,25 +20,20 @@ import com.google.gson.reflect.TypeToken
 class ActivityMedia : AppCompatActivity() {
 
     companion object {
-        private const val REFRESH_TIME = 400L
+        private const val REFRESH_TIME = 1000L
         private const val NULL_TIMER = "00:00"
     }
 
     private var playerState = DEFAULT
     private val gson = Gson()
-    private val type = object : TypeToken<Track?>() {}.type
-    private val musicPlayer = MediaPlayer()
-    private val track = gson.fromJson<Track>(intent.getStringExtra("track"), type)
-    private val handler = Handler(Looper.myLooper()!!)
-    private val timer = findViewById<TextView>(R.id.timer)
-    private val play = findViewById<ImageView>(R.id.playButton)
-    private val pauseResourse = if (isDarkTheme()) {
-        R.drawable.pause_nightmode
-    } else R.drawable.pause
 
-    private val playResourse = if (isDarkTheme()) {
-        R.drawable.play_button
-    } else R.drawable.white_play_button
+    private val musicPlayer = MediaPlayer()
+    private val handler = Handler(Looper.myLooper()!!)
+    private var isDark = false
+
+    private lateinit var track: Track
+    private lateinit var timer: TextView
+    private lateinit var play: ImageView
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingInflatedId")
@@ -46,6 +41,16 @@ class ActivityMedia : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_media)
+
+        val type = object : TypeToken<Track?>() {}.type
+        track = gson.fromJson(intent.getStringExtra("track"), type)
+
+        timer = findViewById(R.id.timer)
+        play = findViewById(R.id.playButton)
+
+
+        isDark = isDarkTheme()
+
         val trackName = findViewById<TextView>(R.id.trackName)
         val artistName = findViewById<TextView>(R.id.artistName)
         val time = findViewById<TextView>(R.id.time)
@@ -54,6 +59,7 @@ class ActivityMedia : AppCompatActivity() {
         val genre = findViewById<TextView>(R.id.genreData)
         val country = findViewById<TextView>(R.id.countryData)
         val picture = findViewById<ImageView>(R.id.album)
+        timer.text = NULL_TIMER
 
         play.setOnClickListener { controlPlayer() }
 
@@ -99,14 +105,20 @@ class ActivityMedia : AppCompatActivity() {
     private fun startPlayer() {
         musicPlayer.start()
         playerState = PLAYING
-        play.setImageResource(pauseResourse)
+
+        if (isDark) {
+            play.setImageResource(R.drawable.pause_nightmode)
+        } else play.setImageResource(R.drawable.pause)
+
         handler.postDelayed({ refreshTimer() }, REFRESH_TIME)
     }
 
     private fun pausePlayer() {
         musicPlayer.pause()
         playerState = PAUSED
-        play.setImageResource(playResourse)
+        if (isDark) {
+            play.setImageResource(R.drawable.play_button)
+        } else play.setImageResource(R.drawable.white_play_button)
         stopTimer()
     }
 
@@ -122,9 +134,10 @@ class ActivityMedia : AppCompatActivity() {
     }
 
     private fun refreshTimer() {
-        if (playerState == PLAYING) {
+        if (playerState != PAUSED) {
             timer.text = FormatterTime.formatTime(musicPlayer.currentPosition.toString())
         }
+        handler.postDelayed({ refreshTimer() }, REFRESH_TIME)
     }
 
     private fun stopTimer() = handler.removeCallbacks { refreshTimer() }
