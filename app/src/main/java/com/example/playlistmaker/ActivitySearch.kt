@@ -1,8 +1,11 @@
 package com.example.playlistmaker
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -21,8 +24,30 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ActivitySearch : AppCompatActivity() {
 
-    var text: String? = ""
-    var musicAdapter = MusicAdapter()
+    companion object {
+        private const val DEBOUNCE_DELAY = 2000L
+        private const val CLICK_DEBOUNCE = 1000L
+    }
+
+    private var text: String? = ""
+    private var musicAdapter = MusicAdapter()
+
+    private val type = object : TypeToken<List<Track?>?>() {}.type
+    private val gson = Gson()
+
+    private var isClick = true
+    private val handler = Handler(Looper.getMainLooper())
+    private val runnable = Runnable { evaluateRequest() }
+
+    lateinit var nothingSearch: LinearLayout
+    lateinit var noConnection: LinearLayout
+    lateinit var search: EditText
+    lateinit var clear: ImageView
+    lateinit var recycler: RecyclerView
+    private lateinit var refreshButton: Button
+    private lateinit var clearHistory: Button
+    private lateinit var textClear: TextView
+    lateinit var progressBar: ProgressBar
 
     // Инициализация подключения
     private val retrofit = Retrofit.Builder().baseUrl("https://itunes.apple.com/")
@@ -31,38 +56,35 @@ class ActivitySearch : AppCompatActivity() {
     //Инициализация API
     private val musicAPI = retrofit.create<SearchAPI>()
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-        val search = findViewById<EditText>(R.id.edit_search)
-        val clear = findViewById<ImageView>(R.id.clear_search)
-        val recycler = findViewById<RecyclerView>(R.id.musicList)
-        val nothingSearch = findViewById<LinearLayout>(R.id.nothingSearch)
-        val noConnection = findViewById<LinearLayout>(R.id.nothingConnection)
-        val refreshButton = findViewById<Button>(R.id.refreshButton)
-        val clearHistory = findViewById<Button>(R.id.clearHistory)
-        val textClear = findViewById<TextView>(R.id.historySearch)
-        val type = object : TypeToken<List<Track?>?>() {}.type
+
         val sharedPreferences = getSharedPreferences("SearchActivity", MODE_PRIVATE)
-        val gson = Gson()
+        nothingSearch = findViewById(R.id.nothingSearch)
+        noConnection = findViewById(R.id.nothingConnection)
+        search = findViewById(R.id.edit_search)
+        clear = findViewById(R.id.clear_search)
+        recycler = findViewById(R.id.musicList)
+        refreshButton = findViewById(R.id.refreshButton)
+        clearHistory = findViewById(R.id.clearHistory)
+        textClear = findViewById(R.id.historySearch)
+        progressBar = findViewById(R.id.progressBar)
 
         var historyTrack = gson.fromJson<ArrayList<Track>>(
             sharedPreferences.getString("tracksHistory", null),
             type
         )
 
-        if (historyTrack == null) {
-            historyTrack = ArrayList()
-        }
+        if (historyTrack == null) historyTrack = ArrayList()
 
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = musicAdapter
 
         if (savedInstanceState != null) {
             text = savedInstanceState.getString("textSearch")
-            if (!text.isNullOrEmpty()) {
-                search.setText(text)
-            }
+            if (!text.isNullOrEmpty()) search.setText(text)
         }
 
         clearHistory.setOnClickListener {
@@ -77,14 +99,12 @@ class ActivitySearch : AppCompatActivity() {
         search.setOnFocusChangeListener { _, hasFocus ->
             //Видимость элементов
             if (hasFocus) {
-
                 if (historyTrack.size > 0) {
                     clearHistory.visibility = View.VISIBLE
                     textClear.visibility = View.VISIBLE
                     musicAdapter.music = historyTrack
                 }
-            }
-            else{
+            } else {
                 clearHistory.visibility = View.INVISIBLE
                 textClear.visibility = View.INVISIBLE
             }
@@ -94,39 +114,39 @@ class ActivitySearch : AppCompatActivity() {
             historyTrack.remove(track)
             historyTrack.add(0, track)
 
-            if (historyTrack.size > 10) {
-                historyTrack.removeLast()
-            }
+            if (historyTrack.size > 10) historyTrack.removeLast()
+
             sharedPreferences.edit().putString("tracksHistory", Gson().toJson(historyTrack, type))
                 .apply()
 
             // Переход на экран плеера
             val intentMedia = Intent(this, ActivityMedia::class.java)
-            intentMedia.putExtra("track",gson.toJson(track))
+            intentMedia.putExtra("track", gson.toJson(track))
             startActivity(intentMedia)
         }
 
-        refreshButton.setOnClickListener {
-            evaluateRequest(noConnection, nothingSearch)
-        }
+        refreshButton.setOnClickListener { evaluateRequest() }
 
         search.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 // ВЫПОЛНЯЙТЕ ПОИСКОВЫЙ ЗАПРОС ЗДЕСЬ
-                evaluateRequest(noConnection, nothingSearch)
+                evaluateRequest()
                 true
             }
             false
         }
 
         clearHistory.setOnClickListener {
-            historyTrack.clear()
-            musicAdapter.music = historyTrack
-            musicAdapter.notifyDataSetChanged()
-            clearHistory.visibility = View.INVISIBLE
-            textClear.visibility = View.INVISIBLE
-            sharedPreferences.edit().putString("tracksHistory", Gson().toJson(historyTrack, type))
-                .apply()
+            if (clickDebounse()) {
+                historyTrack.clear()
+                musicAdapter.music = historyTrack
+                musicAdapter.notifyDataSetChanged()
+                clearHistory.visibility = View.INVISIBLE
+                textClear.visibility = View.INVISIBLE
+                sharedPreferences.edit()
+                    .putString("tracksHistory", Gson().toJson(historyTrack, type))
+                    .apply()
+            }
         }
 
         val simpleTextWatcher = object : TextWatcher {
@@ -135,10 +155,13 @@ class ActivitySearch : AppCompatActivity() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 visibleInvisibleClearButton(search, clear)
                 text = p0.toString()
+                searchDebounse()
             }
 
             override fun afterTextChanged(p0: Editable?) {}
+
         }
+
         search.addTextChangedListener(simpleTextWatcher)
         clear.setOnClickListener {
             search.text.clear()
@@ -164,25 +187,28 @@ class ActivitySearch : AppCompatActivity() {
         clear.isVisible = search.text.isNotEmpty()
     }
 
-    private fun evaluateRequest(
-        noConnection: LinearLayout,
-        nothingSearch: LinearLayout,
-    ) {
+    private fun evaluateRequest() {
         musicAPI.getMusic(text).enqueue(object : Callback<TrackResponse> {
             override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
                 t.printStackTrace()
                 // Ошибка сервера
                 noConnection.visibility = View.VISIBLE
+                progressBar.visibility = View.INVISIBLE
             }
 
             override fun onResponse(
                 call: Call<TrackResponse>,
                 response: Response<TrackResponse>
             ) {
+                progressBar.visibility = View.VISIBLE
+                recycler.visibility = View.INVISIBLE
+
                 if (response.isSuccessful) {
                     val trackJSON = response.body()?.results
                     if (trackJSON != null) {
                         if (trackJSON.isNotEmpty()) {
+                            progressBar.visibility = View.INVISIBLE
+                            recycler.visibility = View.VISIBLE
                             nothingSearch.visibility = View.INVISIBLE
                             noConnection.visibility = View.INVISIBLE
                             musicAdapter.music = trackJSON
@@ -191,6 +217,7 @@ class ActivitySearch : AppCompatActivity() {
                             // не дал результатов
                             nothingSearch.visibility = View.VISIBLE
                             noConnection.visibility = View.INVISIBLE
+                            progressBar.visibility = View.INVISIBLE
                         }
                     }
                 } else {
@@ -198,5 +225,19 @@ class ActivitySearch : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun searchDebounse() {
+        handler.removeCallbacks(runnable)
+        handler.postDelayed(runnable, DEBOUNCE_DELAY)
+    }
+
+    private fun clickDebounse(): Boolean {
+        val current = isClick
+        if (isClick) {
+            isClick = false
+            handler.postDelayed({ isClick = true }, CLICK_DEBOUNCE)
+        }
+        return current
     }
 }
