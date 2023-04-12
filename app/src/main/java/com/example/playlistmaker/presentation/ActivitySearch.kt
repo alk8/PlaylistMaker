@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -16,11 +16,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import retrofit2.*
-import retrofit2.converter.gson.GsonConverterFactory
-
+import com.example.playlistmaker.R
+import com.example.playlistmaker.data.AppleAPI
+import com.example.playlistmaker.data.repository.TrackRepository
+import com.example.playlistmaker.domain.usecase.SearchTrackUseCase
 
 class ActivitySearch : AppCompatActivity() {
 
@@ -32,36 +31,33 @@ class ActivitySearch : AppCompatActivity() {
     private var text: String? = ""
     private var musicAdapter = MusicAdapter()
 
-    private val type = object : TypeToken<List<Track?>?>() {}.type
-    private val gson = Gson()
-
     private var isClick = true
     private val handler = Handler(Looper.getMainLooper())
     private val runnable = Runnable { evaluateRequest() }
 
-    lateinit var nothingSearch: LinearLayout
-    lateinit var noConnection: LinearLayout
+    private lateinit var nothingSearch: LinearLayout
+    private lateinit var noConnection: LinearLayout
     lateinit var search: EditText
     lateinit var clear: ImageView
-    lateinit var recycler: RecyclerView
+    private lateinit var recycler: RecyclerView
     private lateinit var refreshButton: Button
     private lateinit var clearHistory: Button
     private lateinit var textClear: TextView
-    lateinit var progressBar: ProgressBar
+    private lateinit var progressBar: ProgressBar
 
-    // Инициализация подключения
-    private val retrofit = Retrofit.Builder().baseUrl("https://itunes.apple.com/")
-        .addConverterFactory(GsonConverterFactory.create()).build()
+    private val appleAPI = AppleAPI()
+    private lateinit var trackRepository: TrackRepository
 
-    //Инициализация API
-    private val musicAPI = retrofit.create<SearchAPI>()
+    // CASES
+    private val searchTrackUseCase = SearchTrackUseCase()
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val sharedPreferences = getSharedPreferences("SearchActivity", MODE_PRIVATE)
+        trackRepository = TrackRepository(getSharedPreferences("SearchActivity", MODE_PRIVATE))
+
         nothingSearch = findViewById(R.id.nothingSearch)
         noConnection = findViewById(R.id.nothingConnection)
         search = findViewById(R.id.edit_search)
@@ -72,12 +68,7 @@ class ActivitySearch : AppCompatActivity() {
         textClear = findViewById(R.id.historySearch)
         progressBar = findViewById(R.id.progressBar)
 
-        var historyTrack = gson.fromJson<ArrayList<Track>>(
-            sharedPreferences.getString("tracksHistory", null),
-            type
-        )
-
-        if (historyTrack == null) historyTrack = ArrayList()
+        val historyTrack = trackRepository.getHistory()
 
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = musicAdapter
@@ -92,8 +83,7 @@ class ActivitySearch : AppCompatActivity() {
             musicAdapter.music = historyTrack
             clearHistory.visibility = View.INVISIBLE
             textClear.visibility = View.INVISIBLE
-            sharedPreferences.edit().putString("tracksHistory", Gson().toJson(historyTrack, type))
-                .apply()
+            trackRepository.saveHistory(historyTrack)
         }
 
         search.setOnFocusChangeListener { _, hasFocus ->
@@ -115,13 +105,11 @@ class ActivitySearch : AppCompatActivity() {
             historyTrack.add(0, track)
 
             if (historyTrack.size > 10) historyTrack.removeLast()
-
-            sharedPreferences.edit().putString("tracksHistory", Gson().toJson(historyTrack, type))
-                .apply()
+            trackRepository.saveHistory(historyTrack)
 
             // Переход на экран плеера
             val intentMedia = Intent(this, ActivityMedia::class.java)
-            intentMedia.putExtra("track", gson.toJson(track))
+            intentMedia.putExtra("track", trackRepository.trackToJSON(track))
             startActivity(intentMedia)
         }
 
@@ -131,7 +119,6 @@ class ActivitySearch : AppCompatActivity() {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 // ВЫПОЛНЯЙТЕ ПОИСКОВЫЙ ЗАПРОС ЗДЕСЬ
                 evaluateRequest()
-                true
             }
             false
         }
@@ -143,9 +130,7 @@ class ActivitySearch : AppCompatActivity() {
                 musicAdapter.notifyDataSetChanged()
                 clearHistory.visibility = View.INVISIBLE
                 textClear.visibility = View.INVISIBLE
-                sharedPreferences.edit()
-                    .putString("tracksHistory", Gson().toJson(historyTrack, type))
-                    .apply()
+                trackRepository.saveHistory(historyTrack)
             }
         }
 
@@ -159,7 +144,6 @@ class ActivitySearch : AppCompatActivity() {
             }
 
             override fun afterTextChanged(p0: Editable?) {}
-
         }
 
         search.addTextChangedListener(simpleTextWatcher)
@@ -187,44 +171,34 @@ class ActivitySearch : AppCompatActivity() {
         clear.isVisible = search.text.isNotEmpty()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun evaluateRequest() {
-        musicAPI.getMusic(text).enqueue(object : Callback<TrackResponse> {
-            override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                t.printStackTrace()
-                // Ошибка сервера
-                noConnection.visibility = View.VISIBLE
+
+        val tracks = searchTrackUseCase.execute(appleAPI, text)
+
+        if (tracks == null) {
+            // Ошибка сервера
+            noConnection.visibility = View.VISIBLE
+            progressBar.visibility = View.INVISIBLE
+
+        } else {
+            progressBar.visibility = View.VISIBLE
+            recycler.visibility = View.INVISIBLE
+
+            if (tracks.isNotEmpty()) {
+                progressBar.visibility = View.INVISIBLE
+                recycler.visibility = View.VISIBLE
+                nothingSearch.visibility = View.INVISIBLE
+                noConnection.visibility = View.INVISIBLE
+                musicAdapter.music = tracks
+                musicAdapter.notifyDataSetChanged()
+            } else {
+                // не дал результатов
+                nothingSearch.visibility = View.VISIBLE
+                noConnection.visibility = View.INVISIBLE
                 progressBar.visibility = View.INVISIBLE
             }
-
-            override fun onResponse(
-                call: Call<TrackResponse>,
-                response: Response<TrackResponse>
-            ) {
-                progressBar.visibility = View.VISIBLE
-                recycler.visibility = View.INVISIBLE
-
-                if (response.isSuccessful) {
-                    val trackJSON = response.body()?.results
-                    if (trackJSON != null) {
-                        if (trackJSON.isNotEmpty()) {
-                            progressBar.visibility = View.INVISIBLE
-                            recycler.visibility = View.VISIBLE
-                            nothingSearch.visibility = View.INVISIBLE
-                            noConnection.visibility = View.INVISIBLE
-                            musicAdapter.music = trackJSON
-                            musicAdapter.notifyDataSetChanged()
-                        } else {
-                            // не дал результатов
-                            nothingSearch.visibility = View.VISIBLE
-                            noConnection.visibility = View.INVISIBLE
-                            progressBar.visibility = View.INVISIBLE
-                        }
-                    }
-                } else {
-                    val error = response.errorBody()?.string()
-                }
-            }
-        })
+        }
     }
 
     private fun searchDebounse() {
@@ -240,4 +214,8 @@ class ActivitySearch : AppCompatActivity() {
         }
         return current
     }
+
 }
+
+
+

@@ -1,12 +1,14 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.R
+import com.example.playlistmaker.domain.models.Track
 
 class MusicAdapter() : RecyclerView.Adapter<MusicViewHolder>() {
     var music: List<Track> = ArrayList()
-    var itemClickListener: ((Int,Track) -> Unit)? = null
+    var itemClickListener: ((Int, Track) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MusicViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_layout, parent, false)
