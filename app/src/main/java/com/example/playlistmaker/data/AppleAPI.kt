@@ -10,8 +10,6 @@ private const val URL = "https://itunes.apple.com/"
 
 class AppleAPI : RequestTrack {
 
-    val onResponse = {}
-
     private val api: SearchAPI = Retrofit.Builder().baseUrl(URL)
         .addConverterFactory(GsonConverterFactory.create()).build().create()
 
@@ -20,6 +18,7 @@ class AppleAPI : RequestTrack {
         api.getMusic(text).enqueue(object : Callback<TrackResponse> {
             override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
                 t.printStackTrace()
+                callBack.onFailure()
             }
 
             override fun onResponse(
