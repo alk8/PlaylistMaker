@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.domain.models
 
 enum class StateMusicPlayer {
     DEFAULT,
