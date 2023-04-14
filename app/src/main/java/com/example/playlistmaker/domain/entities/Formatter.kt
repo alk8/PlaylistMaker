@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.domain.entities
 
 import java.text.SimpleDateFormat
 import java.util.*

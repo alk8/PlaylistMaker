@@ -13,9 +13,9 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.example.playlistmaker.FormatterTime
+import com.example.playlistmaker.domain.entities.FormatterTime
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.repository.TrackRepository
+import com.example.playlistmaker.data.repository.SerializatorTrack
 import com.example.playlistmaker.domain.models.StateMusicPlayer.*
 import com.example.playlistmaker.domain.models.Track
 
@@ -37,6 +37,7 @@ class ActivityMedia : AppCompatActivity() {
     private lateinit var timer: TextView
     private lateinit var play: ImageView
 
+
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +45,7 @@ class ActivityMedia : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_media)
 
-        track = TrackRepository().jsonToTrack(intent.getStringExtra("track"))
+        track = SerializatorTrack().jsonToTrack(intent.getStringExtra("track"))
 
         timer = findViewById(R.id.timer)
         play = findViewById(R.id.playButton)
