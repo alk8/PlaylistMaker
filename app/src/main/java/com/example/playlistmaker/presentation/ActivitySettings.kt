@@ -1,5 +1,6 @@
 package com.example.playlistmaker.presentation
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,7 @@ import android.widget.ImageView
 import com.example.playlistmaker.R
 
 class ActivitySettings : AppCompatActivity() {
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -36,6 +38,10 @@ class ActivitySettings : AppCompatActivity() {
             intent.data = Uri.parse(getString(R.string.url_site))
             startActivity(intent)
 
+        }
+
+        findViewById<ImageView>(R.id.backSettings).setOnClickListener {
+            this.finish()
         }
     }
 }
