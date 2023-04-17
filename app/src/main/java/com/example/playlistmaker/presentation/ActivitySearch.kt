@@ -18,7 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.data.AppleAPI
+import com.example.playlistmaker.data.repository.SerializatorTrack
 import com.example.playlistmaker.data.repository.TrackRepository
+import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.usecase.SearchTrackUseCase
 
 class ActivitySearch : AppCompatActivity() {
@@ -47,6 +49,7 @@ class ActivitySearch : AppCompatActivity() {
 
     private val appleAPI = AppleAPI()
     private lateinit var trackRepository: TrackRepository
+    private val serializatorTrack = SerializatorTrack()
 
     // CASES
     private val searchTrackUseCase = SearchTrackUseCase()
@@ -68,7 +71,11 @@ class ActivitySearch : AppCompatActivity() {
         textClear = findViewById(R.id.historySearch)
         progressBar = findViewById(R.id.progressBar)
 
-        val historyTrack = trackRepository.getHistory()
+        var historyTrack = trackRepository.getHistory()
+
+        if (historyTrack == null) {
+            historyTrack = ArrayList()
+        }
 
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = musicAdapter
@@ -109,7 +116,7 @@ class ActivitySearch : AppCompatActivity() {
 
             // Переход на экран плеера
             val intentMedia = Intent(this, ActivityMedia::class.java)
-            intentMedia.putExtra("track", trackRepository.trackToJSON(track))
+            intentMedia.putExtra("track", serializatorTrack.trackToJSON(track))
             startActivity(intentMedia)
         }
 
@@ -174,31 +181,36 @@ class ActivitySearch : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     private fun evaluateRequest() {
 
-        val tracks = searchTrackUseCase.execute(appleAPI, text)
+        searchTrackUseCase.execute(appleAPI, text, object : CallbackResponse {
+            override fun onResponse(listTrack: List<Track>) {
+                val tracks = listTrack as ArrayList<Track>
 
-        if (tracks == null) {
-            // Ошибка сервера
-            noConnection.visibility = View.VISIBLE
-            progressBar.visibility = View.INVISIBLE
+                progressBar.visibility = View.VISIBLE
+                recycler.visibility = View.INVISIBLE
 
-        } else {
-            progressBar.visibility = View.VISIBLE
-            recycler.visibility = View.INVISIBLE
+                if (tracks.isEmpty()) {
 
-            if (tracks.isNotEmpty()) {
-                progressBar.visibility = View.INVISIBLE
-                recycler.visibility = View.VISIBLE
-                nothingSearch.visibility = View.INVISIBLE
-                noConnection.visibility = View.INVISIBLE
-                musicAdapter.music = tracks
-                musicAdapter.notifyDataSetChanged()
-            } else {
-                // не дал результатов
-                nothingSearch.visibility = View.VISIBLE
-                noConnection.visibility = View.INVISIBLE
+                    nothingSearch.visibility = View.VISIBLE
+                    noConnection.visibility = View.INVISIBLE
+                    progressBar.visibility = View.INVISIBLE
+
+                } else {
+                    progressBar.visibility = View.INVISIBLE
+                    recycler.visibility = View.VISIBLE
+                    nothingSearch.visibility = View.INVISIBLE
+                    noConnection.visibility = View.INVISIBLE
+                    musicAdapter.music = tracks
+                    musicAdapter.notifyDataSetChanged()
+
+                }
+            }
+
+            override fun onFailure() {
+                noConnection.visibility = View.VISIBLE
                 progressBar.visibility = View.INVISIBLE
             }
-        }
+        })
+
     }
 
     private fun searchDebounse() {
@@ -213,6 +225,11 @@ class ActivitySearch : AppCompatActivity() {
             handler.postDelayed({ isClick = true }, CLICK_DEBOUNCE)
         }
         return current
+    }
+
+    interface CallbackResponse {
+        fun onResponse(listTrack: List<Track>)
+        fun onFailure()
     }
 
 }

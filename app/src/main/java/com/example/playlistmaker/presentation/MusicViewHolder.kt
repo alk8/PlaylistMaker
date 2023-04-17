@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.example.playlistmaker.FormatterTime
+import com.example.playlistmaker.domain.entities.FormatterTime
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.models.Track
 

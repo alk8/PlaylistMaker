@@ -1,8 +1,6 @@
 package com.example.playlistmaker.domain.api
-import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.presentation.ActivitySearch
 
 interface RequestTrack {
-
-    fun evaluateRequest(text: String?) : List<Track>?
-
+    fun evaluateRequest(text: String?, callBack: ActivitySearch.CallbackResponse)
 }
