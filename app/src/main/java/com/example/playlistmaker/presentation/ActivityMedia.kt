@@ -18,6 +18,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.data.repository.SerializatorTrack
 import com.example.playlistmaker.domain.models.StateMusicPlayer.*
 import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.presentation.api.Serializator
 
 
 class ActivityMedia : AppCompatActivity() {
@@ -45,7 +46,9 @@ class ActivityMedia : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_media)
 
-        track = SerializatorTrack().jsonToTrack(intent.getStringExtra("track"))
+        val serializator: Serializator = SerializatorTrack()
+
+        track = serializator.jsonToTrack(intent.getStringExtra("track"))
 
         timer = findViewById(R.id.timer)
         play = findViewById(R.id.playButton)

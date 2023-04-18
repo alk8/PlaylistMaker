@@ -20,8 +20,11 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.data.AppleAPI
 import com.example.playlistmaker.data.repository.SerializatorTrack
 import com.example.playlistmaker.data.repository.TrackRepository
+import com.example.playlistmaker.domain.api.RequestTrack
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.usecase.SearchTrackUseCase
+import com.example.playlistmaker.presentation.api.Serializator
+import com.example.playlistmaker.presentation.api.TrackHistory
 
 class ActivitySearch : AppCompatActivity() {
 
@@ -47,9 +50,9 @@ class ActivitySearch : AppCompatActivity() {
     private lateinit var textClear: TextView
     private lateinit var progressBar: ProgressBar
 
-    private val appleAPI = AppleAPI()
-    private lateinit var trackRepository: TrackRepository
-    private val serializatorTrack = SerializatorTrack()
+    private val appleAPI : RequestTrack = AppleAPI()
+    private lateinit var trackRepository: TrackHistory
+    private val serializatorTrack : Serializator = SerializatorTrack()
 
     // CASES
     private val searchTrackUseCase = SearchTrackUseCase()

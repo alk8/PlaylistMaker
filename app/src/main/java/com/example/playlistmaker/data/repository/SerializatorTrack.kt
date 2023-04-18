@@ -1,14 +1,17 @@
 package com.example.playlistmaker.data.repository
 
 import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.presentation.api.Serializator
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
-class SerializatorTrack {
+class SerializatorTrack : Serializator {
 
-    fun trackToJSON(track: Track): String? {
-        return TrackRepository.gson.toJson(track)
+   override fun trackToJSON(track: Track): String? {
+        return Gson().toJson(track)
     }
 
-    fun jsonToTrack(textJSON: String?) : Track {
-        return TrackRepository.gson.fromJson(textJSON, TrackRepository.type)
+   override fun jsonToTrack(textJSON: String?) : Track {
+        return Gson().fromJson(textJSON, object : TypeToken<Track?>() {}.type)
     }
 }
