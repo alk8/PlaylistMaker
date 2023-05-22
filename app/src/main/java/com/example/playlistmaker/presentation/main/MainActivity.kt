@@ -1,10 +1,13 @@
-package com.example.playlistmaker.presentation
+package com.example.playlistmaker.presentation.main
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import com.example.playlistmaker.R
+import com.example.playlistmaker.presentation.search.ActivitySearch
+import com.example.playlistmaker.presentation.settings.ActivitySettings
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,7 +20,6 @@ class MainActivity : AppCompatActivity() {
         }
         // Кнопка Медиа
         findViewById<Button>(R.id.media).setOnClickListener {
-
         }
         // Кнопка настройки
         findViewById<Button>(R.id.settings).setOnClickListener {
