@@ -8,7 +8,7 @@ import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.usecase.TracksInteractor
 
 class SearchViewModel(
-    private val sharedPreferences: SharedPreferences,
+    sharedPreferences: SharedPreferences,
 ) : ViewModel() {
 
     private val tracksInteractor: TracksInteractor = TracksInteractor(sharedPreferences)
