@@ -1,7 +1,7 @@
 package com.example.playlistmaker.data.repository
 
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.presentation.api.Serializator
+import com.example.playlistmaker.domain.api.Serializator
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -13,5 +13,13 @@ class SerializatorTrack : Serializator {
 
    override fun jsonToTrack(textJSON: String?) : Track {
         return Gson().fromJson(textJSON, object : TypeToken<Track?>() {}.type)
+    }
+
+    override fun tracksToJson(tracks: ArrayList<Track>?): String? {
+        return Gson().toJson(tracks)
+    }
+
+    override fun jsonToTracks(textJSON: String?): ArrayList<Track> {
+        return Gson().fromJson(textJSON, object : TypeToken<ArrayList<Track>?>() {}.type)
     }
 }

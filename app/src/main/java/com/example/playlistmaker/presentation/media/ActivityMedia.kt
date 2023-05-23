@@ -39,14 +39,14 @@ class ActivityMedia : AppCompatActivity() {
         play = findViewById(R.id.playButton)
         isDark = isDarkTheme()
 
-        viewModel.track.observe(this) {
+        viewModel.getTrackData().observe(this) {
             track = it
         }
 
         // Для первой инициализации
-        track = viewModel.track.value!!
+        track = viewModel.getTrackData().value!!
 
-        viewModel.timerText.observe(this) {
+        viewModel.getTimerTextData().observe(this) {
             timer.text = it
         }
 

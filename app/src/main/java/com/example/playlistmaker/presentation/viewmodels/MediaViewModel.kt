@@ -3,6 +3,7 @@ package com.example.playlistmaker.presentation.viewmodels
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.data.repository.SerializatorTrack
@@ -17,10 +18,15 @@ class MediaViewModel(val text: String?): ViewModel(){
         private const val NULL_TIMER = "00:00"
     }
 
-    var track = MutableLiveData<Track>()
-    var timerText = MutableLiveData<String>()
-    var state = MutableLiveData<StateMusicPlayer>()
     private var handler: Handler
+
+    private var track = MutableLiveData<Track>()
+    private var timerText = MutableLiveData<String>()
+    private var state = MutableLiveData<StateMusicPlayer>()
+
+    fun getTrackData(): LiveData<Track> = track
+    fun getTimerTextData(): LiveData<String> = timerText
+    fun getStateData(): LiveData<StateMusicPlayer> = state
 
     private val musicPlayer = MediaPlayer()
 
