@@ -19,16 +19,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.ActivitySearch"
+            android:name=".presentation.search.ActivitySearch"
             android:exported="false" />
         <activity
-            android:name=".presentation.ActivityMedia"
+            android:name=".presentation.media.ActivityMedia"
             android:exported="false" />
         <activity
-            android:name=".presentation.ActivitySettings"
+            android:name=".presentation.settings.ActivitySettings"
             android:exported="false" />
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".presentation.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

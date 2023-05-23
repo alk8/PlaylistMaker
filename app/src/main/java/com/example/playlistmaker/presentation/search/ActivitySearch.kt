@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation
+package com.example.playlistmaker.presentation.search
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -14,17 +14,18 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.data.AppleAPI
 import com.example.playlistmaker.data.repository.SerializatorTrack
-import com.example.playlistmaker.data.repository.TrackRepository
-import com.example.playlistmaker.domain.api.RequestTrack
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.domain.usecase.SearchTrackUseCase
 import com.example.playlistmaker.presentation.api.Serializator
 import com.example.playlistmaker.presentation.api.TrackHistory
+import com.example.playlistmaker.presentation.media.ActivityMedia
+import com.example.playlistmaker.presentation.viewmodels.SearchViewModel
+import com.example.playlistmaker.presentation.viewmodels.SearchViewModelFactory
 
 class ActivitySearch : AppCompatActivity() {
 
@@ -37,9 +38,9 @@ class ActivitySearch : AppCompatActivity() {
     private var musicAdapter = MusicAdapter()
 
     private var isClick = true
+    private lateinit var trackList: ArrayList<Track>
     private val handler = Handler(Looper.getMainLooper())
-    private val runnable = Runnable { evaluateRequest() }
-
+    private val runnable = Runnable { viewModel.uploadTracks(text) }
     private lateinit var nothingSearch: LinearLayout
     private lateinit var noConnection: LinearLayout
     lateinit var search: EditText
@@ -50,19 +51,57 @@ class ActivitySearch : AppCompatActivity() {
     private lateinit var textClear: TextView
     private lateinit var progressBar: ProgressBar
 
-    private val appleAPI : RequestTrack = AppleAPI()
-    private lateinit var trackRepository: TrackHistory
-    private val serializatorTrack : Serializator = SerializatorTrack()
+    private val serializatorTrack: Serializator = SerializatorTrack()
 
-    // CASES
-    private val searchTrackUseCase = SearchTrackUseCase()
+    // VIEWMODEL
+    private lateinit var viewModel: SearchViewModel
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        trackRepository = TrackRepository(getSharedPreferences("SearchActivity", MODE_PRIVATE))
+        val sharedPreferences = getSharedPreferences("SearchActivity", MODE_PRIVATE)
+        viewModel = ViewModelProvider(
+            this, SearchViewModelFactory(
+                sharedPreferences,
+            )
+        )[SearchViewModel::class.java]
+
+        viewModel.trackList.observe(this) {
+            trackList = it
+        }
+
+        viewModel.uploadTracks.observe(this)
+        {
+
+            progressBar.visibility = View.VISIBLE
+            recycler.visibility = View.INVISIBLE
+
+            if (it == null) {
+
+                noConnection.visibility = View.VISIBLE
+                progressBar.visibility = View.INVISIBLE
+
+            } else {
+
+                if (it.isEmpty()) {
+                    nothingSearch.visibility = View.VISIBLE
+                    noConnection.visibility = View.INVISIBLE
+                    progressBar.visibility = View.INVISIBLE
+                } else {
+                    progressBar.visibility = View.INVISIBLE
+                    recycler.visibility = View.VISIBLE
+                    nothingSearch.visibility = View.INVISIBLE
+                    noConnection.visibility = View.INVISIBLE
+                    musicAdapter.music = it
+                    musicAdapter.notifyDataSetChanged()
+                }
+            }
+
+        }
+
+        viewModel.getHistory()
 
         nothingSearch = findViewById(R.id.nothingSearch)
         noConnection = findViewById(R.id.nothingConnection)
@@ -74,12 +113,6 @@ class ActivitySearch : AppCompatActivity() {
         textClear = findViewById(R.id.historySearch)
         progressBar = findViewById(R.id.progressBar)
 
-        var historyTrack = trackRepository.getHistory()
-
-        if (historyTrack == null) {
-            historyTrack = ArrayList()
-        }
-
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = musicAdapter
 
@@ -89,20 +122,20 @@ class ActivitySearch : AppCompatActivity() {
         }
 
         clearHistory.setOnClickListener {
-            historyTrack.clear()
-            musicAdapter.music = historyTrack
+            viewModel.clear()
+            musicAdapter.music = trackList
             clearHistory.visibility = View.INVISIBLE
             textClear.visibility = View.INVISIBLE
-            trackRepository.saveHistory(historyTrack)
+            viewModel.setHistory()
         }
 
         search.setOnFocusChangeListener { _, hasFocus ->
             //Видимость элементов
             if (hasFocus) {
-                if (historyTrack.size > 0) {
+                if (trackList.size > 0) {
                     clearHistory.visibility = View.VISIBLE
                     textClear.visibility = View.VISIBLE
-                    musicAdapter.music = historyTrack
+                    musicAdapter.music = trackList
                 }
             } else {
                 clearHistory.visibility = View.INVISIBLE
@@ -111,11 +144,7 @@ class ActivitySearch : AppCompatActivity() {
         }
 
         musicAdapter.itemClickListener = { _, track ->
-            historyTrack.remove(track)
-            historyTrack.add(0, track)
-
-            if (historyTrack.size > 10) historyTrack.removeLast()
-            trackRepository.saveHistory(historyTrack)
+            viewModel.removeTrack(track)
 
             // Переход на экран плеера
             val intentMedia = Intent(this, ActivityMedia::class.java)
@@ -123,24 +152,23 @@ class ActivitySearch : AppCompatActivity() {
             startActivity(intentMedia)
         }
 
-        refreshButton.setOnClickListener { evaluateRequest() }
+        refreshButton.setOnClickListener { viewModel.uploadTracks(text) }
 
         search.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                // ВЫПОЛНЯЙТЕ ПОИСКОВЫЙ ЗАПРОС ЗДЕСЬ
-                evaluateRequest()
+                viewModel.uploadTracks(text)
             }
             false
         }
 
         clearHistory.setOnClickListener {
             if (clickDebounse()) {
-                historyTrack.clear()
-                musicAdapter.music = historyTrack
+                viewModel.clear()
+                musicAdapter.music = trackList
                 musicAdapter.notifyDataSetChanged()
                 clearHistory.visibility = View.INVISIBLE
                 textClear.visibility = View.INVISIBLE
-                trackRepository.saveHistory(historyTrack)
+                viewModel.setHistory()
             }
         }
 
@@ -181,41 +209,6 @@ class ActivitySearch : AppCompatActivity() {
         clear.isVisible = search.text.isNotEmpty()
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private fun evaluateRequest() {
-
-        searchTrackUseCase.execute(appleAPI, text, object : CallbackResponse {
-            override fun onResponse(listTrack: List<Track>) {
-                val tracks = listTrack as ArrayList<Track>
-
-                progressBar.visibility = View.VISIBLE
-                recycler.visibility = View.INVISIBLE
-
-                if (tracks.isEmpty()) {
-
-                    nothingSearch.visibility = View.VISIBLE
-                    noConnection.visibility = View.INVISIBLE
-                    progressBar.visibility = View.INVISIBLE
-
-                } else {
-                    progressBar.visibility = View.INVISIBLE
-                    recycler.visibility = View.VISIBLE
-                    nothingSearch.visibility = View.INVISIBLE
-                    noConnection.visibility = View.INVISIBLE
-                    musicAdapter.music = tracks
-                    musicAdapter.notifyDataSetChanged()
-
-                }
-            }
-
-            override fun onFailure() {
-                noConnection.visibility = View.VISIBLE
-                progressBar.visibility = View.INVISIBLE
-            }
-        })
-
-    }
-
     private fun searchDebounse() {
         handler.removeCallbacks(runnable)
         handler.postDelayed(runnable, DEBOUNCE_DELAY)
@@ -228,11 +221,6 @@ class ActivitySearch : AppCompatActivity() {
             handler.postDelayed({ isClick = true }, CLICK_DEBOUNCE)
         }
         return current
-    }
-
-    interface CallbackResponse {
-        fun onResponse(listTrack: List<Track>)
-        fun onFailure()
     }
 
 }
