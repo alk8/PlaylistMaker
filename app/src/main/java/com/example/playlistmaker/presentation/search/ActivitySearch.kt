@@ -18,11 +18,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.AppleAPI
 import com.example.playlistmaker.data.repository.SerializatorTrack
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.presentation.api.Serializator
-import com.example.playlistmaker.presentation.api.TrackHistory
+import com.example.playlistmaker.domain.api.Serializator
 import com.example.playlistmaker.presentation.media.ActivityMedia
 import com.example.playlistmaker.presentation.viewmodels.SearchViewModel
 import com.example.playlistmaker.presentation.viewmodels.SearchViewModelFactory
@@ -34,7 +32,7 @@ class ActivitySearch : AppCompatActivity() {
         private const val CLICK_DEBOUNCE = 1000L
     }
 
-    private var text: String? = ""
+    private var text: String = ""
     private var musicAdapter = MusicAdapter()
 
     private var isClick = true
@@ -68,12 +66,11 @@ class ActivitySearch : AppCompatActivity() {
             )
         )[SearchViewModel::class.java]
 
-        viewModel.trackList.observe(this) {
+        viewModel.getTrackListData().observe(this) {
             trackList = it
         }
 
-        viewModel.uploadTracks.observe(this)
-        {
+        viewModel.getUploadTracks().observe(this) {
 
             progressBar.visibility = View.VISIBLE
             recycler.visibility = View.INVISIBLE
@@ -117,7 +114,7 @@ class ActivitySearch : AppCompatActivity() {
         recycler.adapter = musicAdapter
 
         if (savedInstanceState != null) {
-            text = savedInstanceState.getString("textSearch")
+            text = savedInstanceState.getString("textSearch").toString()
             if (!text.isNullOrEmpty()) search.setText(text)
         }
 

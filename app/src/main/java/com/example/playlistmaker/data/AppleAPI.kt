@@ -1,7 +1,8 @@
 package com.example.playlistmaker.data
 
+import com.example.playlistmaker.data.repository.TrackResponse
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.presentation.viewmodels.Uploader
+import com.example.playlistmaker.domain.models.Uploader
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -12,7 +13,7 @@ class AppleAPI {
     private val api: SearchAPI = Retrofit.Builder().baseUrl(URL)
         .addConverterFactory(GsonConverterFactory.create()).build().create()
 
-    fun evaluateRequest(text: String?,uploader: Uploader) {
+    fun evaluateRequest(text: String,uploader: Uploader) {
 
         api.getMusic(text).enqueue(object : Callback<TrackResponse> {
 

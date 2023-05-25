@@ -39,25 +39,15 @@ class ActivityMedia : AppCompatActivity() {
         play = findViewById(R.id.playButton)
         isDark = isDarkTheme()
 
-        viewModel.track.observe(this) {
+        viewModel.getTrackData().observe(this) {
             track = it
         }
 
         // Для первой инициализации
-        track = viewModel.track.value!!
+        track = viewModel.getTrackData().value!!
 
-        viewModel.timerText.observe(this) {
+        viewModel.getTimerTextData().observe(this) {
             timer.text = it
-        }
-
-        viewModel.state.observe(this) {
-            if (isDark) {
-                play.setImageResource(R.drawable.pause_nightmode)
-            } else play.setImageResource(R.drawable.pause)
-
-            if (isDark) {
-                play.setImageResource(R.drawable.play_button)
-            } else play.setImageResource(R.drawable.white_play_button)
         }
 
         val trackName = findViewById<TextView>(R.id.trackName)
