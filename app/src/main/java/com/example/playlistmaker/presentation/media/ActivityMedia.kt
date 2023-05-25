@@ -10,6 +10,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.domain.entities.FormatterTime
 import com.example.playlistmaker.R
+import com.example.playlistmaker.domain.models.StateMusicPlayer
+import com.example.playlistmaker.domain.models.StateMusicPlayer.*
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.viewmodels.MediaViewModel
 import com.example.playlistmaker.presentation.viewmodels.MediaViewModelFactory
@@ -39,17 +41,6 @@ class ActivityMedia : AppCompatActivity() {
         play = findViewById(R.id.playButton)
         isDark = isDarkTheme()
 
-        viewModel.getTrackData().observe(this) {
-            track = it
-        }
-
-        // Для первой инициализации
-        track = viewModel.getTrackData().value!!
-
-        viewModel.getTimerTextData().observe(this) {
-            timer.text = it
-        }
-
         val trackName = findViewById<TextView>(R.id.trackName)
         val artistName = findViewById<TextView>(R.id.artistName)
         val time = findViewById<TextView>(R.id.time)
@@ -59,20 +50,47 @@ class ActivityMedia : AppCompatActivity() {
         val country = findViewById<TextView>(R.id.countryData)
         val picture = findViewById<ImageView>(R.id.album)
 
+        viewModel.getTrackData().observe(this) {
+            track = it
+
+            trackName.text = track.trackName
+            artistName.text = track.artistName
+            time.text = FormatterTime.formatTime(track.trackTimeMillis)
+            album.text = track.collectionName
+            year.text = FormatterTime.getYear(track.releaseDate)
+            genre.text = track.primaryGenreName
+            country.text = track.country
+
+            Glide.with(picture).load(track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
+                .centerCrop()
+                .placeholder(R.drawable.ic_noconnection).transform(RoundedCorners(15))
+                .into(picture)
+        }
+
+        viewModel.getTimerTextData().observe(this) {
+            timer.text = it
+        }
+
+        viewModel.getStateData().observe(this) { it ->
+
+            if (isDark) {
+                if (it == PLAYING) {
+                    play.setImageResource(R.drawable.pause_nightmode)
+                } else {
+                    play.setImageResource(R.drawable.white_play_button)
+                }
+
+            } else {
+
+                if (it == PLAYING) {
+                    play.setImageResource(R.drawable.pause)
+                } else {
+                    play.setImageResource(R.drawable.play_button)
+                }
+            }
+        }
+
         play.setOnClickListener { controlPlayer() }
-
-        trackName.text = track.trackName
-        artistName.text = track.artistName
-        time.text = FormatterTime.formatTime(track.trackTimeMillis)
-        album.text = track.collectionName
-        year.text = FormatterTime.getYear(track.releaseDate)
-        genre.text = track.primaryGenreName
-        country.text = track.country
-
-        Glide.with(picture).load(track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
-            .centerCrop()
-            .placeholder(R.drawable.ic_noconnection).transform(RoundedCorners(15))
-            .into(picture)
 
         findViewById<ImageView>(R.id.back).setOnClickListener { finish() }
         preparePlayer()

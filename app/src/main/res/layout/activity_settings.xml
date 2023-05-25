@@ -27,6 +27,7 @@
             android:text="@string/settings"
             android:layout_gravity="center"
             android:layout_marginLeft="28dp"
+            android:fontFamily="@font/ys_display_medium"
             android:drawableTint="@color/black"/>
 
     </LinearLayout>
@@ -38,6 +39,7 @@
         <Switch
             style="@style/SwitchStyle"
             android:text="@string/dark"
+            android:layout_gravity="center"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     </FrameLayout>
@@ -46,6 +48,10 @@
 
         <TextView
             style="@style/TextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="5dp"
             android:text="@string/share">
 
         </TextView>
@@ -61,6 +67,7 @@
 
         <TextView
             style="@style/TextViewStyle"
+            android:layout_marginTop="5dp"
             android:text="@string/write">
 
         </TextView>
@@ -68,7 +75,7 @@
         <ImageView
             android:id="@+id/qa"
             style="@style/ImageViewStyle"
-            android:src="@drawable/ic_vectorhelpdesk" />
+            android:src="@drawable/helpdesk" />
 
     </FrameLayout>
 
@@ -78,6 +85,7 @@
 
         <TextView
             style="@style/TextViewStyle"
+            android:layout_marginTop="5dp"
             android:text="@string/doc">
 
         </TextView>

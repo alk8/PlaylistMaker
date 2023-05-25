@@ -13,14 +13,16 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.repository.SerializatorTrack
+import com.example.playlistmaker.domain.entities.SerializatorTrack
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.api.Serializator
+import com.example.playlistmaker.domain.models.StateSearch
 import com.example.playlistmaker.presentation.media.ActivityMedia
 import com.example.playlistmaker.presentation.viewmodels.SearchViewModel
 import com.example.playlistmaker.presentation.viewmodels.SearchViewModelFactory
@@ -66,39 +68,37 @@ class ActivitySearch : AppCompatActivity() {
             )
         )[SearchViewModel::class.java]
 
-        viewModel.getTrackListData().observe(this) {
-            trackList = it
-        }
+        viewModel.getState().observe(this) {
 
-        viewModel.getUploadTracks().observe(this) {
-
-            progressBar.visibility = View.VISIBLE
-            recycler.visibility = View.INVISIBLE
-
-            if (it == null) {
-
+            if (it.second == StateSearch.SHOW_UPLOAD_TRACKS) {
+                progressBar.isGone = true
+                recycler.visibility = View.VISIBLE
+                nothingSearch.isGone = true
+                noConnection.isGone = true
+                clearHistory.isGone = true
+                textClear.isGone = true
+                musicAdapter.music = it.first!!
+                musicAdapter.notifyDataSetChanged()
+            } else if (it.second == StateSearch.EMPTY_UPLOAD_TRACKS) {
+                nothingSearch.visibility = View.VISIBLE
+                noConnection.isGone = true
+                progressBar.isGone = true
+            } else if (it.second == StateSearch.NO_CONNECTION) {
                 noConnection.visibility = View.VISIBLE
-                progressBar.visibility = View.INVISIBLE
-
-            } else {
-
-                if (it.isEmpty()) {
-                    nothingSearch.visibility = View.VISIBLE
-                    noConnection.visibility = View.INVISIBLE
-                    progressBar.visibility = View.INVISIBLE
-                } else {
-                    progressBar.visibility = View.INVISIBLE
-                    recycler.visibility = View.VISIBLE
-                    nothingSearch.visibility = View.INVISIBLE
-                    noConnection.visibility = View.INVISIBLE
-                    musicAdapter.music = it
+                progressBar.isGone = true
+            } else if (it.second == StateSearch.SHOW_HISTORY) {
+                if (it.first?.isEmpty() == false) {
+                    clearHistory.visibility = View.VISIBLE
+                    textClear.visibility = View.VISIBLE
+                    musicAdapter.music = it.first!!
                     musicAdapter.notifyDataSetChanged()
                 }
+            } else if (it.second == StateSearch.EMPTY_HISTORY) {
+                clearHistory.isGone = true
+                textClear.isGone = true
             }
 
         }
-
-        viewModel.getHistory()
 
         nothingSearch = findViewById(R.id.nothingSearch)
         noConnection = findViewById(R.id.nothingConnection)
@@ -118,35 +118,19 @@ class ActivitySearch : AppCompatActivity() {
             if (!text.isNullOrEmpty()) search.setText(text)
         }
 
-        clearHistory.setOnClickListener {
-            viewModel.clear()
-            musicAdapter.music = trackList
-            clearHistory.visibility = View.INVISIBLE
-            textClear.visibility = View.INVISIBLE
-            viewModel.setHistory()
-        }
-
         search.setOnFocusChangeListener { _, hasFocus ->
-            //Видимость элементов
-            if (hasFocus) {
-                if (trackList.size > 0) {
-                    clearHistory.visibility = View.VISIBLE
-                    textClear.visibility = View.VISIBLE
-                    musicAdapter.music = trackList
-                }
-            } else {
-                clearHistory.visibility = View.INVISIBLE
-                textClear.visibility = View.INVISIBLE
-            }
+            if (hasFocus) viewModel.getHistory()
         }
 
         musicAdapter.itemClickListener = { _, track ->
             viewModel.removeTrack(track)
 
             // Переход на экран плеера
-            val intentMedia = Intent(this, ActivityMedia::class.java)
-            intentMedia.putExtra("track", serializatorTrack.trackToJSON(track))
-            startActivity(intentMedia)
+            if (track != null) {
+                val intentMedia = Intent(this, ActivityMedia::class.java)
+                intentMedia.putExtra("track", serializatorTrack.trackToJSON(track))
+                startActivity(intentMedia)
+            }
         }
 
         refreshButton.setOnClickListener { viewModel.uploadTracks(text) }
@@ -161,10 +145,10 @@ class ActivitySearch : AppCompatActivity() {
         clearHistory.setOnClickListener {
             if (clickDebounse()) {
                 viewModel.clear()
-                musicAdapter.music = trackList
+                musicAdapter.music = ArrayList()
                 musicAdapter.notifyDataSetChanged()
-                clearHistory.visibility = View.INVISIBLE
-                textClear.visibility = View.INVISIBLE
+                clearHistory.isGone = true
+                textClear.isGone = true
                 viewModel.setHistory()
             }
         }
@@ -184,8 +168,8 @@ class ActivitySearch : AppCompatActivity() {
         search.addTextChangedListener(simpleTextWatcher)
         clear.setOnClickListener {
             search.text.clear()
-            nothingSearch.visibility = View.INVISIBLE
-            noConnection.visibility = View.INVISIBLE
+            nothingSearch.isGone = true
+            noConnection.isGone = true
             musicAdapter.music = ArrayList()
             musicAdapter.notifyDataSetChanged()
             recycler.adapter = musicAdapter
