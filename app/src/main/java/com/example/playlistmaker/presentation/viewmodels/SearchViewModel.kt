@@ -4,7 +4,9 @@ import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.playlistmaker.domain.models.StateSearch
 import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.domain.models.Uploader
 import com.example.playlistmaker.domain.usecase.TracksInteractor
 
 class SearchViewModel(
@@ -13,30 +15,61 @@ class SearchViewModel(
 
     private val tracksInteractor: TracksInteractor = TracksInteractor(sharedPreferences)
 
-    private var trackList = MutableLiveData<ArrayList<Track>>()
-    private var uploadTracks = MutableLiveData<ArrayList<Track>>()
+    private var state = MutableLiveData<Pair<ArrayList<Track>?, StateSearch>>()
 
-    fun getTrackListData(): LiveData<ArrayList<Track>> = trackList
-    fun getUploadTracks(): LiveData<ArrayList<Track>> = uploadTracks
+    private var trackList: ArrayList<Track>? = ArrayList()
+    private var historyList: ArrayList<Track> = ArrayList()
+
+    fun getState(): LiveData<Pair<ArrayList<Track>?, StateSearch>> = state
 
     fun uploadTracks(text: String) {
-        uploadTracks.value = tracksInteractor.uploadTracks(text)
+        tracksInteractor.uploadTracks(text, object : Uploader {
+            override fun getTracks(tracks: ArrayList<Track>?) {
+                if (tracks == null) {
+                    // Ошибка соединения
+                    state.value = Pair(ArrayList(), StateSearch.NO_CONNECTION)
+                } else {
+                    if (tracks.isEmpty()) {
+                        // Пустой запрос
+                        trackList = tracks
+                        state.value = Pair(trackList, StateSearch.EMPTY_UPLOAD_TRACKS)
+                    } else {
+                        // Есть данные
+                        trackList = tracks
+                        state.value = Pair(trackList, StateSearch.SHOW_UPLOAD_TRACKS)
+                    }
+                }
+            }
+        })
+
     }
 
     fun getHistory() {
-        trackList.value = tracksInteractor.getHistory()
+
+        historyList = tracksInteractor.getHistory()
+
+        state.value = if (historyList.isEmpty()) {
+            Pair(historyList, StateSearch.EMPTY_HISTORY)
+        } else {
+            Pair(historyList, StateSearch.SHOW_HISTORY)
+        }
     }
 
     fun setHistory() {
-        tracksInteractor.setHistory(trackList.value)
+        tracksInteractor.setHistory(historyList)
+        state.value = if (historyList.isEmpty()) {
+            Pair(historyList, StateSearch.EMPTY_HISTORY)
+        } else {
+            Pair(historyList, StateSearch.SHOW_HISTORY)
+        }
     }
 
     fun clear() {
-        trackList.value = tracksInteractor.clear()
+        historyList = tracksInteractor.clear()
     }
 
     fun removeTrack(track: Track) {
-        tracksInteractor.removeTrack(trackList.value,track)
+        historyList = tracksInteractor.removeTrack(historyList, track)
         setHistory()
     }
 }

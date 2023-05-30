@@ -85,13 +85,15 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/musicList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        />
 
 
     <LinearLayout
         android:id="@+id/nothingSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:orientation="vertical"
         android:paddingTop="30dp"
         android:visibility="invisible">
@@ -106,6 +108,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_gravity="center"
         android:paddingTop="30dp"
         android:visibility="invisible">
 
