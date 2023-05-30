@@ -38,7 +38,6 @@ class ActivitySearch : AppCompatActivity() {
     private var musicAdapter = MusicAdapter()
 
     private var isClick = true
-    private lateinit var trackList: ArrayList<Track>
     private val handler = Handler(Looper.getMainLooper())
     private val runnable = Runnable { viewModel.uploadTracks(text) }
     private lateinit var nothingSearch: LinearLayout
@@ -147,6 +146,8 @@ class ActivitySearch : AppCompatActivity() {
         }
 
         refreshButton.setOnClickListener { viewModel.uploadTracks(text) }
+
+        findViewById<ImageView>(R.id.backSettings).setOnClickListener { finish() }
 
         search.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {

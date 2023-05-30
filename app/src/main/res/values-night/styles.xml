@@ -10,7 +10,9 @@
         <item name="android:fillColor">@color/white</item>
         <item name="android:padding">@dimen/padding_15</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily">@font/ys_display_light</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
      </style>
 
     <style name="ImageViewStyle">

@@ -31,7 +31,9 @@ class MediaViewModel(val text: String?): ViewModel(){
     private val musicPlayer = MediaPlayer()
 
     init {
-        track.value = SerializatorTrack().jsonToTrack(text)
+        if (!text.isNullOrEmpty()) {
+            track.value = SerializatorTrack().jsonToTrack(text)
+        }
         timerText.value = NULL_TIMER
         state.value = StateMusicPlayer.DEFAULT
         handler = Handler(Looper.myLooper()!!)
@@ -81,7 +83,7 @@ class MediaViewModel(val text: String?): ViewModel(){
         handler.postDelayed({ refreshTimer() }, REFRESH_TIME)
     }
 
-    fun onDestroy(){
+    fun onDestroy() {
         stopTimer()
         musicPlayer.release()
     }

@@ -11,7 +11,7 @@ class SerializatorTrack : Serializator {
         return Gson().toJson(track)
     }
 
-   override fun jsonToTrack(textJSON: String?) : Track {
+   override fun jsonToTrack(textJSON: String) : Track {
         return Gson().fromJson(textJSON, object : TypeToken<Track?>() {}.type)
     }
 
@@ -19,7 +19,7 @@ class SerializatorTrack : Serializator {
         return Gson().toJson(tracks)
     }
 
-    override fun jsonToTracks(textJSON: String?): ArrayList<Track> {
+    override fun jsonToTracks(textJSON: String): ArrayList<Track> {
         return Gson().fromJson(textJSON, object : TypeToken<ArrayList<Track>?>() {}.type)
     }
 }

@@ -51,6 +51,7 @@
                 android:backgroundTint="#E6E8EB"
                 android:layout_gravity="center"
                 android:drawableStart="?attr/searchMini"
+                android:textColor="#1A1B22"
                 android:drawablePadding="15dp"
                 android:hint="@string/search"
                 android:textColorHint="?attr/searchHintColor"

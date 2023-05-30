@@ -48,13 +48,10 @@ class SearchViewModel(
                     }
                 }
             })
-
         }
-
     }
 
     fun getHistory() {
-
         historyList = tracksInteractor.getHistory()
 
         state.value = if (historyList.isEmpty()) {

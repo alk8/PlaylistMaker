@@ -19,9 +19,10 @@ class TracksInteractor(private val sharedPreferences: SharedPreferences) {
 
 
     fun getHistory(): ArrayList<Track> {
-        val stringHistory = sharedPreferences?.getString("tracksHistory", "")
 
-        if (stringHistory?.isEmpty() == true) return ArrayList()
+        var stringHistory = sharedPreferences?.getString("tracksHistory","")
+
+        if (stringHistory.isNullOrEmpty()) return ArrayList()
 
         return serializator.jsonToTracks(stringHistory)
     }
