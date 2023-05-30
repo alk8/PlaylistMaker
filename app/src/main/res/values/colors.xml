@@ -11,5 +11,6 @@
     <color name="color_track">#1A1B22</color>
     <color name="color_progressBar">#6200EE</color>
     <color name="color_purpleBackground">#F5F5F5</color>
+    <color name="color_grey">#F5F5F5</color>
 
 </resources>

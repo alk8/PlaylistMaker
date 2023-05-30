@@ -20,7 +20,7 @@
             android:src="@drawable/ic_noconnection" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="330dp"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -28,7 +28,8 @@
                 android:id="@+id/trackName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/ys_display_bold"
+                android:fontFamily="@font/ys_display_regular"
+                android:textColor="?attr/blackWhiteColor"
                 android:textSize="16sp" />
 
             <LinearLayout
@@ -40,12 +41,13 @@
                     android:id="@+id/artistName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:fontFamily="@font/ys_display_light"
+                    android:fontFamily="@font/ys_display_regular"
                     android:textSize="11sp" />
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_gravity="center"
                     android:src="@drawable/ic_ellipse_1"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"/>
@@ -54,12 +56,19 @@
                     android:id="@+id/trackTime"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:fontFamily="@font/ys_display_light"
+                    android:fontFamily="@font/ys_display_regular"
                     android:textSize="11sp" />
 
             </LinearLayout>
 
         </LinearLayout>
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/track"
+            android:layout_gravity="center">
+        </ImageView>
 
     </LinearLayout>
 

@@ -12,4 +12,14 @@ class Track(
     val previewUrl: String
 ) {
 
+    override fun equals(other: Any?): Boolean {
+
+        return if (other is Track){
+            this.artistName == other.artistName && this.trackName == other.trackName
+        }else{
+            false
+        }
+
+    }
+
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="arrow" format="reference" />
+    <attr name="blackWhiteColor" format="reference" />
+    <attr name="searchBackground" format="reference" />
+    <attr name="searchMini" format="reference" />
+    <attr name="searchHintColor" format="reference" />
+
+</resources>

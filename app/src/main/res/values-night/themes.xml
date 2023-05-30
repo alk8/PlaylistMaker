@@ -11,6 +11,11 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="arrow">@drawable/white_strelka</item>
+        <item name="blackWhiteColor">@color/white</item>
+        <item name="searchBackground">@drawable/search_background_night</item>
+        <item name="searchMini">@drawable/search_mini_night</item>
+        <item name="searchHintColor">@color/color_track</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>

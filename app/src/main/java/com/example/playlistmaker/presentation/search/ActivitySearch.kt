@@ -70,32 +70,45 @@ class ActivitySearch : AppCompatActivity() {
 
         viewModel.getState().observe(this) {
 
-            if (it.second == StateSearch.SHOW_UPLOAD_TRACKS) {
-                progressBar.isGone = true
-                recycler.visibility = View.VISIBLE
-                nothingSearch.isGone = true
-                noConnection.isGone = true
-                clearHistory.isGone = true
-                textClear.isGone = true
-                musicAdapter.music = it.first!!
-                musicAdapter.notifyDataSetChanged()
-            } else if (it.second == StateSearch.EMPTY_UPLOAD_TRACKS) {
-                nothingSearch.visibility = View.VISIBLE
-                noConnection.isGone = true
-                progressBar.isGone = true
-            } else if (it.second == StateSearch.NO_CONNECTION) {
-                noConnection.visibility = View.VISIBLE
-                progressBar.isGone = true
-            } else if (it.second == StateSearch.SHOW_HISTORY) {
-                if (it.first?.isEmpty() == false) {
-                    clearHistory.visibility = View.VISIBLE
-                    textClear.visibility = View.VISIBLE
+            when (it.second) {
+                StateSearch.SHOW_UPLOAD_TRACKS -> {
+                    progressBar.isGone = true
+                    recycler.visibility = View.VISIBLE
+                    nothingSearch.isGone = true
+                    noConnection.isGone = true
+                    clearHistory.isGone = true
+                    textClear.isGone = true
                     musicAdapter.music = it.first!!
                     musicAdapter.notifyDataSetChanged()
                 }
-            } else if (it.second == StateSearch.EMPTY_HISTORY) {
-                clearHistory.isGone = true
-                textClear.isGone = true
+                StateSearch.EMPTY_UPLOAD_TRACKS -> {
+                    nothingSearch.visibility = View.VISIBLE
+                    noConnection.isGone = true
+                    progressBar.isGone = true
+                }
+                StateSearch.NO_CONNECTION -> {
+                    noConnection.visibility = View.VISIBLE
+                    progressBar.isGone = true
+                }
+                StateSearch.SHOW_HISTORY -> {
+                    if (it.first?.isEmpty() == false) {
+                        clearHistory.visibility = View.VISIBLE
+                        textClear.visibility = View.VISIBLE
+                        musicAdapter.music = it.first!!
+                        musicAdapter.notifyDataSetChanged()
+                    }
+                }
+                StateSearch.EMPTY_HISTORY -> {
+                    clearHistory.isGone = true
+                    textClear.isGone = true
+                }
+                else -> {
+                    // default state
+                    progressBar.isGone = true
+                    nothingSearch.isGone = true
+                    noConnection.isGone = true
+                    clearHistory.isGone = true
+                }
             }
 
         }

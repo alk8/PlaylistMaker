@@ -14,17 +14,17 @@
         android:layout_marginBottom="40dp">
 
         <ImageView
+            android:id="@+id/backSettings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/backSettings"
-            android:src="@drawable/ic_vectorstrelka"
+            android:layout_gravity="center"
             android:layout_marginLeft="@dimen/margin_15"
-            android:layout_gravity="center">
-        </ImageView>
+            android:src="@drawable/ic_vectorstrelka"></ImageView>
 
         <TextView
             style="@style/TextSettings"
             android:text="@string/settings"
+            android:textSize="22sp"
             android:layout_gravity="center"
             android:layout_marginLeft="28dp"
             android:fontFamily="@font/ys_display_medium"
@@ -40,7 +40,8 @@
             style="@style/SwitchStyle"
             android:text="@string/dark"
             android:layout_gravity="center"
-            tools:ignore="UseSwitchCompatOrMaterialXml" />
+            tools:ignore="UseSwitchCompatOrMaterialXml"
+            android:id="@+id/darkMode"/>
 
     </FrameLayout>
 
