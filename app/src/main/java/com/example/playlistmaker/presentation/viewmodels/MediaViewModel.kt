@@ -19,7 +19,6 @@ class MediaViewModel(val text: String?): ViewModel(){
     }
 
     private var handler: Handler
-
     private var track = MutableLiveData<Track>()
     private var timerText = MutableLiveData<String>()
     private var state = MutableLiveData<StateMusicPlayer>()
@@ -47,7 +46,7 @@ class MediaViewModel(val text: String?): ViewModel(){
             stopTimer()
             timerText.value = NULL_TIMER
         }
-        musicPlayer.setOnPreparedListener { state.value = StateMusicPlayer.PREPARED }
+        musicPlayer.setOnPreparedListener {state.value = StateMusicPlayer.PREPARED}
     }
 
     private fun stopTimer() = handler.removeCallbacks { refreshTimer() }
