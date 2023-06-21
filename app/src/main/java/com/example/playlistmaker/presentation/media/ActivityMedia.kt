@@ -5,17 +5,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.domain.entities.FormatterTime
 import com.example.playlistmaker.R
-import com.example.playlistmaker.domain.models.StateMusicPlayer
 import com.example.playlistmaker.domain.models.StateMusicPlayer.*
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.viewmodels.MediaViewModel
 import com.example.playlistmaker.presentation.viewmodels.MediaViewModelFactory
-
 
 class ActivityMedia : AppCompatActivity() {
 
@@ -32,14 +31,12 @@ class ActivityMedia : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_media)
 
-        viewModel = ViewModelProvider(
-            this,
-            MediaViewModelFactory(intent.getStringExtra("track"))
-        )[MediaViewModel::class.java]
-
         timer = findViewById(R.id.timer)
         play = findViewById(R.id.playButton)
         isDark = isDarkTheme()
+
+        play.setOnClickListener { controlPlayer() }
+        findViewById<ImageView>(R.id.back).setOnClickListener { finish() }
 
         val trackName = findViewById<TextView>(R.id.trackName)
         val artistName = findViewById<TextView>(R.id.artistName)
@@ -50,22 +47,12 @@ class ActivityMedia : AppCompatActivity() {
         val country = findViewById<TextView>(R.id.countryData)
         val picture = findViewById<ImageView>(R.id.album)
 
-        viewModel.getTrackData().observe(this) {
-            track = it
+        var trackIntent = intent.getStringExtra("track")
 
-            trackName.text = track.trackName
-            artistName.text = track.artistName
-            time.text = FormatterTime.formatTime(track.trackTimeMillis)
-            album.text = track.collectionName
-            year.text = FormatterTime.getYear(track.releaseDate)
-            genre.text = track.primaryGenreName
-            country.text = track.country
-
-            Glide.with(picture).load(track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
-                .centerCrop()
-                .placeholder(R.drawable.ic_noconnection).transform(RoundedCorners(15))
-                .into(picture)
-        }
+        viewModel = ViewModelProvider(
+            this,
+            MediaViewModelFactory(trackIntent)
+        )[MediaViewModel::class.java]
 
         viewModel.getTimerTextData().observe(this) {
             timer.text = it
@@ -90,11 +77,27 @@ class ActivityMedia : AppCompatActivity() {
             }
         }
 
-        play.setOnClickListener { controlPlayer() }
+        viewModel.getTrackData().observe(this) {
 
-        findViewById<ImageView>(R.id.back).setOnClickListener { finish() }
+            track = it
+            trackName.text = track.trackName
+            artistName.text = track.artistName
+            time.text = FormatterTime.formatTime(track.trackTimeMillis)
+            album.text = track.collectionName
+            year.text = FormatterTime.getYear(track.releaseDate)
+            genre.text = track.primaryGenreName
+            country.text = track.country
+
+            Glide.with(picture).load(track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
+                .centerCrop()
+                .placeholder(R.drawable.ic_noconnection).transform(RoundedCorners(15))
+                .into(picture)
+        }
+
         preparePlayer()
+
     }
+
 
     private fun preparePlayer() {
         viewModel.preparePlayer()

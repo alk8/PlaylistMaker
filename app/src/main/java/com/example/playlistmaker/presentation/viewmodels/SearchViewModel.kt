@@ -20,32 +20,38 @@ class SearchViewModel(
     private var trackList: ArrayList<Track>? = ArrayList()
     private var historyList: ArrayList<Track> = ArrayList()
 
+    init {
+        state.value = getDefaultState()
+    }
     fun getState(): LiveData<Pair<ArrayList<Track>?, StateSearch>> = state
 
     fun uploadTracks(text: String) {
-        tracksInteractor.uploadTracks(text, object : Uploader {
-            override fun getTracks(tracks: ArrayList<Track>?) {
-                if (tracks == null) {
-                    // Ошибка соединения
-                    state.value = Pair(ArrayList(), StateSearch.NO_CONNECTION)
-                } else {
-                    if (tracks.isEmpty()) {
-                        // Пустой запрос
-                        trackList = tracks
-                        state.value = Pair(trackList, StateSearch.EMPTY_UPLOAD_TRACKS)
+
+        if (text.isEmpty()){
+            state.value = getDefaultState()
+        }else {
+            tracksInteractor.uploadTracks(text, object : Uploader {
+                override fun getTracks(tracks: ArrayList<Track>?) {
+                    if (tracks == null) {
+                        // Ошибка соединения
+                        state.value = Pair(ArrayList(), StateSearch.NO_CONNECTION)
                     } else {
-                        // Есть данные
-                        trackList = tracks
-                        state.value = Pair(trackList, StateSearch.SHOW_UPLOAD_TRACKS)
+                        if (tracks.isEmpty()) {
+                            // Пустой запрос
+                            trackList = tracks
+                            state.value = Pair(trackList, StateSearch.EMPTY_UPLOAD_TRACKS)
+                        } else {
+                            // Есть данные
+                            trackList = tracks
+                            state.value = Pair(trackList, StateSearch.SHOW_UPLOAD_TRACKS)
+                        }
                     }
                 }
-            }
-        })
-
+            })
+        }
     }
 
     fun getHistory() {
-
         historyList = tracksInteractor.getHistory()
 
         state.value = if (historyList.isEmpty()) {
@@ -71,5 +77,9 @@ class SearchViewModel(
     fun removeTrack(track: Track) {
         historyList = tracksInteractor.removeTrack(historyList, track)
         setHistory()
+    }
+
+    private fun getDefaultState(): Pair<ArrayList<Track>?, StateSearch>{
+        return Pair(ArrayList(),StateSearch.DEFAULT)
     }
 }

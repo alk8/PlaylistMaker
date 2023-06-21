@@ -19,7 +19,6 @@ class MediaViewModel(val text: String?): ViewModel(){
     }
 
     private var handler: Handler
-
     private var track = MutableLiveData<Track>()
     private var timerText = MutableLiveData<String>()
     private var state = MutableLiveData<StateMusicPlayer>()
@@ -31,7 +30,9 @@ class MediaViewModel(val text: String?): ViewModel(){
     private val musicPlayer = MediaPlayer()
 
     init {
-        track.value = SerializatorTrack().jsonToTrack(text)
+        if (!text.isNullOrEmpty()) {
+            track.value = SerializatorTrack().jsonToTrack(text)
+        }
         timerText.value = NULL_TIMER
         state.value = StateMusicPlayer.DEFAULT
         handler = Handler(Looper.myLooper()!!)
@@ -45,7 +46,7 @@ class MediaViewModel(val text: String?): ViewModel(){
             stopTimer()
             timerText.value = NULL_TIMER
         }
-        musicPlayer.setOnPreparedListener { state.value = StateMusicPlayer.PREPARED }
+        musicPlayer.setOnPreparedListener {state.value = StateMusicPlayer.PREPARED}
     }
 
     private fun stopTimer() = handler.removeCallbacks { refreshTimer() }
@@ -81,7 +82,7 @@ class MediaViewModel(val text: String?): ViewModel(){
         handler.postDelayed({ refreshTimer() }, REFRESH_TIME)
     }
 
-    fun onDestroy(){
+    fun onDestroy() {
         stopTimer()
         musicPlayer.release()
     }

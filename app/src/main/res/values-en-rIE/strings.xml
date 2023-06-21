@@ -24,4 +24,10 @@
     <string name="refresh">Refresh</string>
     <string name="storySearch">Story search</string>
     <string name="clearHistory">Clean story</string>
+    <string name="Duration">Duration</string>
+    <string name="Album">Album</string>
+    <string name="year">Year</string>
+    <string name="genre">Genre</string>
+    <string name="country">Country</string>
+    <string name="toast">You haven\'t turned on the music yet, use the \"Search\" command</string>
 </resources>

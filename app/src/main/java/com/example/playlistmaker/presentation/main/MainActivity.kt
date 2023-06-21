@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import com.example.playlistmaker.R
+import com.example.playlistmaker.presentation.media.ActivityMedia
+import com.example.playlistmaker.presentation.mediateka.ActivityMediateka
 import com.example.playlistmaker.presentation.search.ActivitySearch
 import com.example.playlistmaker.presentation.settings.ActivitySettings
 
@@ -20,6 +22,7 @@ class MainActivity : AppCompatActivity() {
         }
         // Кнопка Медиа
         findViewById<Button>(R.id.media).setOnClickListener {
+            startActivity(Intent(this, ActivityMediateka::class.java))
         }
         // Кнопка настройки
         findViewById<Button>(R.id.settings).setOnClickListener {
