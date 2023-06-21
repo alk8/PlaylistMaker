@@ -63,11 +63,6 @@ class SearchViewModel(
 
     fun setHistory() {
         tracksInteractor.setHistory(historyList)
-        state.value = if (historyList.isEmpty()) {
-            Pair(historyList, StateSearch.EMPTY_HISTORY)
-        } else {
-            Pair(historyList, StateSearch.SHOW_HISTORY)
-        }
     }
 
     fun clear() {

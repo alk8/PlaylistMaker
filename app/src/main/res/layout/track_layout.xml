@@ -30,6 +30,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ys_display_regular"
                 android:textColor="?attr/blackWhiteColor"
+                android:singleLine="true"
                 android:textSize="16sp" />
 
             <LinearLayout
@@ -39,7 +40,7 @@
 
                 <TextView
                     android:id="@+id/artistName"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/ys_display_regular"
                     android:textSize="11sp" />
@@ -54,7 +55,7 @@
 
                 <TextView
                     android:id="@+id/trackTime"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/ys_display_regular"
                     android:textSize="11sp" />
@@ -67,6 +68,7 @@
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:src="@drawable/track"
+            android:layout_marginEnd="20dp"
             android:layout_gravity="center">
         </ImageView>
 

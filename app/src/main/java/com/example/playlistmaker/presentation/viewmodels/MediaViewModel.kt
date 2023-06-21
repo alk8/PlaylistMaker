@@ -6,7 +6,7 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.playlistmaker.domain.entities.SerializatorTrack
+import com.example.playlistmaker.data.SerializatorTrack
 import com.example.playlistmaker.domain.entities.FormatterTime
 import com.example.playlistmaker.domain.models.StateMusicPlayer
 import com.example.playlistmaker.domain.models.Track
