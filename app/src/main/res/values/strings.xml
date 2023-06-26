@@ -21,7 +21,7 @@
     <string name="NoInternet">Нет соединения</string>
     <string name="problemConnection">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
     <string name="refresh">Обновить</string>
-    <string name="storySearch">История поиска</string>
+    <string name="storySearch">Вы искали</string>
     <string name="clearHistory">Очистить историю</string>
     <string name="Duration">Длительность</string>
     <string name="Album">Альбом</string>
