@@ -40,7 +40,8 @@ class ActivitySearch : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private val runnable = Runnable {
         progressBar.isGone = false
-        viewModel.uploadTracks(text) }
+        viewModel.uploadTracks(text)
+    }
     private lateinit var nothingSearch: LinearLayout
     private lateinit var noConnection: LinearLayout
     lateinit var search: EditText
@@ -67,6 +68,16 @@ class ActivitySearch : AppCompatActivity() {
                 sharedPreferences,
             )
         )[SearchViewModel::class.java]
+
+        nothingSearch = findViewById(R.id.nothingSearch)
+        noConnection = findViewById(R.id.nothingConnection)
+        search = findViewById(R.id.edit_search)
+        clear = findViewById(R.id.clear_search)
+        recycler = findViewById(R.id.musicList)
+        refreshButton = findViewById(R.id.refreshButton)
+        clearHistory = findViewById(R.id.clearHistory)
+        textClear = findViewById(R.id.historySearch)
+        progressBar = findViewById(R.id.progressBar)
 
         viewModel.getState().observe(this) {
 
@@ -100,6 +111,7 @@ class ActivitySearch : AppCompatActivity() {
                     if (it.first?.isEmpty() == false) {
                         clearHistory.visibility = View.VISIBLE
                         recycler.visibility = View.VISIBLE
+                        progressBar.isGone = true
                         textClear.visibility = View.VISIBLE
                         musicAdapter.music = it.first!!
                         musicAdapter.notifyDataSetChanged()
@@ -119,15 +131,6 @@ class ActivitySearch : AppCompatActivity() {
             }
         }
 
-        nothingSearch = findViewById(R.id.nothingSearch)
-        noConnection = findViewById(R.id.nothingConnection)
-        search = findViewById(R.id.edit_search)
-        clear = findViewById(R.id.clear_search)
-        recycler = findViewById(R.id.musicList)
-        refreshButton = findViewById(R.id.refreshButton)
-        clearHistory = findViewById(R.id.clearHistory)
-        textClear = findViewById(R.id.historySearch)
-        progressBar = findViewById(R.id.progressBar)
 
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = musicAdapter
@@ -181,7 +184,9 @@ class ActivitySearch : AppCompatActivity() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 visibleInvisibleClearButton(search, clear)
                 text = p0.toString()
-                searchDebounse()
+                if (text.isNotEmpty()) {
+                    searchDebounse()
+                }
             }
 
             override fun afterTextChanged(p0: Editable?) {}
@@ -223,10 +228,6 @@ class ActivitySearch : AppCompatActivity() {
             handler.postDelayed({ isClick = true }, CLICK_DEBOUNCE)
         }
         return current
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
 }
