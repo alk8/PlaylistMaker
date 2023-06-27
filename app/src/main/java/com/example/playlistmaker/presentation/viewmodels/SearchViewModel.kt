@@ -28,7 +28,9 @@ class SearchViewModel(
     fun uploadTracks(text: String) {
 
         if (text.isEmpty()){
-            state.value = getDefaultState()
+            if (state.value?.equals(StateSearch.SHOW_HISTORY) == true) {
+                state.value = getDefaultState()
+            }
         }else {
             tracksInteractor.uploadTracks(text, object : Uploader {
                 override fun getTracks(tracks: ArrayList<Track>?) {
@@ -63,11 +65,6 @@ class SearchViewModel(
 
     fun setHistory() {
         tracksInteractor.setHistory(historyList)
-        state.value = if (historyList.isEmpty()) {
-            Pair(historyList, StateSearch.EMPTY_HISTORY)
-        } else {
-            Pair(historyList, StateSearch.SHOW_HISTORY)
-        }
     }
 
     fun clear() {

@@ -2,43 +2,35 @@ package com.example.playlistmaker.domain.usecase
 
 import android.content.SharedPreferences
 import com.example.playlistmaker.data.AppleAPI
-import com.example.playlistmaker.domain.entities.SerializatorTrack
+import com.example.playlistmaker.data.SerializatorTrack
+import com.example.playlistmaker.data.repository.DataBase
+import com.example.playlistmaker.domain.api.Base
+import com.example.playlistmaker.domain.api.GettingTracks
+import com.example.playlistmaker.domain.api.Serializator
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.models.Uploader
+import com.example.playlistmaker.presentation.api.BusinessLogic
 
-class TracksInteractor(private val sharedPreferences: SharedPreferences) {
+class TracksInteractor(private val sharedPreferences: SharedPreferences) : BusinessLogic {
 
-    companion object {
-        val serializator = SerializatorTrack()
-        val api = AppleAPI()
-    }
+    val dataBase : Base = DataBase(sharedPreferences)
+    val api : GettingTracks = AppleAPI()
 
-    fun uploadTracks(text: String, uploader: Uploader) {
+    override fun uploadTracks(text: String, uploader: Uploader) {
         api.evaluateRequest(text, uploader)
     }
 
-
-    fun getHistory(): ArrayList<Track> {
-
-        var stringHistory = sharedPreferences?.getString("tracksHistory","")
-
-        if (stringHistory.isNullOrEmpty()) return ArrayList()
-
-        return serializator.jsonToTracks(stringHistory)
+    override fun getHistory(): ArrayList<Track> {
+       return dataBase.getHistory()
     }
 
-    fun setHistory(trackList: ArrayList<Track>?) {
-        sharedPreferences?.edit()?.putString(
-            "tracksHistory", serializator.tracksToJson(
-                trackList,
-            )
-        )
-            ?.apply()
+    override fun setHistory(trackList: ArrayList<Track>?) {
+        dataBase.setHistory(trackList)
     }
 
-    fun clear(): ArrayList<Track> = ArrayList()
+    override fun clear(): ArrayList<Track> = ArrayList()
 
-    fun removeTrack(trackList: ArrayList<Track>, track: Track): ArrayList<Track> {
+    override fun removeTrack(trackList: ArrayList<Track>, track: Track): ArrayList<Track> {
 
         trackList.remove(track)
         trackList.add(0, track)

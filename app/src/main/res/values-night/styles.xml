@@ -67,9 +67,9 @@
     </style>
 
     <style name="NothingFoundText">
-        <item name="android:layout_width">130dp</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:layout_height">20dp</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:text">"@string/NothingSearch"</item>
         <item name="android:textColor">@color/white</item>
     </style>

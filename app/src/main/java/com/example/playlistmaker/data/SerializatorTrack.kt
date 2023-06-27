@@ -1,4 +1,4 @@
-package com.example.playlistmaker.domain.entities
+package com.example.playlistmaker.data
 
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.api.Serializator
