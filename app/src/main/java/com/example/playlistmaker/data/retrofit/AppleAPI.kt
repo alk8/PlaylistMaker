@@ -1,15 +1,11 @@
-package com.example.playlistmaker.data
+package com.example.playlistmaker.data.retrofit
 
-import com.example.playlistmaker.data.repository.TrackResponse
 import com.example.playlistmaker.domain.api.GettingTracks
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.api.Uploader
-import org.koin.java.KoinJavaComponent.getKoin
 import retrofit2.*
 
-class AppleAPI : GettingTracks {
-
-    private val appleAPI: SearchAPI = getKoin().get()
+class AppleAPI(private val appleAPI: SearchAPI) : GettingTracks {
 
     override fun evaluateRequest(text: String, uploader: Uploader) {
 

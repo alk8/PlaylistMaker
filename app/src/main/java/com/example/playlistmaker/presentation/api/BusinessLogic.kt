@@ -3,7 +3,6 @@ package com.example.playlistmaker.presentation.api
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.api.Uploader
 
-
 interface BusinessLogic {
 
     fun uploadTracks(text: String, uploader: Uploader)

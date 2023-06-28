@@ -1,18 +1,20 @@
 package com.example.playlistmaker.data.repository
 
 import android.media.MediaPlayer
-import com.example.playlistmaker.data.SerializatorTrack
-import com.example.playlistmaker.domain.api.Player
+import com.example.playlistmaker.domain.api.PlayerMedia
 import com.example.playlistmaker.domain.api.Serializator
 import com.example.playlistmaker.domain.models.Track
 
-class MusicPlayerImpl(private val mediaPlayer: MediaPlayer,private val serializatorTrack: SerializatorTrack): Player {
+class MusicPlayerImpl(
+    private val mediaPlayer: MediaPlayer,
+    private val serializatorTrack: Serializator
+) : PlayerMedia {
 
     override fun prepare(trackUrl: String?, completion: (Any) -> Unit, prepared: (Any) -> Unit) {
         mediaPlayer.setDataSource(trackUrl)
         mediaPlayer.prepareAsync()
-        mediaPlayer.setOnCompletionListener {completion}
-        mediaPlayer.setOnPreparedListener {prepared}
+        mediaPlayer.setOnCompletionListener { completion }
+        mediaPlayer.setOnPreparedListener { prepared }
     }
 
     override fun currentPosition(): String = mediaPlayer.currentPosition.toString()
@@ -30,4 +32,5 @@ class MusicPlayerImpl(private val mediaPlayer: MediaPlayer,private val serializa
     }
 
     override fun jsonToTrack(textJSON: String): Track = serializatorTrack.jsonToTrack(textJSON)
+
 }

@@ -1,25 +1,25 @@
 package com.example.playlistmaker.domain.di
 
 import android.content.SharedPreferences
-import com.example.playlistmaker.data.AppleAPI
-import com.example.playlistmaker.data.repository.DataBase
+import com.example.playlistmaker.data.retrofit.AppleAPI
+import com.example.playlistmaker.data.repository.DataBaseImpl
 import com.example.playlistmaker.data.repository.MusicPlayerImpl
 import com.example.playlistmaker.domain.api.Base
 import com.example.playlistmaker.domain.api.GettingTracks
-import com.example.playlistmaker.domain.api.Player
+import com.example.playlistmaker.domain.api.PlayerMedia
 import org.koin.dsl.module
 
-val domainRepository = module {
-    factory<Player> {
+val DomainModule = module {
+    single<PlayerMedia> {
         MusicPlayerImpl(get(), get())
     }
 
     single<Base> { (sharedPreferences: SharedPreferences) ->
-        DataBase(sharedPreferences)
+        DataBaseImpl(get(),sharedPreferences)
     }
 
     single<GettingTracks> {
-        AppleAPI()
+        AppleAPI(get())
     }
 }
 

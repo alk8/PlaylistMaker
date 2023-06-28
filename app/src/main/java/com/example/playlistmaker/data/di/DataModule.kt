@@ -1,8 +1,9 @@
 package com.example.playlistmaker.data.di
 
 import android.media.MediaPlayer
-import com.example.playlistmaker.data.SearchAPI
-import com.example.playlistmaker.data.SerializatorTrack
+import com.example.playlistmaker.data.retrofit.SearchAPI
+import com.example.playlistmaker.data.repository.SerializatorTrackImpl
+import com.example.playlistmaker.domain.api.Serializator
 import com.google.gson.Gson
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -11,21 +12,22 @@ import retrofit2.create
 
 private const val URL = "https://itunes.apple.com/"
 
-val dataRepository = module {
+val dataModule = module {
 
-    factory {
+    single {
         MediaPlayer()
     }
     factory {
         Gson()
     }
 
-    factory<SearchAPI> {
+    single<SearchAPI> {
         Retrofit.Builder().baseUrl(URL)
             .addConverterFactory(GsonConverterFactory.create()).build().create()
     }
 
-    factory {
-        SerializatorTrack(get())
+    factory<Serializator> {
+        SerializatorTrackImpl(get())
     }
+
 }

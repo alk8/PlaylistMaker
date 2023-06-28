@@ -1,6 +1,5 @@
 package com.example.playlistmaker.presentation.viewmodels
 
-import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,14 +7,19 @@ import com.example.playlistmaker.domain.models.StateSearch
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.api.Uploader
 import com.example.playlistmaker.presentation.api.BusinessLogic
-import org.koin.core.parameter.parametersOf
-import org.koin.java.KoinJavaComponent.getKoin
+import android.os.Handler
 
 class SearchViewModel(
-    sharedPreferences: SharedPreferences,
+    private val tracksInteractor: BusinessLogic,
+    private val handler: Handler,
+    private val runnable: Runnable
 ) : ViewModel() {
 
-    private val tracksInteractor: BusinessLogic = getKoin().get(parameters = { parametersOf(sharedPreferences)})
+    companion object {
+        private const val DEBOUNCE_DELAY = 2000L
+        private const val CLICK_DEBOUNCE = 1000L
+    }
+
     private var state = MutableLiveData<Pair<ArrayList<Track>?, StateSearch>>()
 
     private var trackList: ArrayList<Track>? = ArrayList()
@@ -24,15 +28,16 @@ class SearchViewModel(
     init {
         state.value = getDefaultState()
     }
+
     fun getState(): LiveData<Pair<ArrayList<Track>?, StateSearch>> = state
 
     fun uploadTracks(text: String) {
 
-        if (text.isEmpty()){
+        if (text.isEmpty()) {
             if (state.value?.equals(StateSearch.SHOW_HISTORY) == true) {
                 state.value = getDefaultState()
             }
-        }else {
+        } else {
             tracksInteractor.uploadTracks(text, object : Uploader {
                 override fun getTracks(tracks: ArrayList<Track>?) {
                     if (tracks == null) {
@@ -77,9 +82,20 @@ class SearchViewModel(
         setHistory()
     }
 
-    private fun getDefaultState(): Pair<ArrayList<Track>?, StateSearch>{
-        return Pair(ArrayList(),StateSearch.DEFAULT)
+    private fun getDefaultState(): Pair<ArrayList<Track>?, StateSearch> {
+        return Pair(ArrayList(), StateSearch.DEFAULT)
     }
 
-    fun trackToJSON(track: Track) : String? = tracksInteractor.trackToJSON(track)
+    fun trackToJSON(track: Track): String? = tracksInteractor.trackToJSON(track)
+
+    fun searchDebounse() {
+        handler.removeCallbacks(runnable)
+        handler.postDelayed(runnable, DEBOUNCE_DELAY)
+    }
+
+    fun clickDebounse(): Boolean {
+        var isClick = false
+        handler.postDelayed({ isClick = true }, CLICK_DEBOUNCE)
+        return isClick
+    }
 }

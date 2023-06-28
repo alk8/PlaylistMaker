@@ -10,4 +10,5 @@
     <dimen name="margin_right">10dp</dimen>
     <dimen name="text_size">16sp</dimen>
     <dimen name="height_trackList">61dp</dimen>
+    <dimen name="radius">2dp</dimen>
 </resources>

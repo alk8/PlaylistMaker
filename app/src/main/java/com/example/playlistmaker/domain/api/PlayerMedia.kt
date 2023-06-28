@@ -2,7 +2,7 @@ package com.example.playlistmaker.domain.api
 
 import com.example.playlistmaker.domain.models.Track
 
-interface Player {
+interface PlayerMedia {
     fun prepare(trackUrl:String?,completion: (Any) -> Unit,prepared: (Any) -> Unit)
     fun currentPosition(): String
     fun pause()

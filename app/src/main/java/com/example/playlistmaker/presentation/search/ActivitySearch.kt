@@ -19,17 +19,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.models.StateSearch
-import com.example.playlistmaker.presentation.media.ActivityMedia
+import com.example.playlistmaker.presentation.media.MediaActivity
 import com.example.playlistmaker.presentation.viewmodels.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class ActivitySearch : AppCompatActivity() {
-
-    companion object {
-        private const val DEBOUNCE_DELAY = 2000L
-        private const val CLICK_DEBOUNCE = 1000L
-    }
 
     private var text: String = ""
     private var musicAdapter = MusicAdapter()
@@ -44,21 +39,20 @@ class ActivitySearch : AppCompatActivity() {
     private lateinit var clearHistory: Button
     private lateinit var textClear: TextView
     private lateinit var progressBar: ProgressBar
-    private lateinit var runnable: Runnable
+    private val runnable = Runnable {
+        progressBar.isGone = false
+        viewModel.uploadTracks(text)
+    }
+    private val viewModel: SearchViewModel by viewModel {
+        parametersOf(getSharedPreferences("SearchActivity", MODE_PRIVATE),handler,runnable)
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val sharedPreferences = getSharedPreferences("SearchActivity", MODE_PRIVATE)
-        val viewModel: SearchViewModel by viewModel {
-            parametersOf(sharedPreferences)
-        }
-        runnable = Runnable {
-            progressBar.isGone = false
-            viewModel.uploadTracks(text)
-        }
+
 
         nothingSearch = findViewById(R.id.nothingSearch)
         noConnection = findViewById(R.id.nothingConnection)
@@ -141,7 +135,7 @@ class ActivitySearch : AppCompatActivity() {
 
             // Переход на экран плеера
             if (track != null) {
-                val intentMedia = Intent(this, ActivityMedia::class.java)
+                val intentMedia = Intent(this, MediaActivity::class.java)
                 intentMedia.putExtra("track", viewModel.trackToJSON(track))
                 startActivity(intentMedia)
             }
@@ -208,19 +202,17 @@ class ActivitySearch : AppCompatActivity() {
     }
 
     private fun searchDebounse() {
-        handler.removeCallbacks(runnable)
-        handler.postDelayed(runnable, DEBOUNCE_DELAY)
+        viewModel.searchDebounse()
     }
 
     private fun clickDebounse(): Boolean {
         val current = isClick
         if (isClick) {
             isClick = false
-            handler.postDelayed({ isClick = true }, CLICK_DEBOUNCE)
+            isClick = viewModel.clickDebounse()
         }
         return current
     }
-
 }
 
 

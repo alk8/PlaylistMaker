@@ -1,13 +1,11 @@
 package com.example.playlistmaker.domain.usecase
 
-import com.example.playlistmaker.domain.api.Player
+import com.example.playlistmaker.domain.api.PlayerMedia
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.presentation.api.MusicPlayer
+import com.example.playlistmaker.presentation.api.MusicInteractor
 import org.koin.java.KoinJavaComponent.getKoin
 
-class MusicInteractor : MusicPlayer {
-
-    private val musicPlayer : Player = getKoin().get()
+class MusicInteractorImpl(private val musicPlayer : PlayerMedia) : MusicInteractor {
 
     override fun prepare(trackUrl: String?, completion: (Any) -> Unit, prepared: (Any) -> Unit) {
         musicPlayer.prepare(trackUrl,completion,prepared)

@@ -13,16 +13,20 @@ import com.example.playlistmaker.domain.models.StateMusicPlayer.*
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.viewmodels.MediaViewModel
 import org.koin.android.ext.android.getKoin
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class ActivityMedia : AppCompatActivity() {
+class MediaActivity : AppCompatActivity() {
 
     private var isDark = false
 
     private lateinit var track: Track
     private lateinit var timer: TextView
     private lateinit var play: ImageView
-    private lateinit var viewModel: MediaViewModel
+
+    private val viewModel: MediaViewModel by viewModel{
+        parametersOf(intent.getStringExtra("track"))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -32,10 +36,6 @@ class ActivityMedia : AppCompatActivity() {
         timer = findViewById(R.id.timer)
         play = findViewById(R.id.playButton)
         isDark = isDarkTheme()
-
-        val trackIntent = intent.getStringExtra("track")
-
-        viewModel = getKoin().get(parameters = { parametersOf(trackIntent) })
 
         play.setOnClickListener { viewModel.controlPlayer()}
         findViewById<ImageView>(R.id.back).setOnClickListener { finish() }
@@ -48,6 +48,8 @@ class ActivityMedia : AppCompatActivity() {
         val genre = findViewById<TextView>(R.id.genreData)
         val country = findViewById<TextView>(R.id.countryData)
         val picture = findViewById<ImageView>(R.id.album)
+
+        viewModel.preparePlayer()
 
         viewModel.getTimerTextData().observe(this) {
             timer.text = it
@@ -87,10 +89,8 @@ class ActivityMedia : AppCompatActivity() {
                 .placeholder(R.drawable.ic_noconnection).transform(RoundedCorners(15))
                 .into(picture)
         }
-        viewModel.preparePlayer()
 
     }
-
 
     private fun isDarkTheme(): Boolean {
         return this.resources.configuration.uiMode and
@@ -99,7 +99,7 @@ class ActivityMedia : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel
+        viewModel.onDestroy()
     }
 
     override fun onPause() {
