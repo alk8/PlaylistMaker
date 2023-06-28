@@ -2,7 +2,6 @@ package com.example.playlistmaker.presentation.settings
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity

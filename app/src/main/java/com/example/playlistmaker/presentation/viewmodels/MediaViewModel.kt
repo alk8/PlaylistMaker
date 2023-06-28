@@ -1,17 +1,17 @@
 package com.example.playlistmaker.presentation.viewmodels
 
-import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.playlistmaker.data.SerializatorTrack
 import com.example.playlistmaker.domain.entities.FormatterTime
 import com.example.playlistmaker.domain.models.StateMusicPlayer
 import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.presentation.api.MusicPlayer
+import org.koin.java.KoinJavaComponent.getKoin
 
-class MediaViewModel(val text: String?): ViewModel(){
+class MediaViewModel(val text: String?) : ViewModel() {
 
     companion object {
         private const val REFRESH_TIME = 1000L
@@ -27,33 +27,32 @@ class MediaViewModel(val text: String?): ViewModel(){
     fun getTimerTextData(): LiveData<String> = timerText
     fun getStateData(): LiveData<StateMusicPlayer> = state
 
-    private val musicPlayer = MediaPlayer()
+    private val musicPlayer : MusicPlayer = getKoin().get()
 
     init {
         if (!text.isNullOrEmpty()) {
-            track.value = SerializatorTrack().jsonToTrack(text)
+            track.value = musicPlayer.jsonToTrack(text)
         }
         timerText.value = NULL_TIMER
         state.value = StateMusicPlayer.DEFAULT
         handler = Handler(Looper.myLooper()!!)
     }
 
-    fun preparePlayer(){
-        musicPlayer.setDataSource(track.value?.previewUrl)
-        musicPlayer.prepareAsync()
-        musicPlayer.setOnCompletionListener {
+    fun preparePlayer() {
+
+        musicPlayer.prepare(track.value?.previewUrl, {
             state.value = StateMusicPlayer.PREPARED
             stopTimer()
             timerText.value = NULL_TIMER
-        }
-        musicPlayer.setOnPreparedListener {state.value = StateMusicPlayer.PREPARED}
+        }, { state.value = StateMusicPlayer.PREPARED })
+
     }
 
     private fun stopTimer() = handler.removeCallbacks { refreshTimer() }
 
     private fun refreshTimer() {
         if (state.value != StateMusicPlayer.PAUSED) {
-            timerText.postValue(FormatterTime.formatTime(musicPlayer.currentPosition.toString()))
+            timerText.postValue(FormatterTime.formatTime(musicPlayer.currentPosition()))
         }
         handler.postDelayed({ refreshTimer() }, REFRESH_TIME)
     }

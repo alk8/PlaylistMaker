@@ -6,15 +6,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.domain.models.StateSearch
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.domain.models.Uploader
-import com.example.playlistmaker.domain.usecase.TracksInteractor
+import com.example.playlistmaker.domain.api.Uploader
+import com.example.playlistmaker.presentation.api.BusinessLogic
+import org.koin.core.parameter.parametersOf
+import org.koin.java.KoinJavaComponent.getKoin
 
 class SearchViewModel(
     sharedPreferences: SharedPreferences,
 ) : ViewModel() {
 
-    private val tracksInteractor: TracksInteractor = TracksInteractor(sharedPreferences)
-
+    private val tracksInteractor: BusinessLogic = getKoin().get(parameters = { parametersOf(sharedPreferences)})
     private var state = MutableLiveData<Pair<ArrayList<Track>?, StateSearch>>()
 
     private var trackList: ArrayList<Track>? = ArrayList()
@@ -79,4 +80,6 @@ class SearchViewModel(
     private fun getDefaultState(): Pair<ArrayList<Track>?, StateSearch>{
         return Pair(ArrayList(),StateSearch.DEFAULT)
     }
+
+    fun trackToJSON(track: Track) : String? = tracksInteractor.trackToJSON(track)
 }

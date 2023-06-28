@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.domain.entities.FormatterTime
@@ -14,7 +12,8 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.models.StateMusicPlayer.*
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.viewmodels.MediaViewModel
-import com.example.playlistmaker.presentation.viewmodels.MediaViewModelFactory
+import org.koin.android.ext.android.getKoin
+import org.koin.core.parameter.parametersOf
 
 class ActivityMedia : AppCompatActivity() {
 
@@ -23,7 +22,6 @@ class ActivityMedia : AppCompatActivity() {
     private lateinit var track: Track
     private lateinit var timer: TextView
     private lateinit var play: ImageView
-
     private lateinit var viewModel: MediaViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +33,11 @@ class ActivityMedia : AppCompatActivity() {
         play = findViewById(R.id.playButton)
         isDark = isDarkTheme()
 
-        play.setOnClickListener { controlPlayer() }
+        val trackIntent = intent.getStringExtra("track")
+
+        viewModel = getKoin().get(parameters = { parametersOf(trackIntent) })
+
+        play.setOnClickListener { viewModel.controlPlayer()}
         findViewById<ImageView>(R.id.back).setOnClickListener { finish() }
 
         val trackName = findViewById<TextView>(R.id.trackName)
@@ -47,18 +49,11 @@ class ActivityMedia : AppCompatActivity() {
         val country = findViewById<TextView>(R.id.countryData)
         val picture = findViewById<ImageView>(R.id.album)
 
-        var trackIntent = intent.getStringExtra("track")
-
-        viewModel = ViewModelProvider(
-            this,
-            MediaViewModelFactory(trackIntent)
-        )[MediaViewModel::class.java]
-
         viewModel.getTimerTextData().observe(this) {
             timer.text = it
         }
 
-        viewModel.getStateData().observe(this) { it ->
+        viewModel.getStateData().observe(this) {
 
             if (isDark) {
                 if (it == PLAYING) {
@@ -68,7 +63,6 @@ class ActivityMedia : AppCompatActivity() {
                 }
 
             } else {
-
                 if (it == PLAYING) {
                     play.setImageResource(R.drawable.pause)
                 } else {
@@ -93,17 +87,10 @@ class ActivityMedia : AppCompatActivity() {
                 .placeholder(R.drawable.ic_noconnection).transform(RoundedCorners(15))
                 .into(picture)
         }
-
-        preparePlayer()
-
-    }
-
-
-    private fun preparePlayer() {
         viewModel.preparePlayer()
+
     }
 
-    private fun controlPlayer() = viewModel.controlPlayer()
 
     private fun isDarkTheme(): Boolean {
         return this.resources.configuration.uiMode and
@@ -112,7 +99,7 @@ class ActivityMedia : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.onDestroy()
+        viewModel
     }
 
     override fun onPause() {

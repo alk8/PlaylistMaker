@@ -3,13 +3,13 @@ package com.example.playlistmaker.data.repository
 import android.content.SharedPreferences
 import com.example.playlistmaker.data.SerializatorTrack
 import com.example.playlistmaker.domain.api.Base
-import com.example.playlistmaker.domain.api.Serializator
 import com.example.playlistmaker.domain.models.Track
+import org.koin.java.KoinJavaComponent.getKoin
 
 class DataBase(private val sharedPreferences: SharedPreferences) : Base {
 
     companion object {
-        private val serializator: Serializator = SerializatorTrack()
+        private val serializator: SerializatorTrack = getKoin().get()
     }
 
     override fun getHistory(): ArrayList<Track> {
@@ -28,6 +28,9 @@ class DataBase(private val sharedPreferences: SharedPreferences) : Base {
         )
             ?.apply()
     }
+
+    override fun trackToJSON(track: Track): String? = serializator.trackToJSON(track)
+
 }
 
 

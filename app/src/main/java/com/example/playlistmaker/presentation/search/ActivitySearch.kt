@@ -15,16 +15,14 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.SerializatorTrack
-import com.example.playlistmaker.domain.api.Serializator
 import com.example.playlistmaker.domain.models.StateSearch
 import com.example.playlistmaker.presentation.media.ActivityMedia
 import com.example.playlistmaker.presentation.viewmodels.SearchViewModel
-import com.example.playlistmaker.presentation.viewmodels.SearchViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class ActivitySearch : AppCompatActivity() {
 
@@ -35,13 +33,8 @@ class ActivitySearch : AppCompatActivity() {
 
     private var text: String = ""
     private var musicAdapter = MusicAdapter()
-
     private var isClick = true
     private val handler = Handler(Looper.getMainLooper())
-    private val runnable = Runnable {
-        progressBar.isGone = false
-        viewModel.uploadTracks(text)
-    }
     private lateinit var nothingSearch: LinearLayout
     private lateinit var noConnection: LinearLayout
     lateinit var search: EditText
@@ -51,11 +44,7 @@ class ActivitySearch : AppCompatActivity() {
     private lateinit var clearHistory: Button
     private lateinit var textClear: TextView
     private lateinit var progressBar: ProgressBar
-
-    private val serializatorTrack: Serializator = SerializatorTrack()
-
-    // VIEWMODEL
-    private lateinit var viewModel: SearchViewModel
+    private lateinit var runnable: Runnable
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,11 +52,13 @@ class ActivitySearch : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
         val sharedPreferences = getSharedPreferences("SearchActivity", MODE_PRIVATE)
-        viewModel = ViewModelProvider(
-            this, SearchViewModelFactory(
-                sharedPreferences,
-            )
-        )[SearchViewModel::class.java]
+        val viewModel: SearchViewModel by viewModel {
+            parametersOf(sharedPreferences)
+        }
+        runnable = Runnable {
+            progressBar.isGone = false
+            viewModel.uploadTracks(text)
+        }
 
         nothingSearch = findViewById(R.id.nothingSearch)
         noConnection = findViewById(R.id.nothingConnection)
@@ -137,7 +128,7 @@ class ActivitySearch : AppCompatActivity() {
 
         if (savedInstanceState != null) {
             text = savedInstanceState.getString("textSearch").toString()
-            if (!text.isNullOrEmpty()) search.setText(text)
+            if (text.isNotEmpty()) search.setText(text)
         }
 
         search.setOnFocusChangeListener { _, hasFocus ->
@@ -151,7 +142,7 @@ class ActivitySearch : AppCompatActivity() {
             // Переход на экран плеера
             if (track != null) {
                 val intentMedia = Intent(this, ActivityMedia::class.java)
-                intentMedia.putExtra("track", serializatorTrack.trackToJSON(track))
+                intentMedia.putExtra("track", viewModel.trackToJSON(track))
                 startActivity(intentMedia)
             }
         }

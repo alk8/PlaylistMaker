@@ -2,19 +2,20 @@ package com.example.playlistmaker.domain.usecase
 
 import android.content.SharedPreferences
 import com.example.playlistmaker.data.AppleAPI
-import com.example.playlistmaker.data.SerializatorTrack
 import com.example.playlistmaker.data.repository.DataBase
 import com.example.playlistmaker.domain.api.Base
 import com.example.playlistmaker.domain.api.GettingTracks
-import com.example.playlistmaker.domain.api.Serializator
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.domain.models.Uploader
+import com.example.playlistmaker.domain.api.Uploader
 import com.example.playlistmaker.presentation.api.BusinessLogic
+import org.koin.core.parameter.parametersOf
+import org.koin.java.KoinJavaComponent.getKoin
 
 class TracksInteractor(private val sharedPreferences: SharedPreferences) : BusinessLogic {
 
-    val dataBase : Base = DataBase(sharedPreferences)
-    val api : GettingTracks = AppleAPI()
+    private val koin = getKoin()
+    val dataBase : Base = koin.get(parameters = { parametersOf(sharedPreferences) })
+    val api : GettingTracks = koin.get()
 
     override fun uploadTracks(text: String, uploader: Uploader) {
         api.evaluateRequest(text, uploader)
@@ -42,4 +43,5 @@ class TracksInteractor(private val sharedPreferences: SharedPreferences) : Busin
         return trackList
     }
 
+    override fun trackToJSON(track: Track): String? = dataBase.trackToJSON(track)
 }

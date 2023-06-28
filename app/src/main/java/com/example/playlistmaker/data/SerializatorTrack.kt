@@ -4,22 +4,23 @@ import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.api.Serializator
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.koin.java.KoinJavaComponent.getKoin
 
-class SerializatorTrack : Serializator {
+class SerializatorTrack(private val gson: Gson) {
 
-   override fun trackToJSON(track: Track): String? {
-        return Gson().toJson(track)
+    fun trackToJSON(track: Track): String? {
+        return gson.toJson(track)
     }
 
-   override fun jsonToTrack(textJSON: String) : Track {
-        return Gson().fromJson(textJSON, object : TypeToken<Track?>() {}.type)
+    fun jsonToTrack(textJSON: String): Track {
+        return gson.fromJson(textJSON, object : TypeToken<Track?>() {}.type)
     }
 
-    override fun tracksToJson(tracks: ArrayList<Track>?): String? {
-        return Gson().toJson(tracks)
+    fun tracksToJson(tracks: ArrayList<Track>?): String? {
+        return gson.toJson(tracks)
     }
 
-    override fun jsonToTracks(textJSON: String): ArrayList<Track> {
-        return Gson().fromJson(textJSON, object : TypeToken<ArrayList<Track>?>() {}.type)
+    fun jsonToTracks(textJSON: String): ArrayList<Track> {
+        return gson.fromJson(textJSON, object : TypeToken<ArrayList<Track>?>() {}.type)
     }
 }
