@@ -30,9 +30,10 @@ class MediaViewModel(private val musicPlayer : MusicInteractor,private var handl
         }
         timerText.value = NULL_TIMER
         state.value = StateMusicPlayer.DEFAULT
+        preparePlayer()
     }
 
-    fun preparePlayer() {
+    private fun preparePlayer() {
         musicPlayer.prepare(track.value?.previewUrl, {
             state.value = StateMusicPlayer.PREPARED
             stopTimer()

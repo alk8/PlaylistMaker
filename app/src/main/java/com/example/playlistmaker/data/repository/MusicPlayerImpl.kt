@@ -11,6 +11,7 @@ class MusicPlayerImpl(
 ) : PlayerMedia {
 
     override fun prepare(trackUrl: String?, completion: (Any) -> Unit, prepared: (Any) -> Unit) {
+        mediaPlayer.reset()
         mediaPlayer.setDataSource(trackUrl)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnCompletionListener { completion }
