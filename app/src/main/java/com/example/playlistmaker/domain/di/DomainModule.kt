@@ -14,11 +14,11 @@ val DomainModule = module {
         MusicPlayerImpl(get(), get())
     }
 
-    single<Base> { (sharedPreferences: SharedPreferences) ->
+    factory<Base>{ (sharedPreferences: SharedPreferences) ->
         DataBaseImpl(get(),sharedPreferences)
     }
 
-    single<GettingTracks> {
+    factory<GettingTracks> {
         AppleAPI(get())
     }
 }

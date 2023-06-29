@@ -14,14 +14,14 @@ private const val URL = "https://itunes.apple.com/"
 
 val dataModule = module {
 
-    single {
+    factory {
         MediaPlayer()
     }
     factory {
         Gson()
     }
 
-    single<SearchAPI> {
+    factory <SearchAPI> {
         Retrofit.Builder().baseUrl(URL)
             .addConverterFactory(GsonConverterFactory.create()).build().create()
     }

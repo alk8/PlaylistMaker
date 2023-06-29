@@ -24,14 +24,14 @@ class MediaActivity : AppCompatActivity() {
     private lateinit var timer: TextView
     private lateinit var play: ImageView
 
-    private val viewModel: MediaViewModel by viewModel{
-        parametersOf(intent.getStringExtra("track"))
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_media)
+
+        val viewModel: MediaViewModel by viewModel{
+            parametersOf(intent.getStringExtra("track"))
+        }
 
         timer = findViewById(R.id.timer)
         play = findViewById(R.id.playButton)
@@ -99,12 +99,12 @@ class MediaActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.onDestroy()
+        //viewModel.onDestroy()
     }
 
     override fun onPause() {
         super.onPause()
-        viewModel.pausePlayer()
+        //viewModel.pausePlayer()
     }
 
 }

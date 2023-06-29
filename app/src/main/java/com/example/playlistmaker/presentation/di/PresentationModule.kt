@@ -14,8 +14,8 @@ import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 
 val presentationModule = module {
-    viewModel { (sharedPreferences: SharedPreferences,handler:Handler,runnable:Runnable) ->
-        SearchViewModel(get(parameters = { parametersOf(sharedPreferences) }),handler,runnable)
+    viewModel { (sharedPreferences: SharedPreferences,runnable:Runnable) ->
+        SearchViewModel(get(parameters = { parametersOf(sharedPreferences) }),get(),runnable)
     }
 
     viewModel { (text: String?) ->
@@ -30,7 +30,7 @@ val presentationModule = module {
         MusicInteractorImpl(get())
     }
 
-    factory {
+    single {
         Handler(Looper.myLooper()!!)
     }
 

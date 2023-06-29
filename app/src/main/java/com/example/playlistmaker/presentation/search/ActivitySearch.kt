@@ -29,7 +29,6 @@ class ActivitySearch : AppCompatActivity() {
     private var text: String = ""
     private var musicAdapter = MusicAdapter()
     private var isClick = true
-    private val handler = Handler(Looper.getMainLooper())
     private lateinit var nothingSearch: LinearLayout
     private lateinit var noConnection: LinearLayout
     lateinit var search: EditText
@@ -44,15 +43,13 @@ class ActivitySearch : AppCompatActivity() {
         viewModel.uploadTracks(text)
     }
     private val viewModel: SearchViewModel by viewModel {
-        parametersOf(getSharedPreferences("SearchActivity", MODE_PRIVATE),handler,runnable)
+        parametersOf(getSharedPreferences("SearchActivity", MODE_PRIVATE),runnable)
     }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-
-
 
         nothingSearch = findViewById(R.id.nothingSearch)
         noConnection = findViewById(R.id.nothingConnection)
