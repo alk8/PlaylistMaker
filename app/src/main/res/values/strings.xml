@@ -29,4 +29,5 @@
     <string name="genre">Жанр</string>
     <string name="country">Страна</string>
     <string name="toast">Вы еще не включали музыку, воспользуйтесь командой Поиск</string>
+    <string name="warning">Для данного трека недоступно предпрослушивание</string>
 </resources>

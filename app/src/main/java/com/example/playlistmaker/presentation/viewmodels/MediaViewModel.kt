@@ -1,6 +1,7 @@
 package com.example.playlistmaker.presentation.viewmodels
 
 import android.os.Handler
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,7 +10,12 @@ import com.example.playlistmaker.domain.models.StateMusicPlayer
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.api.MusicInteractor
 
-class MediaViewModel(private val musicPlayer : MusicInteractor,private var handler: Handler,val text: String?) : ViewModel() {
+class MediaViewModel(
+    private val musicPlayer: MusicInteractor,
+    private var handler: Handler,
+    val text: String?,
+    private val toast: () -> Unit
+) : ViewModel() {
 
     companion object {
         private const val REFRESH_TIME = 1000L
@@ -30,16 +36,17 @@ class MediaViewModel(private val musicPlayer : MusicInteractor,private var handl
         }
         timerText.value = NULL_TIMER
         state.value = StateMusicPlayer.DEFAULT
-        preparePlayer()
-    }
+        val path = track.value?.previewUrl
 
-    private fun preparePlayer() {
-        musicPlayer.prepare(track.value?.previewUrl, {
-            state.value = StateMusicPlayer.PREPARED
-            stopTimer()
-            timerText.value = NULL_TIMER
-        }, { state.value = StateMusicPlayer.PREPARED })
-
+        if (!path.isNullOrEmpty()) {
+            musicPlayer.prepare(path, {
+                state.value = StateMusicPlayer.PREPARED
+                stopTimer()
+                timerText.value = NULL_TIMER
+            }, { state.value = StateMusicPlayer.PREPARED })
+        }else{
+            state.value = StateMusicPlayer.NO_CONTENT
+        }
     }
 
     private fun stopTimer() = handler.removeCallbacks { refreshTimer() }
@@ -59,7 +66,11 @@ class MediaViewModel(private val musicPlayer : MusicInteractor,private var handl
             StateMusicPlayer.PAUSED, StateMusicPlayer.PREPARED, StateMusicPlayer.DEFAULT -> {
                 startPlayer()
             }
-            null -> TODO()
+            StateMusicPlayer.NO_CONTENT -> {
+                toast.invoke()
+            }
+
+            else -> {}
         }
     }
 
@@ -75,8 +86,4 @@ class MediaViewModel(private val musicPlayer : MusicInteractor,private var handl
         handler.postDelayed({ refreshTimer() }, REFRESH_TIME)
     }
 
-    fun onDestroy() {
-        stopTimer()
-        musicPlayer.release()
-    }
 }

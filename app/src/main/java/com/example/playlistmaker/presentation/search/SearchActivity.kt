@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -24,7 +22,7 @@ import com.example.playlistmaker.presentation.viewmodels.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class ActivitySearch : AppCompatActivity() {
+class SearchActivity : AppCompatActivity() {
 
     private var text: String = ""
     private var musicAdapter = MusicAdapter()
@@ -131,11 +129,9 @@ class ActivitySearch : AppCompatActivity() {
             viewModel.removeTrack(track)
 
             // Переход на экран плеера
-            if (track != null) {
-                val intentMedia = Intent(this, MediaActivity::class.java)
-                intentMedia.putExtra("track", viewModel.trackToJSON(track))
-                startActivity(intentMedia)
-            }
+            val intentMedia = Intent(this, MediaActivity::class.java)
+            intentMedia.putExtra("track", viewModel.trackToJSON(track))
+            startActivity(intentMedia)
         }
 
         refreshButton.setOnClickListener { viewModel.uploadTracks(text) }

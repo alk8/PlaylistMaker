@@ -7,7 +7,7 @@ import org.koin.java.KoinJavaComponent.getKoin
 
 class MusicInteractorImpl(private val musicPlayer : PlayerMedia) : MusicInteractor {
 
-    override fun prepare(trackUrl: String?, completion: (Any) -> Unit, prepared: (Any) -> Unit) {
+    override fun prepare(trackUrl: String, completion: () -> Unit, prepared: () -> Unit) {
         musicPlayer.prepare(trackUrl,completion,prepared)
     }
 

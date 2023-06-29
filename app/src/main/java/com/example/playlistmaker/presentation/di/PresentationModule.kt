@@ -5,7 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import com.example.playlistmaker.domain.usecase.MusicInteractorImpl
 import com.example.playlistmaker.domain.usecase.TracksInteractorImpl
-import com.example.playlistmaker.presentation.api.BusinessLogic
+import com.example.playlistmaker.presentation.api.TracksInteracator
 import com.example.playlistmaker.presentation.api.MusicInteractor
 import com.example.playlistmaker.presentation.viewmodels.MediaViewModel
 import com.example.playlistmaker.presentation.viewmodels.SearchViewModel
@@ -18,11 +18,11 @@ val presentationModule = module {
         SearchViewModel(get(parameters = { parametersOf(sharedPreferences) }),get(),runnable)
     }
 
-    viewModel { (text: String?) ->
-        MediaViewModel(get(),get(),text)
+    viewModel { (text: String?,toast:() -> Unit) ->
+        MediaViewModel(get(),get(),text,toast)
     }
 
-    single<BusinessLogic> { (sharedPreferences: SharedPreferences) ->
+    single<TracksInteracator> { (sharedPreferences: SharedPreferences) ->
         TracksInteractorImpl(get(parameters = { parametersOf(sharedPreferences) }),get())
     }
 

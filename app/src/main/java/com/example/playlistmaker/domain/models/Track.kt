@@ -1,14 +1,14 @@
 package com.example.playlistmaker.domain.models
 
 class Track(
-    val trackName: String = "",
-    val artistName: String = "",
-    val trackTimeMillis: String = "",
+    val trackName: String? = null,
+    val artistName: String? = null,
+    val trackTimeMillis: String? = null,
     val artworkUrl100: String = "",
-    val collectionName: String = "",
-    val releaseDate: String = "",
-    val primaryGenreName: String = "",
-    val country: String = "",
+    val collectionName: String? = null,
+    val releaseDate: String? = null,
+    val primaryGenreName: String? = null,
+    val country: String? = null,
     val previewUrl: String = ""
 ) {
 
@@ -20,6 +20,12 @@ class Track(
             false
         }
 
+    }
+
+    override fun hashCode(): Int {
+        var result = trackName.hashCode()
+        result = 31 * result + artistName.hashCode()
+        return result
     }
 
 }

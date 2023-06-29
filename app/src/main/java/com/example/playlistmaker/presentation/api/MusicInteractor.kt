@@ -3,7 +3,7 @@ package com.example.playlistmaker.presentation.api
 import com.example.playlistmaker.domain.models.Track
 
 interface MusicInteractor {
-    fun prepare(trackUrl:String?,completion: (Any) -> Unit,prepared: (Any) -> Unit)
+    fun prepare(trackUrl:String,completion: () -> Unit,prepared: () -> Unit)
     fun currentPosition(): String
     fun pause()
     fun start()

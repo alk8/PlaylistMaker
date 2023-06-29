@@ -4,5 +4,6 @@ enum class StateMusicPlayer {
     DEFAULT,
     PREPARED,
     PLAYING,
-    PAUSED
+    PAUSED,
+    NO_CONTENT
 }

@@ -4,9 +4,9 @@ import com.example.playlistmaker.domain.api.Base
 import com.example.playlistmaker.domain.api.GettingTracks
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.api.Uploader
-import com.example.playlistmaker.presentation.api.BusinessLogic
+import com.example.playlistmaker.presentation.api.TracksInteracator
 
-class TracksInteractorImpl(private val dataBase : Base,val api : GettingTracks) : BusinessLogic {
+class TracksInteractorImpl(private val dataBase : Base,val api : GettingTracks) : TracksInteracator {
 
     override fun uploadTracks(text: String, uploader: Uploader) {
         api.evaluateRequest(text, uploader)
@@ -27,7 +27,7 @@ class TracksInteractorImpl(private val dataBase : Base,val api : GettingTracks) 
         trackList.remove(track)
         trackList.add(0, track)
 
-        if (trackList.size!! > 10) {
+        if (trackList.size > 10) {
             trackList.removeLast()
         }
         setHistory(trackList)

@@ -6,11 +6,11 @@ import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.domain.models.StateSearch
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.api.Uploader
-import com.example.playlistmaker.presentation.api.BusinessLogic
+import com.example.playlistmaker.presentation.api.TracksInteracator
 import android.os.Handler
 
 class SearchViewModel(
-    private val tracksInteractor: BusinessLogic,
+    private val tracksInteractor: TracksInteracator,
     private val handler: Handler,
     private val runnable: Runnable
 ) : ViewModel() {

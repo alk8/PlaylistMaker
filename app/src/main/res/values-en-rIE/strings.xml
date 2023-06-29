@@ -30,4 +30,5 @@
     <string name="genre">Genre</string>
     <string name="country">Country</string>
     <string name="toast">You haven\'t turned on the music yet, use the \"Search\" command</string>
+    <string name="warning">Preview is not available for this track</string>
 </resources>

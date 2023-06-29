@@ -10,12 +10,12 @@ class MusicPlayerImpl(
     private val serializatorTrack: Serializator
 ) : PlayerMedia {
 
-    override fun prepare(trackUrl: String?, completion: (Any) -> Unit, prepared: (Any) -> Unit) {
+    override fun prepare(trackUrl: String, completion: () -> Unit, prepared: () -> Unit) {
         mediaPlayer.reset()
         mediaPlayer.setDataSource(trackUrl)
         mediaPlayer.prepareAsync()
-        mediaPlayer.setOnCompletionListener { completion }
-        mediaPlayer.setOnPreparedListener { prepared }
+        mediaPlayer.setOnCompletionListener { completion.invoke() }
+        mediaPlayer.setOnPreparedListener { prepared.invoke() }
     }
 
     override fun currentPosition(): String = mediaPlayer.currentPosition.toString()
