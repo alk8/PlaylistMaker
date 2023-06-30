@@ -1,22 +1,15 @@
-package com.example.playlistmaker.data
+package com.example.playlistmaker.data.retrofit
 
-import com.example.playlistmaker.data.repository.TrackResponse
 import com.example.playlistmaker.domain.api.GettingTracks
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.domain.models.Uploader
+import com.example.playlistmaker.domain.api.Uploader
 import retrofit2.*
-import retrofit2.converter.gson.GsonConverterFactory
 
-private const val URL = "https://itunes.apple.com/"
-
-class AppleAPI : GettingTracks {
-
-    private val api: SearchAPI = Retrofit.Builder().baseUrl(URL)
-        .addConverterFactory(GsonConverterFactory.create()).build().create()
+class AppleAPI(private val appleAPI: SearchAPI) : GettingTracks {
 
     override fun evaluateRequest(text: String, uploader: Uploader) {
 
-        api.getMusic(text).enqueue(object : Callback<TrackResponse> {
+        appleAPI.getMusic(text).enqueue(object : Callback<TrackResponse> {
 
             override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
                 uploader.getTracks(null)

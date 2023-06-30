@@ -1,24 +1,27 @@
 package com.example.playlistmaker.presentation.viewmodels
 
-import android.media.MediaPlayer
 import android.os.Handler
-import android.os.Looper
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.playlistmaker.data.SerializatorTrack
 import com.example.playlistmaker.domain.entities.FormatterTime
 import com.example.playlistmaker.domain.models.StateMusicPlayer
 import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.presentation.api.MusicInteractor
 
-class MediaViewModel(val text: String?): ViewModel(){
+class MediaViewModel(
+    private val musicPlayer: MusicInteractor,
+    private var handler: Handler,
+    val text: String?,
+    private val toast: () -> Unit
+) : ViewModel() {
 
     companion object {
         private const val REFRESH_TIME = 1000L
         private const val NULL_TIMER = "00:00"
     }
 
-    private var handler: Handler
     private var track = MutableLiveData<Track>()
     private var timerText = MutableLiveData<String>()
     private var state = MutableLiveData<StateMusicPlayer>()
@@ -27,33 +30,30 @@ class MediaViewModel(val text: String?): ViewModel(){
     fun getTimerTextData(): LiveData<String> = timerText
     fun getStateData(): LiveData<StateMusicPlayer> = state
 
-    private val musicPlayer = MediaPlayer()
-
     init {
         if (!text.isNullOrEmpty()) {
-            track.value = SerializatorTrack().jsonToTrack(text)
+            track.value = musicPlayer.jsonToTrack(text)
         }
         timerText.value = NULL_TIMER
         state.value = StateMusicPlayer.DEFAULT
-        handler = Handler(Looper.myLooper()!!)
-    }
+        val path = track.value?.previewUrl
 
-    fun preparePlayer(){
-        musicPlayer.setDataSource(track.value?.previewUrl)
-        musicPlayer.prepareAsync()
-        musicPlayer.setOnCompletionListener {
-            state.value = StateMusicPlayer.PREPARED
-            stopTimer()
-            timerText.value = NULL_TIMER
+        if (!path.isNullOrEmpty()) {
+            musicPlayer.prepare(path, {
+                state.value = StateMusicPlayer.PREPARED
+                stopTimer()
+                timerText.value = NULL_TIMER
+            }, { state.value = StateMusicPlayer.PREPARED })
+        }else{
+            state.value = StateMusicPlayer.NO_CONTENT
         }
-        musicPlayer.setOnPreparedListener {state.value = StateMusicPlayer.PREPARED}
     }
 
     private fun stopTimer() = handler.removeCallbacks { refreshTimer() }
 
     private fun refreshTimer() {
         if (state.value != StateMusicPlayer.PAUSED) {
-            timerText.postValue(FormatterTime.formatTime(musicPlayer.currentPosition.toString()))
+            timerText.postValue(FormatterTime.formatTime(musicPlayer.currentPosition()))
         }
         handler.postDelayed({ refreshTimer() }, REFRESH_TIME)
     }
@@ -66,7 +66,11 @@ class MediaViewModel(val text: String?): ViewModel(){
             StateMusicPlayer.PAUSED, StateMusicPlayer.PREPARED, StateMusicPlayer.DEFAULT -> {
                 startPlayer()
             }
-            null -> TODO()
+            StateMusicPlayer.NO_CONTENT -> {
+                toast.invoke()
+            }
+
+            else -> {}
         }
     }
 
@@ -82,8 +86,4 @@ class MediaViewModel(val text: String?): ViewModel(){
         handler.postDelayed({ refreshTimer() }, REFRESH_TIME)
     }
 
-    fun onDestroy() {
-        stopTimer()
-        musicPlayer.release()
-    }
 }

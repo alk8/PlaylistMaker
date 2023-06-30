@@ -1,16 +1,11 @@
 package com.example.playlistmaker.data.repository
 
 import android.content.SharedPreferences
-import com.example.playlistmaker.data.SerializatorTrack
 import com.example.playlistmaker.domain.api.Base
 import com.example.playlistmaker.domain.api.Serializator
 import com.example.playlistmaker.domain.models.Track
 
-class DataBase(private val sharedPreferences: SharedPreferences) : Base {
-
-    companion object {
-        private val serializator: Serializator = SerializatorTrack()
-    }
+class DataBaseImpl(private val serializator: Serializator, private val sharedPreferences: SharedPreferences) : Base {
 
     override fun getHistory(): ArrayList<Track> {
 
@@ -21,13 +16,16 @@ class DataBase(private val sharedPreferences: SharedPreferences) : Base {
     }
 
     override fun setHistory(trackList: ArrayList<Track>?) {
-        sharedPreferences?.edit()?.putString(
+        sharedPreferences.edit()?.putString(
             "tracksHistory", serializator.tracksToJson(
                 trackList,
             )
         )
             ?.apply()
     }
+
+    override fun trackToJSON(track: Track): String? = serializator.trackToJSON(track)
+
 }
 
 
