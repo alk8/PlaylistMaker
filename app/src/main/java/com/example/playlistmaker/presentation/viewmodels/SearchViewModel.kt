@@ -3,7 +3,7 @@ package com.example.playlistmaker.presentation.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.playlistmaker.domain.models.StateSearch
+import com.example.playlistmaker.domain.models.states.StateSearch
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.api.Uploader
 import com.example.playlistmaker.presentation.api.TracksInteracator

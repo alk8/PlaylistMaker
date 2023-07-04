@@ -5,5 +5,4 @@
     <attr name="searchBackground" format="reference" />
     <attr name="searchMini" format="reference" />
     <attr name="searchHintColor" format="reference" />
-
 </resources>

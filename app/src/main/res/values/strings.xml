@@ -30,4 +30,10 @@
     <string name="country">Страна</string>
     <string name="toast">Вы еще не включали музыку, воспользуйтесь командой Поиск</string>
     <string name="warning">Для данного трека недоступно предпрослушивание</string>
+    <string name="newPlaylist">Новый плейлист</string>
+    <string name="emptyMediateka">Ваша медиатека пуста</string>
+    <string name="emptyPlayLists">Вы не создали ни одного плейлиста</string>
+    <string name="Mediateka">Медиатека</string>
+    <string name="FavoriteTracks">Избранные треки</string>
+    <string name="Playlists">Плейлисты</string>
 </resources>

@@ -16,7 +16,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.domain.models.StateSearch
+import com.example.playlistmaker.domain.models.states.StateSearch
 import com.example.playlistmaker.presentation.media.MediaActivity
 import com.example.playlistmaker.presentation.viewmodels.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel

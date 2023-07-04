@@ -1,12 +1,11 @@
 package com.example.playlistmaker.presentation.viewmodels
 
 import android.os.Handler
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.domain.entities.FormatterTime
-import com.example.playlistmaker.domain.models.StateMusicPlayer
+import com.example.playlistmaker.domain.models.states.StateMusicPlayer
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.api.MusicInteractor
 
