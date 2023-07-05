@@ -1,4 +1,4 @@
-package com.example.playlistmaker.domain.models.states
+package com.example.playlistmaker.presentation.states
 
 enum class StateMediatekaFragment {
     FAVORITE,

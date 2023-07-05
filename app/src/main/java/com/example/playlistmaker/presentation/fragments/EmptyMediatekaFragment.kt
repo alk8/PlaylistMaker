@@ -8,12 +8,25 @@ import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentEmptyMediatekaBinding
-import com.example.playlistmaker.domain.models.states.StateMediatekaFragment
+import com.example.playlistmaker.presentation.states.StateMediatekaFragment
+import com.example.playlistmaker.presentation.viewmodels.EmptyMediatekaFragmentModel
+import org.koin.android.ext.android.getKoin
 
-class EmptyMediatekaFragment(private val state: StateMediatekaFragment) : Fragment() {
+class EmptyMediatekaFragment : Fragment() {
+
+    private var STATE = StateMediatekaFragment.DEFAULT
+
+    companion object {
+
+        fun newInstance(state: StateMediatekaFragment) = EmptyMediatekaFragment().apply {
+            STATE = state
+        }
+    }
+
 
     private var _binding: FragmentEmptyMediatekaBinding? = null
     private val binding get() = _binding!!
+    private val viewModel : EmptyMediatekaFragmentModel = getKoin().get()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -21,7 +34,7 @@ class EmptyMediatekaFragment(private val state: StateMediatekaFragment) : Fragme
     ): View {
         _binding = FragmentEmptyMediatekaBinding.inflate(inflater, container, false)
 
-        when (state) {
+        when (STATE) {
 
             StateMediatekaFragment.FAVORITE -> {
                 binding.newPlaylist.isGone = true
@@ -30,10 +43,16 @@ class EmptyMediatekaFragment(private val state: StateMediatekaFragment) : Fragme
             StateMediatekaFragment.PLAYLISTS -> {
                 binding.text.text = getString(R.string.emptyPlayLists)
             }
-            StateMediatekaFragment.DEFAULT ->{
+            StateMediatekaFragment.DEFAULT -> {
 
             }
         }
         return binding.root
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
 }
