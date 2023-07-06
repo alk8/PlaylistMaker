@@ -7,6 +7,7 @@ import com.example.playlistmaker.domain.usecase.MusicInteractorImpl
 import com.example.playlistmaker.domain.usecase.TracksInteractorImpl
 import com.example.playlistmaker.presentation.api.TracksInteracator
 import com.example.playlistmaker.presentation.api.MusicInteractor
+import com.example.playlistmaker.presentation.viewmodels.EmptyMediatekaFragmentModel
 import com.example.playlistmaker.presentation.viewmodels.MediaViewModel
 import com.example.playlistmaker.presentation.viewmodels.SearchViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -20,6 +21,10 @@ val presentationModule = module {
 
     viewModel { (text: String?,toast:() -> Unit) ->
         MediaViewModel(get(),get(),text,toast)
+    }
+
+    viewModel {
+        EmptyMediatekaFragmentModel()
     }
 
     single<TracksInteracator> { (sharedPreferences: SharedPreferences) ->

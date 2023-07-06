@@ -10,10 +10,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.domain.entities.FormatterTime
 import com.example.playlistmaker.R
-import com.example.playlistmaker.domain.models.StateMusicPlayer.*
+import com.example.playlistmaker.domain.models.states.StateMusicPlayer.*
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.viewmodels.MediaViewModel
-import org.koin.android.ext.android.getKoin
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 

@@ -31,4 +31,10 @@
     <string name="country">Country</string>
     <string name="toast">You haven\'t turned on the music yet, use the \"Search\" command</string>
     <string name="warning">Preview is not available for this track</string>
+    <string name="newPlaylist">New playlist</string>
+    <string name="emptyMediateka">Your mediateka is empty</string>
+    <string name="emptyPlayLists">You haven\'t created a single playlist</string>
+    <string name="Mediateka">Mediateka</string>
+    <string name="FavoriteTracks">Favorite tracks</string>
+    <string name="Playlists">Playlists</string>
 </resources>
