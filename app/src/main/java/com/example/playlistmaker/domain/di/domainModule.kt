@@ -14,8 +14,8 @@ val DomainModule = module {
         MusicPlayerImpl(get(), get())
     }
 
-    factory<Base>{ (sharedPreferences: SharedPreferences) ->
-        DataBaseImpl(get(),sharedPreferences)
+    factory<Base>{
+        DataBaseImpl(get(),get())
     }
 
     factory<GettingTracks> {

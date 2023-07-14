@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="40dp">
+
+        <TextView
+            style="@style/TextSettings"
+            android:text="@string/settings"
+            android:textSize="22sp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="28dp"
+            android:fontFamily="@font/ys_display_medium"
+            android:drawableTint="@color/black"/>
+
+    </LinearLayout>
+
+    <FrameLayout style="@style/FrameLayoutStyle">
+
+        <Switch
+            style="@style/SwitchStyle"
+            android:text="@string/dark"
+            android:layout_gravity="center"
+            tools:ignore="UseSwitchCompatOrMaterialXml"
+            android:id="@+id/darkMode"/>
+
+    </FrameLayout>
+
+    <FrameLayout style="@style/FrameLayoutStyle">
+
+        <TextView
+            style="@style/TextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="5dp"
+            android:text="@string/share">
+
+        </TextView>
+
+        <ImageView
+            android:id="@+id/share"
+            style="@style/ImageViewStyle"
+            android:src="@drawable/ic_vectorshare" />
+
+    </FrameLayout>
+
+    <FrameLayout style="@style/FrameLayoutStyle">
+
+        <TextView
+            style="@style/TextViewStyle"
+            android:layout_marginTop="5dp"
+            android:text="@string/write">
+
+        </TextView>
+
+        <ImageView
+            android:id="@+id/qa"
+            style="@style/ImageViewStyle"
+            android:src="@drawable/helpdesk" />
+
+    </FrameLayout>
+
+    <FrameLayout
+
+        style="@style/FrameLayoutStyle">
+
+        <TextView
+            style="@style/TextViewStyle"
+            android:layout_marginTop="5dp"
+            android:text="@string/doc">
+
+        </TextView>
+
+        <ImageView
+            android:id="@+id/temp"
+            style="@style/ImageViewStyle"
+            android:src="@drawable/ic_vectordoc" />
+
+    </FrameLayout>
+
+</LinearLayout>
+

@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.media
+package com.example.playlistmaker.presentation.player
 
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +16,7 @@ import com.example.playlistmaker.presentation.viewmodels.MediaViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class MediaActivity : AppCompatActivity() {
+class PlayerActivity : AppCompatActivity() {
 
     private var isDark = false
 
@@ -33,7 +33,7 @@ class MediaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_media)
+        setContentView(R.layout.activity_player)
 
         timer = findViewById(R.id.timer)
         play = findViewById(R.id.playButton)
