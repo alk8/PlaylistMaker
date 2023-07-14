@@ -15,14 +15,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="24dp"
-            android:id="@+id/back"
-            android:src="?attr/arrow" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

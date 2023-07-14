@@ -16,6 +16,9 @@
         <item name="searchBackground">@drawable/search_background_night</item>
         <item name="searchMini">@drawable/search_mini_night</item>
         <item name="searchHintColor">@color/color_track</item>
+        <item name="menuSearch">@drawable/night_mode_search_mini</item>
+        <item name="menuMediateka">@drawable/night_mode_mediateka_mini</item>
+        <item name="menuSettings">@drawable/night_mode_settings_mini</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>
