@@ -18,7 +18,7 @@
             android:text="@string/settings"
             android:textSize="22sp"
             android:layout_gravity="center"
-            android:layout_marginLeft="28dp"
+            android:layout_marginLeft="12dp"
             android:fontFamily="@font/ys_display_medium"
             android:drawableTint="@color/black"/>
 

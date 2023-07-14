@@ -21,21 +21,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.mediateka.MediatekaActivity"
-            android:exported="false" />
-        <activity
-            android:name=".presentation.search.SearchActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity
-            android:name=".presentation.player.PlayerActivity"
-            android:exported="false" />
-        <activity
-            android:name=".presentation.settings.SettingsActivity"
-            android:exported="false" />
-        <activity
             android:name=".presentation.main.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
