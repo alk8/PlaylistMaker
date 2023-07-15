@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
@@ -77,6 +78,10 @@ class PlayerFragment : Fragment() {
 
         viewModel.getTimerTextData().observe(viewLifecycleOwner) {
             timer.text = it
+        }
+
+        binding.back.setOnClickListener {
+            findNavController().popBackStack()
         }
 
         viewModel.getStateData().observe(viewLifecycleOwner) {

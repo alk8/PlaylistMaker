@@ -20,6 +20,7 @@
         <item name="menuSearch">@drawable/light_mode_search_mini</item>
         <item name="menuMediateka">@drawable/light_mode_mediateka_mini</item>
         <item name="menuSettings">@drawable/light_mode_settings_mini</item>
+        <item name="blackWhiteBar">@color/white</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>

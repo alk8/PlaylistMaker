@@ -19,6 +19,7 @@
         <item name="menuSearch">@drawable/night_mode_search_mini</item>
         <item name="menuMediateka">@drawable/night_mode_mediateka_mini</item>
         <item name="menuSettings">@drawable/night_mode_settings_mini</item>
+        <item name="blackWhiteBar">@color/black</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>
