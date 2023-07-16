@@ -1,71 +1,100 @@
-package com.example.playlistmaker.presentation.media
+package com.example.playlistmaker.presentation.player
 
 import android.content.res.Configuration
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.example.playlistmaker.domain.entities.FormatterTime
 import com.example.playlistmaker.R
-import com.example.playlistmaker.domain.models.states.StateMusicPlayer.*
+import com.example.playlistmaker.databinding.FragmentPlayerBinding
+import com.example.playlistmaker.domain.entities.FormatterTime
 import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.domain.models.states.StateMusicPlayer
 import com.example.playlistmaker.presentation.viewmodels.MediaViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class MediaActivity : AppCompatActivity() {
+class PlayerFragment : Fragment() {
 
     private var isDark = false
 
     private lateinit var track: Track
     private lateinit var timer: TextView
     private lateinit var play: ImageView
+
+    private lateinit var binding: FragmentPlayerBinding
+
     private val toast = {
-        Toast.makeText(this, R.string.warning, Toast.LENGTH_SHORT).show()
-    }
-    private val viewModel: MediaViewModel by viewModel {
-        parametersOf(intent.getStringExtra("track"), toast)
+        Toast.makeText(this.context, R.string.warning, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    companion object {
+        const val TRACK = "track"
 
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_media)
+        fun createArgs(track: String?): Bundle {
+            return bundleOf(TRACK to track)
+        }
+    }
 
-        timer = findViewById(R.id.timer)
-        play = findViewById(R.id.playButton)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+        binding = FragmentPlayerBinding.inflate(inflater, container, false)
+        return binding.root
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val viewModel: MediaViewModel by viewModel {
+            parametersOf(requireArguments().getString(TRACK), toast)
+        }
+
+        timer = binding.timer
+        play = binding.playButton
         isDark = isDarkTheme()
 
         play.setOnClickListener { viewModel.controlPlayer() }
-        findViewById<ImageView>(R.id.back).setOnClickListener { finish() }
 
-        val trackName = findViewById<TextView>(R.id.trackName)
-        val artistName = findViewById<TextView>(R.id.artistName)
-        val time = findViewById<TextView>(R.id.time)
-        val album = findViewById<TextView>(R.id.albumData)
-        val year = findViewById<TextView>(R.id.yearData)
-        val genre = findViewById<TextView>(R.id.genreData)
-        val country = findViewById<TextView>(R.id.countryData)
-        val picture = findViewById<ImageView>(R.id.album)
+        val trackName = binding.trackName
+        val artistName = binding.artistName
+        val time = binding.time
+        val album = binding.albumData
+        val year = binding.yearData
+        val genre = binding.genreData
+        val country = binding.countryData
+        val picture = binding.album
 
-        viewModel.getTimerTextData().observe(this) {
+        viewModel.getTimerTextData().observe(viewLifecycleOwner) {
             timer.text = it
         }
 
-        viewModel.getStateData().observe(this) {
+        binding.back.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        viewModel.getStateData().observe(viewLifecycleOwner) {
 
             if (isDark) {
-                if (it == PLAYING) {
+                if (it == StateMusicPlayer.PLAYING) {
                     play.setImageResource(R.drawable.pause_nightmode)
                 } else {
                     play.setImageResource(R.drawable.white_play_button)
                 }
 
             } else {
-                if (it == PLAYING) {
+                if (it == StateMusicPlayer.PLAYING) {
                     play.setImageResource(R.drawable.pause)
                 } else {
                     play.setImageResource(R.drawable.play_button)
@@ -73,7 +102,7 @@ class MediaActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.getTrackData().observe(this) {
+        viewModel.getTrackData().observe(viewLifecycleOwner) {
 
             track = it
             trackName.text = track.trackName
@@ -83,7 +112,6 @@ class MediaActivity : AppCompatActivity() {
             year.text = FormatterTime.getYear(track.releaseDate)
             genre.text = track.primaryGenreName
             country.text = track.country
-
 
             Glide.with(picture).load(track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
                 .centerCrop()
@@ -97,12 +125,6 @@ class MediaActivity : AppCompatActivity() {
     private fun isDarkTheme(): Boolean {
         return this.resources.configuration.uiMode and
                 Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-    }
-
-
-    override fun onPause() {
-        super.onPause()
-        viewModel.pausePlayer()
     }
 
 }

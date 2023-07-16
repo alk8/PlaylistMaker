@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/searchFragment"
+        android:title="@string/search"
+        android:icon="?attr/menuSearch"/>
+    <item
+        android:id="@+id/mediaFragment"
+        android:title="@string/Mediateka"
+        android:icon="?attr/menuMediateka"/>
+
+    <item
+        android:id="@+id/settingsFragment"
+        android:title="@string/settings"
+        android:icon="?attr/menuSettings"/>
+
+</menu>

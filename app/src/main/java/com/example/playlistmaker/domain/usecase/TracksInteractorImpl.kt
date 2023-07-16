@@ -7,7 +7,7 @@ import com.example.playlistmaker.domain.api.Uploader
 import com.example.playlistmaker.presentation.api.TracksInteracator
 
 class TracksInteractorImpl(private val dataBase : Base,val api : GettingTracks) : TracksInteracator {
-
+    
     override fun uploadTracks(text: String, uploader: Uploader) {
         api.evaluateRequest(text, uploader)
     }

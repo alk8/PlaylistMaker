@@ -5,4 +5,8 @@
     <attr name="searchBackground" format="reference" />
     <attr name="searchMini" format="reference" />
     <attr name="searchHintColor" format="reference" />
+    <attr name="blackWhiteBar" format="reference" />
+    <attr name="menuSearch" format="reference" />
+    <attr name="menuMediateka" format="reference" />
+    <attr name="menuSettings" format="reference" />
 </resources>

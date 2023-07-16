@@ -3,15 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".presentation.media.MediaActivity">
-
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/back"
         style="@style/strelkaStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"

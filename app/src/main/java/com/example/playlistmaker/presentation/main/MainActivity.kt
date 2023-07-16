@@ -1,31 +1,38 @@
 package com.example.playlistmaker.presentation.main
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
+import android.view.View
+import androidx.navigation.NavDestination
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.example.playlistmaker.R
-import com.example.playlistmaker.presentation.mediateka.MediatekaActivity
-import com.example.playlistmaker.presentation.search.SearchActivity
-import com.example.playlistmaker.presentation.settings.SettingsActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import org.koin.core.qualifier._q
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //Кнопка Поиска
-        findViewById<Button>(R.id.search).setOnClickListener {
-            startActivity(Intent(this, SearchActivity::class.java))
-        }
-        // Кнопка Медиа
-        findViewById<Button>(R.id.media).setOnClickListener {
-            startActivity(Intent(this, MediatekaActivity::class.java))
-        }
-        // Кнопка настройки
-        findViewById<Button>(R.id.settings).setOnClickListener {
-            startActivity(Intent(this, SettingsActivity::class.java))
-        }
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.container_view) as NavHostFragment
+        val navController = navHostFragment.navController
 
+        val bottomNavBar = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavBar.setupWithNavController(navController)
+
+        bottomNavBar.setBackgroundColor(R.attr.blackWhiteBar)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.playerFragment -> {
+                    bottomNavBar.visibility = View.GONE
+                }
+                else -> {
+                    bottomNavBar.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 }

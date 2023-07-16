@@ -1,28 +1,31 @@
 package com.example.playlistmaker.presentation.search
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
+import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.domain.models.states.StateSearch
-import com.example.playlistmaker.presentation.media.MediaActivity
+import com.example.playlistmaker.presentation.player.PlayerFragment
 import com.example.playlistmaker.presentation.viewmodels.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
+
+    private lateinit var binding: FragmentSearchBinding
 
     private var text: String = ""
     private var musicAdapter = MusicAdapter()
@@ -41,25 +44,32 @@ class SearchActivity : AppCompatActivity() {
         viewModel.uploadTracks(text)
     }
     private val viewModel: SearchViewModel by viewModel {
-        parametersOf(getSharedPreferences("SearchActivity", MODE_PRIVATE),runnable)
+        parametersOf(runnable)
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        nothingSearch = findViewById(R.id.nothingSearch)
-        noConnection = findViewById(R.id.nothingConnection)
-        search = findViewById(R.id.edit_search)
-        clear = findViewById(R.id.clear_search)
-        recycler = findViewById(R.id.musicList)
-        refreshButton = findViewById(R.id.refreshButton)
-        clearHistory = findViewById(R.id.clearHistory)
-        textClear = findViewById(R.id.historySearch)
-        progressBar = findViewById(R.id.progressBar)
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        nothingSearch = binding.nothingSearch
+        noConnection = binding.nothingConnection
+        search = binding.editSearch
+        clear = binding.clearSearch
+        recycler = binding.musicList
+        refreshButton = binding.refreshButton
+        clearHistory = binding.clearHistory
+        textClear = binding.historySearch
+        progressBar = binding.progressBar
 
-        viewModel.getState().observe(this) {
+        viewModel.getState().observe(viewLifecycleOwner) {
 
             when (it.second) {
                 StateSearch.SHOW_UPLOAD_TRACKS -> {
@@ -112,7 +122,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
 
-        recycler.layoutManager = LinearLayoutManager(this)
+        recycler.layoutManager = LinearLayoutManager(binding.root.context)
         recycler.adapter = musicAdapter
 
         if (savedInstanceState != null) {
@@ -125,18 +135,16 @@ class SearchActivity : AppCompatActivity() {
         }
 
         musicAdapter.itemClickListener = { _, track ->
-
             viewModel.removeTrack(track)
-
             // Переход на экран плеера
-            val intentMedia = Intent(this, MediaActivity::class.java)
-            intentMedia.putExtra("track", viewModel.trackToJSON(track))
-            startActivity(intentMedia)
+
+            findNavController().navigate(
+                R.id.action_searchFragment_to_playerFragment,
+                PlayerFragment.createArgs(viewModel.trackToJSON(track))
+            )
         }
 
         refreshButton.setOnClickListener { viewModel.uploadTracks(text) }
-
-        findViewById<ImageView>(R.id.backSettings).setOnClickListener { finish() }
 
         search.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -166,7 +174,6 @@ class SearchActivity : AppCompatActivity() {
                     searchDebounse()
                 }
             }
-
             override fun afterTextChanged(p0: Editable?) {}
         }
 
@@ -177,10 +184,10 @@ class SearchActivity : AppCompatActivity() {
             noConnection.isGone = true
             viewModel.getHistory()
             recycler.adapter = musicAdapter
-            this.currentFocus?.let { view ->
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                imm?.hideSoftInputFromWindow(view.windowToken, 0)
-            }
+//            this.currentFocus?.let { view ->
+//                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+//                imm?.hideSoftInputFromWindow(view.windowToken, 0)
+//            }
             visibleInvisibleClearButton(search, clear)
         }
     }
@@ -207,6 +214,3 @@ class SearchActivity : AppCompatActivity() {
         return current
     }
 }
-
-
-

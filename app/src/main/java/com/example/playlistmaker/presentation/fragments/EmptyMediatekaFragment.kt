@@ -17,12 +17,10 @@ class EmptyMediatekaFragment : Fragment() {
     private var STATE = StateMediatekaFragment.DEFAULT
 
     companion object {
-
         fun newInstance(state: StateMediatekaFragment) = EmptyMediatekaFragment().apply {
             STATE = state
         }
     }
-
 
     private var _binding: FragmentEmptyMediatekaBinding? = null
     private val binding get() = _binding!!
