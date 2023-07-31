@@ -1,8 +1,5 @@
 package com.example.playlistmaker.presentation.di
 
-
-import android.os.Handler
-import android.os.Looper
 import com.example.playlistmaker.domain.usecase.MusicInteractorImpl
 import com.example.playlistmaker.domain.usecase.TracksInteractorImpl
 import com.example.playlistmaker.presentation.api.TracksInteracator
@@ -15,11 +12,11 @@ import org.koin.dsl.module
 
 val presentationModule = module {
     viewModel { (runnable:Runnable) ->
-        SearchViewModel(get(),get(),runnable)
+        SearchViewModel(get(),runnable)
     }
 
     viewModel { (text: String?,toast:() -> Unit) ->
-        MediaViewModel(get(),get(),text,toast)
+        MediaViewModel(get(),text,toast)
     }
 
     viewModel {
@@ -32,10 +29,6 @@ val presentationModule = module {
 
     single<MusicInteractor> {
         MusicInteractorImpl(get())
-    }
-
-    single {
-        Handler(Looper.myLooper()!!)
     }
 
 }

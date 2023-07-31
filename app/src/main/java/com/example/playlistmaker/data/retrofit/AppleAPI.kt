@@ -2,31 +2,25 @@ package com.example.playlistmaker.data.retrofit
 
 import com.example.playlistmaker.domain.api.GettingTracks
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.domain.api.Uploader
-import retrofit2.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class AppleAPI(private val appleAPI: SearchAPI) : GettingTracks {
 
-    override fun evaluateRequest(text: String, uploader: Uploader) {
-
-        appleAPI.getMusic(text).enqueue(object : Callback<TrackResponse> {
-
-            override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                uploader.getTracks(null)
-            }
-
-            override fun onResponse(
-                call: Call<TrackResponse>,
-                response: Response<TrackResponse>
-            ) {
-
-                if (response.isSuccessful) {
-                    val trackJSON = response.body()?.results
-                    if (trackJSON != null) {
-                        uploader.getTracks(trackJSON as ArrayList<Track>?)
-                    }
+    override suspend fun evaluateRequest(text: String): Flow<ArrayList<Track>?> = flow {
+        try {
+            appleAPI.getMusic(text).apply {
+                if (this.results.isNotEmpty()) {
+                    val tracks = this.results
+                    emit(tracks as ArrayList<Track>)
+                } else {
+                    emit(arrayListOf())
                 }
             }
-        })
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emit(null)
+        }
+
     }
 }

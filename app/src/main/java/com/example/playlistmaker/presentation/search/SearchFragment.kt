@@ -184,10 +184,6 @@ class SearchFragment : Fragment() {
             noConnection.isGone = true
             viewModel.getHistory()
             recycler.adapter = musicAdapter
-//            this.currentFocus?.let { view ->
-//                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-//                imm?.hideSoftInputFromWindow(view.windowToken, 0)
-//            }
             visibleInvisibleClearButton(search, clear)
         }
     }

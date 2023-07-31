@@ -7,11 +7,13 @@ import com.example.playlistmaker.domain.models.states.StateSearch
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.api.Uploader
 import com.example.playlistmaker.presentation.api.TracksInteracator
-import android.os.Handler
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SearchViewModel(
     private val tracksInteractor: TracksInteracator,
-    private val handler: Handler,
     private val runnable: Runnable
 ) : ViewModel() {
 
@@ -24,6 +26,7 @@ class SearchViewModel(
 
     private var trackList: ArrayList<Track>? = ArrayList()
     private var historyList: ArrayList<Track> = ArrayList()
+    private lateinit var searchInternet: Job
 
     init {
         state.value = getDefaultState()
@@ -38,24 +41,30 @@ class SearchViewModel(
                 state.value = getDefaultState()
             }
         } else {
-            tracksInteractor.uploadTracks(text, object : Uploader {
-                override fun getTracks(tracks: ArrayList<Track>?) {
-                    if (tracks == null) {
-                        // Ошибка соединения
-                        state.value = Pair(ArrayList(), StateSearch.NO_CONNECTION)
-                    } else {
-                        if (tracks.isEmpty()) {
-                            // Пустой запрос
-                            trackList = tracks
-                            state.value = Pair(trackList, StateSearch.EMPTY_UPLOAD_TRACKS)
+
+            // Работа с flow
+            viewModelScope.launch {
+                tracksInteractor
+                    .uploadTracks(text)
+                    .collect {
+                        if (it == null) {
+                            // Ошибка соединения
+                            state.value = Pair(ArrayList(), StateSearch.NO_CONNECTION)
                         } else {
-                            // Есть данные
-                            trackList = tracks
-                            state.value = Pair(trackList, StateSearch.SHOW_UPLOAD_TRACKS)
+                            if (it.isEmpty()) {
+                                // Пустой запрос
+                                trackList = it
+                                state.value = Pair(trackList, StateSearch.EMPTY_UPLOAD_TRACKS)
+                            } else {
+                                // Есть данные
+                                trackList = it
+                                state.value = Pair(trackList, StateSearch.SHOW_UPLOAD_TRACKS)
+                            }
                         }
+
                     }
-                }
-            })
+            }
+
         }
     }
 
@@ -89,13 +98,19 @@ class SearchViewModel(
     fun trackToJSON(track: Track): String? = tracksInteractor.trackToJSON(track)
 
     fun searchDebounse() {
-        handler.removeCallbacks(runnable)
-        handler.postDelayed(runnable, DEBOUNCE_DELAY)
+        searchInternet = viewModelScope.launch {
+            delay(DEBOUNCE_DELAY)
+            runnable.run()
+        }
     }
 
     fun clickDebounse(): Boolean {
         var isClick = false
-        handler.postDelayed({ isClick = true }, CLICK_DEBOUNCE)
+
+        viewModelScope.launch {
+            delay(CLICK_DEBOUNCE)
+            isClick = true
+        }
         return isClick
     }
 }

@@ -5,11 +5,12 @@ import com.example.playlistmaker.domain.api.GettingTracks
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.api.Uploader
 import com.example.playlistmaker.presentation.api.TracksInteracator
+import kotlinx.coroutines.flow.Flow
 
 class TracksInteractorImpl(private val dataBase : Base,val api : GettingTracks) : TracksInteracator {
     
-    override fun uploadTracks(text: String, uploader: Uploader) {
-        api.evaluateRequest(text, uploader)
+    override suspend fun uploadTracks(text: String): Flow<ArrayList<Track>?> {
+        return api.evaluateRequest(text)
     }
 
     override fun getHistory(): ArrayList<Track> {

@@ -1,6 +1,5 @@
 package com.example.playlistmaker.presentation.viewmodels
 
-import android.os.Handler
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,7 +14,6 @@ import kotlinx.coroutines.launch
 
 class MediaViewModel(
     private val musicPlayer: MusicInteractor,
-    private var handler: Handler,
     val text: String?,
     private val toast: () -> Unit
 ) : ViewModel() {
@@ -46,7 +44,6 @@ class MediaViewModel(
         if (!path.isNullOrEmpty()) {
             musicPlayer.prepare(path, {
                 state.value = StateMusicPlayer.PREPARED
-                stopTimer()
                 timerText.value = NULL_TIMER
             }, { state.value = StateMusicPlayer.PREPARED })
         } else {
@@ -61,13 +58,7 @@ class MediaViewModel(
         }
     }
 
-    private fun stopTimer() = refresh.cancel()
-
-    private suspend fun refreshTimer() {
-        if (state.value != StateMusicPlayer.PAUSED) {
-            timerText.postValue(FormatterTime.formatTime(musicPlayer.currentPosition()))
-        }
-    }
+    private fun refreshTimer() = timerText.postValue(FormatterTime.formatTime(musicPlayer.currentPosition()))
 
     fun controlPlayer() {
 
@@ -88,12 +79,17 @@ class MediaViewModel(
     private fun pausePlayer() {
         musicPlayer.pause()
         state.value = StateMusicPlayer.PAUSED
-        stopTimer()
     }
 
     private fun startPlayer() {
         musicPlayer.start()
+        refresh.start()
         state.value = StateMusicPlayer.PLAYING
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        refresh.cancel()
     }
 
 }
