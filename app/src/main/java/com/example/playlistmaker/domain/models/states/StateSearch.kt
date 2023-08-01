@@ -6,5 +6,6 @@ enum class StateSearch {
     SHOW_UPLOAD_TRACKS,
     EMPTY_UPLOAD_TRACKS,
     NO_CONNECTION,
+    START_SEARCH,
     DEFAULT
 }

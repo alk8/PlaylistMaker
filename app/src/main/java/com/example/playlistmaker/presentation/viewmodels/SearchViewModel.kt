@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.domain.models.states.StateSearch
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.domain.api.Uploader
 import com.example.playlistmaker.presentation.api.TracksInteracator
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
@@ -14,7 +13,6 @@ import kotlinx.coroutines.launch
 
 class SearchViewModel(
     private val tracksInteractor: TracksInteracator,
-    private val runnable: Runnable
 ) : ViewModel() {
 
     companion object {
@@ -45,19 +43,18 @@ class SearchViewModel(
             // Работа с flow
             viewModelScope.launch {
                 tracksInteractor
-                    .uploadTracks(text)
-                    .collect {
-                        if (it == null) {
+                    .uploadTracks(text).apply{
+                        if (this == null) {
                             // Ошибка соединения
                             state.value = Pair(ArrayList(), StateSearch.NO_CONNECTION)
                         } else {
-                            if (it.isEmpty()) {
+                            if (this.isEmpty()) {
                                 // Пустой запрос
-                                trackList = it
+                                trackList = this
                                 state.value = Pair(trackList, StateSearch.EMPTY_UPLOAD_TRACKS)
                             } else {
                                 // Есть данные
-                                trackList = it
+                                trackList = this
                                 state.value = Pair(trackList, StateSearch.SHOW_UPLOAD_TRACKS)
                             }
                         }
@@ -100,7 +97,7 @@ class SearchViewModel(
     fun searchDebounse() {
         searchInternet = viewModelScope.launch {
             delay(DEBOUNCE_DELAY)
-            runnable.run()
+            state.value = Pair(ArrayList(),StateSearch.START_SEARCH)
         }
     }
 

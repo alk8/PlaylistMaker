@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 class TracksInteractorImpl(private val dataBase : Base,val api : GettingTracks) : TracksInteracator {
     
-    override suspend fun uploadTracks(text: String): Flow<ArrayList<Track>?> {
+    override suspend fun uploadTracks(text: String): ArrayList<Track>? {
         return api.evaluateRequest(text)
     }
 

@@ -1,12 +1,10 @@
 package com.example.playlistmaker.presentation.api
 
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.domain.api.Uploader
-import kotlinx.coroutines.flow.Flow
 
 interface TracksInteracator {
 
-    suspend fun uploadTracks(text: String): Flow<ArrayList<Track>?>
+    suspend fun uploadTracks(text: String): ArrayList<Track>?
 
     fun getHistory(): ArrayList<Track>
 

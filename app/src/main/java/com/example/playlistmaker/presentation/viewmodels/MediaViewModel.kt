@@ -19,7 +19,7 @@ class MediaViewModel(
 ) : ViewModel() {
 
     companion object {
-        private const val REFRESH_TIME = 1000L
+        private const val REFRESH_TIME = 300L
         private const val NULL_TIMER = "00:00"
     }
 

@@ -11,12 +11,12 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val presentationModule = module {
-    viewModel { (runnable:Runnable) ->
-        SearchViewModel(get(),runnable)
+    viewModel {
+        SearchViewModel(get())
     }
 
-    viewModel { (text: String?,toast:() -> Unit) ->
-        MediaViewModel(get(),text,toast)
+    viewModel { (text: String?, toast: () -> Unit) ->
+        MediaViewModel(get(), text, toast)
     }
 
     viewModel {
@@ -24,7 +24,7 @@ val presentationModule = module {
     }
 
     single<TracksInteracator> {
-        TracksInteractorImpl(get(),get())
+        TracksInteractorImpl(get(), get())
     }
 
     single<MusicInteractor> {

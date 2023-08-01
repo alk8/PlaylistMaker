@@ -2,25 +2,21 @@ package com.example.playlistmaker.data.retrofit
 
 import com.example.playlistmaker.domain.api.GettingTracks
 import com.example.playlistmaker.domain.models.Track
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 class AppleAPI(private val appleAPI: SearchAPI) : GettingTracks {
 
-    override suspend fun evaluateRequest(text: String): Flow<ArrayList<Track>?> = flow {
+    override suspend fun evaluateRequest(text: String): ArrayList<Track>?{
         try {
             appleAPI.getMusic(text).apply {
-                if (this.results.isNotEmpty()) {
-                    val tracks = this.results
-                    emit(tracks as ArrayList<Track>)
+                return if (this.results.isNotEmpty()) {
+                    (this.results as ArrayList<Track>)
                 } else {
-                    emit(arrayListOf())
+                    (arrayListOf())
                 }
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            emit(null)
+            return null
         }
-
     }
 }
