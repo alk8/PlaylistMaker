@@ -34,20 +34,18 @@ class MediaViewModel(
 
     init {
 
+        timerText.value = NULL_TIMER
+
+        viewModelScope.launch {
+            musicPlayer.playerStateFlow.collect{
+                state.value = it
+            }
+        }
+
         if (!text.isNullOrEmpty()) {
             track.value = musicPlayer.jsonToTrack(text)
-        }
-        timerText.value = NULL_TIMER
-        state.value = StateMusicPlayer.DEFAULT
-        val path = track.value?.previewUrl
-
-        if (!path.isNullOrEmpty()) {
-            musicPlayer.prepare(path, {
-                state.value = StateMusicPlayer.PREPARED
-                timerText.value = NULL_TIMER
-            }, { state.value = StateMusicPlayer.PREPARED })
-        } else {
-            state.value = StateMusicPlayer.NO_CONTENT
+            val path = track.value?.previewUrl
+            musicPlayer.prepare(path)
         }
 
         refresh = viewModelScope.launch {
@@ -78,18 +76,11 @@ class MediaViewModel(
 
     private fun pausePlayer() {
         musicPlayer.pause()
-        state.value = StateMusicPlayer.PAUSED
     }
 
     private fun startPlayer() {
         musicPlayer.start()
         refresh.start()
-        state.value = StateMusicPlayer.PLAYING
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        refresh.cancel()
     }
 
 }

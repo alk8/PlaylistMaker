@@ -1,9 +1,12 @@
 package com.example.playlistmaker.presentation.api
 
 import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.domain.models.states.StateMusicPlayer
+import kotlinx.coroutines.flow.MutableStateFlow
 
 interface MusicInteractor {
-    fun prepare(trackUrl:String,completion: () -> Unit,prepared: () -> Unit)
+    val playerStateFlow: MutableStateFlow<StateMusicPlayer>
+    fun prepare(trackUrl: String?)
     fun currentPosition(): String
     fun pause()
     fun start()

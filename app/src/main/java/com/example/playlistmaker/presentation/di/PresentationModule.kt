@@ -28,7 +28,7 @@ val presentationModule = module {
     }
 
     single<MusicInteractor> {
-        MusicInteractorImpl(get())
+        MusicInteractorImpl(get(),get())
     }
 
 }
