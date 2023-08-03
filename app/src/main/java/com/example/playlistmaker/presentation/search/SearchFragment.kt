@@ -21,7 +21,6 @@ import com.example.playlistmaker.domain.models.states.StateSearch
 import com.example.playlistmaker.presentation.player.PlayerFragment
 import com.example.playlistmaker.presentation.viewmodels.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
 class SearchFragment : Fragment() {
 
@@ -39,13 +38,8 @@ class SearchFragment : Fragment() {
     private lateinit var clearHistory: Button
     private lateinit var textClear: TextView
     private lateinit var progressBar: ProgressBar
-    private val runnable = Runnable {
-        progressBar.isGone = false
-        viewModel.uploadTracks(text)
-    }
-    private val viewModel: SearchViewModel by viewModel {
-        parametersOf(runnable)
-    }
+
+    private val viewModel: SearchViewModel by viewModel()
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
@@ -72,6 +66,11 @@ class SearchFragment : Fragment() {
         viewModel.getState().observe(viewLifecycleOwner) {
 
             when (it.second) {
+
+                StateSearch.START_SEARCH->{
+                    progressBar.isGone = false
+                    viewModel.uploadTracks(text)
+                }
                 StateSearch.SHOW_UPLOAD_TRACKS -> {
                     progressBar.isGone = true
                     recycler.visibility = View.VISIBLE
@@ -184,10 +183,6 @@ class SearchFragment : Fragment() {
             noConnection.isGone = true
             viewModel.getHistory()
             recycler.adapter = musicAdapter
-//            this.currentFocus?.let { view ->
-//                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-//                imm?.hideSoftInputFromWindow(view.windowToken, 0)
-//            }
             visibleInvisibleClearButton(search, clear)
         }
     }
