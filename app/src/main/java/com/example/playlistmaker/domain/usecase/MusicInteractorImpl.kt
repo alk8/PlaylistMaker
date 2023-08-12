@@ -41,6 +41,10 @@ class MusicInteractorImpl(
         favoriteRepository.setLike(track)
     }
 
+    override suspend fun isFavorite(track: Track): Boolean {
+        return favoriteRepository.isFavorite(track)
+    }
+
     override suspend fun deleteLike(track: Track) {
         favoriteRepository.deleteLike(track)
     }

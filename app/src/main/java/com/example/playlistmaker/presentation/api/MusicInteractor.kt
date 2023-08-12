@@ -14,4 +14,6 @@ interface MusicInteractor {
     fun jsonToTrack(textJSON: String): Track
     suspend fun setLike(track:Track)
     suspend fun deleteLike(track: Track)
+    suspend fun isFavorite(track: Track) : Boolean
+
 }

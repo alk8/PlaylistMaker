@@ -5,6 +5,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface FavoriteRepository {
 
+    suspend fun isFavorite(track: Track): Boolean
+
     suspend fun deleteLike(track: Track)
 
     suspend fun setLike(track: Track)

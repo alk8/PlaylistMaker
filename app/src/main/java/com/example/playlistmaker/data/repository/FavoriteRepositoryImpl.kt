@@ -18,6 +18,13 @@ class FavoriteRepositoryImpl(private val appDataBase: AppDataBase,private val tr
         appDataBase.trackDao().insertTrack(trackEntity)
     }
 
+    override suspend fun isFavorite(track: Track): Boolean {
+
+        val row = appDataBase.trackDao().isFavorite(track.artworkUrl100)
+
+        return false
+    }
+
     override suspend fun getFavoriteTracks(): Flow<List<Track>> = flow{
         val tracksEntity = appDataBase.trackDao().getFavoriteTracks()
 

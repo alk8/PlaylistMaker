@@ -7,12 +7,15 @@ import com.example.playlistmaker.data.db.entity.TrackEntity
 interface TrackDAO {
 
     @Insert(entity = TrackEntity::class, onConflict = OnConflictStrategy.REPLACE)
-    fun insertTrack(trackEntity:TrackEntity)
+    suspend fun insertTrack(trackEntity:TrackEntity)
 
     @Delete(entity = TrackEntity::class)
-    fun deleteTrack(trackEntity:TrackEntity)
+    suspend fun deleteTrack(trackEntity:TrackEntity)
 
     @Query("SELECT * FROM Favor")
-    fun getFavoriteTracks() : List<TrackEntity>
+    suspend fun getFavoriteTracks() : List<TrackEntity>
+
+    @Query("SELECT * FROM Favor WHERE artworkUrl100 = :artworkUrl100")
+    suspend fun isFavorite(artworkUrl100:String) : List<TrackEntity>
 
 }

@@ -43,7 +43,14 @@ class MediaViewModel(
         }
 
         if (!text.isNullOrEmpty()) {
-            track.value = musicPlayer.jsonToTrack(text)
+
+            val preparedTrack = musicPlayer.jsonToTrack(text)
+
+            viewModelScope.launch {
+               preparedTrack.isFavorite =  musicPlayer.isFavorite(preparedTrack)
+            }
+
+            track.value = preparedTrack
             val path = track.value?.previewUrl
             musicPlayer.prepare(path)
         }
