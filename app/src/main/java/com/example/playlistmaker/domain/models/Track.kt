@@ -1,14 +1,34 @@
 package com.example.playlistmaker.domain.models
 
-class Track(
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "Favorite_tracks")
+data class Track(
+
+    @PrimaryKey(autoGenerate = true)
+    val id : Long,
+
+    @ColumnInfo(name = "trackName")
     val trackName: String? = null,
+
     val artistName: String? = null,
+
     val trackTimeMillis: String? = null,
+
     val artworkUrl100: String = "",
+
+    @Ignore
     val collectionName: String? = null,
+
     val releaseDate: String? = null,
+
     val primaryGenreName: String? = null,
+
     val country: String? = null,
+
     val previewUrl: String = ""
 ) {
 
