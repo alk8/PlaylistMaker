@@ -83,4 +83,14 @@ class MediaViewModel(
         refresh.start()
     }
 
+    fun setLike(){
+        musicPlayer.setLike(track.value!!)
+        track.value!!.isFavorite = true
+    }
+
+    fun deleteLike(){
+        musicPlayer.deleteLike(track.value!!)
+        track.value!!.isFavorite = false
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.example.playlistmaker.domain.usecase
 
+import com.example.playlistmaker.domain.api.FavoriteRepository
 import com.example.playlistmaker.domain.api.PlayerMedia
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.models.states.StateMusicPlayer
@@ -8,7 +9,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 class MusicInteractorImpl(
     private val musicPlayer: PlayerMedia,
-    override var playerStateFlow: MutableStateFlow<StateMusicPlayer>
+    override var playerStateFlow: MutableStateFlow<StateMusicPlayer>,
+    private val favoriteRepository: FavoriteRepository
 ) : MusicInteractor {
 
     override fun prepare(trackUrl: String?) {
@@ -33,6 +35,14 @@ class MusicInteractorImpl(
     override fun start() {
         musicPlayer.start()
         playerStateFlow.value = StateMusicPlayer.PLAYING
+    }
+
+    override fun setLike(track: Track) {
+        favoriteRepository.setLike(track)
+    }
+
+    override fun deleteLike(track: Track) {
+        favoriteRepository.deleteLike(track)
     }
 
     override fun release() {

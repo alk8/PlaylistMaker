@@ -1,18 +1,8 @@
 package com.example.playlistmaker.domain.models
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Ignore
-import androidx.room.PrimaryKey
-
-@Entity(tableName = "Favorite_tracks")
 data class Track(
 
-    @PrimaryKey(autoGenerate = true)
-    val id : Long,
-
-    @ColumnInfo(name = "trackName")
-    val trackName: String? = null,
+    val trackName: String = "",
 
     val artistName: String? = null,
 
@@ -20,7 +10,6 @@ data class Track(
 
     val artworkUrl100: String = "",
 
-    @Ignore
     val collectionName: String? = null,
 
     val releaseDate: String? = null,
@@ -29,7 +18,9 @@ data class Track(
 
     val country: String? = null,
 
-    val previewUrl: String = ""
+    val previewUrl: String = "",
+
+    var isFavorite: Boolean = false
 ) {
 
     override fun equals(other: Any?): Boolean {

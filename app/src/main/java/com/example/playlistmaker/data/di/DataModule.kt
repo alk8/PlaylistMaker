@@ -5,6 +5,7 @@ import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.example.playlistmaker.data.db.AppDataBase
+import com.example.playlistmaker.data.db.TrackConvertor
 import com.example.playlistmaker.data.repository.FavoriteRepositoryImpl
 import com.example.playlistmaker.data.retrofit.SearchAPI
 import com.example.playlistmaker.data.repository.SerializatorTrackImpl
@@ -43,11 +44,13 @@ val dataModule = module {
     }
 
     single {
-        Room.databaseBuilder(androidContext(), AppDataBase::class.java,"database.db")
+        Room.databaseBuilder(androidContext(), AppDataBase::class.java,"database.db").build()
     }
 
     single<FavoriteRepository> {
-        FavoriteRepositoryImpl(get())
+        FavoriteRepositoryImpl(get(),get())
     }
+
+    factory { TrackConvertor() }
 
 }
