@@ -84,12 +84,21 @@ class MediaViewModel(
     }
 
     fun setLike(){
-        musicPlayer.setLike(track.value!!)
+
+        viewModelScope.launch {
+            musicPlayer.setLike(track.value!!)
+        }
+
+
         track.value!!.isFavorite = true
     }
 
     fun deleteLike(){
-        musicPlayer.deleteLike(track.value!!)
+
+        viewModelScope.launch {
+            musicPlayer.deleteLike(track.value!!)
+        }
+
         track.value!!.isFavorite = false
     }
 

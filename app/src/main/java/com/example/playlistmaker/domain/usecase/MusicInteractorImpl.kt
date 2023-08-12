@@ -37,11 +37,11 @@ class MusicInteractorImpl(
         playerStateFlow.value = StateMusicPlayer.PLAYING
     }
 
-    override fun setLike(track: Track) {
+    override suspend fun setLike(track: Track) {
         favoriteRepository.setLike(track)
     }
 
-    override fun deleteLike(track: Track) {
+    override suspend fun deleteLike(track: Track) {
         favoriteRepository.deleteLike(track)
     }
 

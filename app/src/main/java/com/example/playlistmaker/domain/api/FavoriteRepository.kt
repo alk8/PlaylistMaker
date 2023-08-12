@@ -5,10 +5,10 @@ import kotlinx.coroutines.flow.Flow
 
 interface FavoriteRepository {
 
-    fun deleteLike(track: Track)
+    suspend fun deleteLike(track: Track)
 
-    fun setLike(track: Track)
+    suspend fun setLike(track: Track)
 
-    fun getFavoriteTracks() : Flow<List<Track>>
+    suspend fun getFavoriteTracks() : Flow<List<Track>>
 
 }
