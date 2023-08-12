@@ -12,7 +12,7 @@ interface TrackDAO {
     @Delete(entity = TrackEntity::class)
     fun deleteTrack(trackEntity:TrackEntity)
 
-    @Query("SELECT * FROM Favorite")
+    @Query("SELECT * FROM Favor")
     fun getFavoriteTracks() : List<TrackEntity>
 
 }

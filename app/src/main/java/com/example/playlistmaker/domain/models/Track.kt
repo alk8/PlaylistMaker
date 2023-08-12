@@ -21,6 +21,7 @@ data class Track(
     val previewUrl: String = "",
 
     var isFavorite: Boolean = false
+
 ) {
 
     override fun equals(other: Any?): Boolean {
