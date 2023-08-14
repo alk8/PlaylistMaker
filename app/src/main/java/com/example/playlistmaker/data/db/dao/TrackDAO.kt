@@ -15,7 +15,7 @@ interface TrackDAO {
     @Query("SELECT * FROM Favor")
     suspend fun getFavoriteTracks() : List<TrackEntity>
 
-    @Query("SELECT * FROM Favor WHERE artworkUrl100 = :artworkUrl100")
+    @Query("SELECT * FROM Favor WHERE artworkUrl100 LIKE :artworkUrl100")
     suspend fun isFavorite(artworkUrl100:String) : List<TrackEntity>
 
 }

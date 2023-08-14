@@ -20,7 +20,11 @@ class FavoriteRepositoryImpl(private val appDataBase: AppDataBase,private val tr
 
     override suspend fun isFavorite(track: Track): Boolean {
 
-        val row = appDataBase.trackDao().isFavorite(track.artworkUrl100)
+        try {
+            val row = appDataBase.trackDao().isFavorite(track.artworkUrl100)
+        }catch (e:Exception){
+            var a = 0
+        }
 
         return false
     }
