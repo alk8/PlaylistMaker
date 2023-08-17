@@ -47,12 +47,12 @@ class MediaViewModel(
             val preparedTrack = musicPlayer.jsonToTrack(text)
 
             viewModelScope.launch {
-               preparedTrack.isFavorite =  musicPlayer.isFavorite(preparedTrack)
+                val isFavorite = musicPlayer.isFavorite(preparedTrack)
+                preparedTrack.isFavorite = isFavorite
+                track.value = preparedTrack
+                val path = track.value?.previewUrl
+                musicPlayer.prepare(path)
             }
-
-            track.value = preparedTrack
-            val path = track.value?.previewUrl
-            musicPlayer.prepare(path)
         }
 
         refresh = viewModelScope.launch {
