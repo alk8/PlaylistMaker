@@ -7,22 +7,22 @@ import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.FragmentEmptyMediatekaBinding
+import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
 import com.example.playlistmaker.presentation.states.StateMediatekaFragment
 import com.example.playlistmaker.presentation.viewmodels.EmptyMediatekaFragmentModel
 import org.koin.android.ext.android.getKoin
 
-class EmptyMediatekaFragment : Fragment() {
+class PlaylistsFragment : Fragment() {
 
     private var STATE = StateMediatekaFragment.DEFAULT
 
     companion object {
-        fun newInstance(state: StateMediatekaFragment) = EmptyMediatekaFragment().apply {
+        fun newInstance(state: StateMediatekaFragment) = PlaylistsFragment().apply {
             STATE = state
         }
     }
 
-    private var _binding: FragmentEmptyMediatekaBinding? = null
+    private var _binding: FragmentPlaylistsBinding? = null
     private val binding get() = _binding!!
     private val viewModel : EmptyMediatekaFragmentModel = getKoin().get()
 
@@ -30,7 +30,7 @@ class EmptyMediatekaFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentEmptyMediatekaBinding.inflate(inflater, container, false)
+        _binding = FragmentPlaylistsBinding.inflate(inflater, container, false)
 
         when (STATE) {
 

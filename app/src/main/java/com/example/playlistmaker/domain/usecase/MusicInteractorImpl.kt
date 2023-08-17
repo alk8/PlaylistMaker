@@ -5,6 +5,7 @@ import com.example.playlistmaker.domain.api.PlayerMedia
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.models.states.StateMusicPlayer
 import com.example.playlistmaker.presentation.api.MusicInteractor
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class MusicInteractorImpl(
@@ -43,6 +44,10 @@ class MusicInteractorImpl(
 
     override suspend fun isFavorite(track: Track): Boolean {
         return favoriteRepository.isFavorite(track)
+    }
+
+    override fun getFavoriteTracks(): Flow<ArrayList<Track>> {
+        return favoriteRepository.getFavoriteTracks()
     }
 
     override suspend fun deleteLike(track: Track) {

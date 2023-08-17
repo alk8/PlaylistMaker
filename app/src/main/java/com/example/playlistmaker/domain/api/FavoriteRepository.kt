@@ -11,6 +11,6 @@ interface FavoriteRepository {
 
     suspend fun setLike(track: Track)
 
-    suspend fun getFavoriteTracks() : Flow<List<Track>>
+    fun getFavoriteTracks() : Flow<ArrayList<Track>>
 
 }
