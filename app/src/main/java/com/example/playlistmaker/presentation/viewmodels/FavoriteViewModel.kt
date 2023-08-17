@@ -1,24 +1,30 @@
 package com.example.playlistmaker.presentation.viewmodels
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.api.MusicInteractor
+import com.example.playlistmaker.presentation.api.TracksInteracator
 
 import kotlinx.coroutines.launch
 
-class FavoriteViewModel(private val musicInteractor: MusicInteractor) : ViewModel(){
+class FavoriteViewModel(private val musicInteractor: MusicInteractor,private val tracksInteracor:TracksInteracator) : ViewModel(){
 
-    fun getFavoriteTracks(): ArrayList<Track> {
+    private var favorite = MutableLiveData<ArrayList<Track>>()
 
-        var favorite: ArrayList<Track> = ArrayList()
+    fun getFavoriteTracks(): MutableLiveData<ArrayList<Track>> {
+
         viewModelScope.launch {
             musicInteractor.getFavoriteTracks().collect{
-                favorite = it
+                favorite.value = it
             }
         }
 
         return favorite
     }
 
+    fun trackToJSON(track: Track): String? {
+       return tracksInteracor.trackToJSON(track)
+    }
 }

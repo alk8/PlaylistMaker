@@ -25,7 +25,7 @@ val presentationModule = module {
     }
 
     viewModel {
-        FavoriteViewModel(get())
+        FavoriteViewModel(get(),get())
     }
 
     single<TracksInteracator> {
