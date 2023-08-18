@@ -1,5 +1,6 @@
 package com.example.playlistmaker.presentation.viewmodels
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,7 +14,7 @@ class FavoriteViewModel(private val musicInteractor: MusicInteractor,private val
 
     private var favorite = MutableLiveData<ArrayList<Track>>()
 
-    fun getFavoriteTracks(): MutableLiveData<ArrayList<Track>> {
+    fun getFavoriteTracks(): LiveData<ArrayList<Track>> {
 
         viewModelScope.launch {
             musicInteractor.getFavoriteTracks().collect{

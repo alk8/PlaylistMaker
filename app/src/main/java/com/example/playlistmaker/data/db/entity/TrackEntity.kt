@@ -25,6 +25,8 @@ data class TrackEntity(
 
     val previewUrl: String = "",
 
-    val isFavorite: Boolean = false
+    val isFavorite: Boolean = false,
+
+    val date: Long = 0L
 
 )

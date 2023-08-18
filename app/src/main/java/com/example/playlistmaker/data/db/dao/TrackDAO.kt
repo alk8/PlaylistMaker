@@ -12,7 +12,7 @@ interface TrackDAO {
     @Delete(entity = TrackEntity::class)
     suspend fun deleteTrack(trackEntity:TrackEntity)
 
-    @Query("SELECT * FROM Favor")
+    @Query("SELECT * FROM Favor ORDER BY date DESC")
     suspend fun getFavoriteTracks() : List<TrackEntity>
 
     @Query("SELECT EXISTS (SELECT 1 FROM Favor WHERE artworkUrl100 LIKE :artworkUrl100)")

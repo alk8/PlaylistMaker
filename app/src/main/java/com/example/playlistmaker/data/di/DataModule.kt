@@ -30,7 +30,7 @@ val dataModule = module {
         Gson()
     }
 
-    factory <SearchAPI> {
+    factory<SearchAPI> {
         Retrofit.Builder().baseUrl(URL)
             .addConverterFactory(GsonConverterFactory.create()).build().create()
     }
@@ -44,11 +44,13 @@ val dataModule = module {
     }
 
     single {
-        Room.databaseBuilder(androidContext(), AppDataBase::class.java,"database.db").build()
+        Room.databaseBuilder(androidContext(), AppDataBase::class.java, "database.db")
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     single<FavoriteRepository> {
-        FavoriteRepositoryImpl(get(),get())
+        FavoriteRepositoryImpl(get(), get())
     }
 
     factory { TrackConvertor() }
