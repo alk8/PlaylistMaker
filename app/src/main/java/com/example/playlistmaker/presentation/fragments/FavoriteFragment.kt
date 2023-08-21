@@ -56,7 +56,7 @@ class FavoriteFragment : Fragment() {
         musicAdapter.itemClickListener = { _, track ->
             // Переход на экран плеера
             findNavController().navigate(
-                R.id.action_favoriteFragment_to_playerFragment,
+                R.id.action_mediaFragment_to_playerFragment,
                 PlayerFragment.createArgs(viewModel.trackToJSON(track))
             )
         }

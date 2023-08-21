@@ -23,18 +23,14 @@
         android:id="@+id/mediaFragment"
         android:name="com.example.playlistmaker.presentation.mediateka.MediatekaFragment"
         android:label="fragment_media"
-        tools:layout="@layout/fragment_media" />
+        tools:layout="@layout/fragment_media" >
+        <action
+            android:id="@+id/action_mediaFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+    </fragment>
     <fragment
         android:id="@+id/playerFragment"
         android:name="com.example.playlistmaker.presentation.player.PlayerFragment"
         android:label="fragment_player"
         tools:layout="@layout/fragment_player" />
-    <fragment
-        android:id="@+id/favoriteFragment"
-        android:name="com.example.playlistmaker.presentation.fragments.FavoriteFragment"
-        android:label="FavoriteFragment" >
-        <action
-            android:id="@+id/action_favoriteFragment_to_playerFragment"
-            app:destination="@id/playerFragment" />
-    </fragment>
 </navigation>
