@@ -43,9 +43,16 @@ class MediaViewModel(
         }
 
         if (!text.isNullOrEmpty()) {
-            track.value = musicPlayer.jsonToTrack(text)
-            val path = track.value?.previewUrl
-            musicPlayer.prepare(path)
+
+            val preparedTrack = musicPlayer.jsonToTrack(text)
+
+            viewModelScope.launch {
+                val isFavorite = musicPlayer.isFavorite(preparedTrack)
+                preparedTrack.isFavorite = isFavorite
+                track.value = preparedTrack
+                val path = track.value?.previewUrl
+                musicPlayer.prepare(path)
+            }
         }
 
         refresh = viewModelScope.launch {
@@ -81,6 +88,25 @@ class MediaViewModel(
     private fun startPlayer() {
         musicPlayer.start()
         refresh.start()
+    }
+
+    fun setLike(){
+
+        viewModelScope.launch {
+            musicPlayer.setLike(track.value!!)
+        }
+
+
+        track.value!!.isFavorite = true
+    }
+
+    fun deleteLike(){
+
+        viewModelScope.launch {
+            musicPlayer.deleteLike(track.value!!)
+        }
+
+        track.value!!.isFavorite = false
     }
 
 }

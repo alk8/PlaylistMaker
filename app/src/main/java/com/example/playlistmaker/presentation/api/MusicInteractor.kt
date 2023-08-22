@@ -2,6 +2,7 @@ package com.example.playlistmaker.presentation.api
 
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.models.states.StateMusicPlayer
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
 interface MusicInteractor {
@@ -12,4 +13,9 @@ interface MusicInteractor {
     fun start()
     fun release()
     fun jsonToTrack(textJSON: String): Track
+    suspend fun setLike(track:Track)
+    suspend fun deleteLike(track: Track)
+    suspend fun isFavorite(track: Track) : Boolean
+    fun getFavoriteTracks(): Flow<ArrayList<Track>>
+
 }

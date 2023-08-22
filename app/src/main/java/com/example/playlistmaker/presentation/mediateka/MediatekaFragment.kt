@@ -18,9 +18,10 @@ class MediatekaFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentMediaBinding.inflate(inflater,container,false)
+
         return binding.root
     }
 
@@ -28,7 +29,6 @@ class MediatekaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.viewPager.adapter = NumbersViewPagerAdapter(childFragmentManager,lifecycle)
-
         tabMediator = TabLayoutMediator(binding.tabLayout,binding.viewPager) {tab, position ->
             when(position){
                 0 -> tab.text = getString(R.string.FavoriteTracks)
@@ -36,11 +36,8 @@ class MediatekaFragment : Fragment() {
             }
         }
         tabMediator.attach()
+
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        tabMediator.detach()
-    }
 
 }

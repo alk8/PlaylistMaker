@@ -26,12 +26,17 @@ class SettingsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentSettingsBinding.inflate(inflater,container,false)
+        return binding?.root
+    }
 
-        val switch = _binding!!.darkMode
+    @RequiresApi(Build.VERSION_CODES.R)
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        switch.isChecked = resources.configuration.isNightModeActive
+        _binding!!.darkMode.isChecked = resources.configuration.isNightModeActive
 
-        switch.setOnCheckedChangeListener { _, isChecked ->
+        _binding!!.darkMode.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked){
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             }else {
@@ -61,11 +66,13 @@ class SettingsFragment : Fragment() {
             intent.putExtra(Intent.EXTRA_TEXT,getString(R.string.text_mail))
             startActivity(intent)
         }
-        return binding?.root
+
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
+    @RequiresApi(Build.VERSION_CODES.R)
+    override fun onResume() {
+        super.onResume()
+        _binding!!.darkMode.isChecked = resources.configuration.isNightModeActive
     }
+
 }

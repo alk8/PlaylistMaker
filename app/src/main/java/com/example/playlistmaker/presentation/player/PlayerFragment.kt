@@ -84,6 +84,7 @@ class PlayerFragment : Fragment() {
             findNavController().popBackStack()
         }
 
+
         viewModel.getStateData().observe(viewLifecycleOwner) {
 
             if (isDark) {
@@ -118,13 +119,37 @@ class PlayerFragment : Fragment() {
                 .placeholder(R.drawable.ic_noconnection).transform(RoundedCorners(15))
                 .into(picture)
 
+            isFavorite()
+
         }
 
+        binding.likeButton.setOnClickListener {
+
+            // снять или поставить
+            track.isFavorite = !track.isFavorite
+
+            isFavorite()
+
+            if (track.isFavorite){
+                viewModel.setLike()
+            }else{
+                viewModel.deleteLike()
+            }
+        }
     }
 
     private fun isDarkTheme(): Boolean {
         return this.resources.configuration.uiMode and
                 Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+    }
+
+    private fun isFavorite(){
+
+        if (track.isFavorite){
+            binding.likeButton.setImageResource(R.drawable.buttonlike)
+        }else{
+            binding.likeButton.setImageResource(R.drawable.like_button)
+        }
     }
 
 }
