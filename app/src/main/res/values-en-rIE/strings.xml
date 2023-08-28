@@ -41,4 +41,5 @@
     <string name="name">Name of album</string>
     <string name="Description">Description</string>
     <string name="Create">Create</string>
+    <string name="addPlaylist">Add playlist</string>
 </resources>

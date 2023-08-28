@@ -54,7 +54,7 @@ class Convertor {
 
     fun mapAlbum(album: AlbumEntity): Album{
 
-        return Album(album.nameAlbum,album.description, Uri.parse(album.uri))
+        return Album(album.nameAlbum,album.description, Uri.parse(album.uri),0)
 
     }
 

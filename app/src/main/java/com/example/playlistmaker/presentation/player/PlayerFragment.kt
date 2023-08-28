@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -19,6 +20,7 @@ import com.example.playlistmaker.domain.entities.FormatterTime
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.models.states.StateMusicPlayer
 import com.example.playlistmaker.presentation.viewmodels.MediaViewModel
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -76,6 +78,11 @@ class PlayerFragment : Fragment() {
         val country = binding.countryData
         val picture = binding.album
 
+        val bottomSheetContainer = requireActivity().findViewById<LinearLayout>(R.id.standard_bottom_sheet)
+        val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+        }
+
         viewModel.getTimerTextData().observe(viewLifecycleOwner) {
             timer.text = it
         }
@@ -83,6 +90,37 @@ class PlayerFragment : Fragment() {
         binding.back.setOnClickListener {
             findNavController().popBackStack()
         }
+
+        binding.libraryButton.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                // newState — новое состояние BottomSheet
+                when (newState) {
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        // загружаем рекламный баннер
+                        //loadAds()
+                    }
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        // останавливаем трейлер
+                        //pauseTrailer()
+                    }
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        // возобновляем трейлер
+                        //resumeTrailer()
+                    }
+                    else -> {
+                        // Остальные состояния не обрабатываем
+                    }
+                }
+            }
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+        })
+
+
+
 
 
         viewModel.getStateData().observe(viewLifecycleOwner) {

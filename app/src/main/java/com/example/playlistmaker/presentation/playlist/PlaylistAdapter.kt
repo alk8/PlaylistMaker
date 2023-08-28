@@ -10,7 +10,6 @@ class PlaylistAdapter(val albums: List<Album>): RecyclerView.Adapter<PlaylistVie
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.album_layout,parent,false)
         return PlaylistViewHolder(view)
-
     }
 
     override fun getItemCount(): Int {

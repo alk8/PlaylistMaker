@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 class AlbumInteractorImpl(private val albumRepository: AlbumRepository):AlbumInteractor {
     override suspend fun saveAlbum(nameAlbum: String, description: String, uri: Uri) {
-        albumRepository.saveAlbum(Album(nameAlbum,description,uri))
+        albumRepository.saveAlbum(Album(nameAlbum,description,uri,0))
     }
 
     override fun getAlbums(): Flow<ArrayList<Album>> {

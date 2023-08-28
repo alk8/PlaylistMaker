@@ -40,4 +40,5 @@
     <string name="name">Название*</string>
     <string name="Description">Описание</string>
     <string name="Create">Создать</string>
+    <string name="addPlaylist">Добавить в плейлист</string>
 </resources>
