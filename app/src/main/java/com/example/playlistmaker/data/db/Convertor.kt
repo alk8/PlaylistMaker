@@ -1,10 +1,14 @@
 package com.example.playlistmaker.data.db
 
+import android.net.Uri
+import com.example.playlistmaker.data.db.entity.AlbumEntity
 import com.example.playlistmaker.data.db.entity.TrackEntity
+import com.example.playlistmaker.domain.models.Album
 import com.example.playlistmaker.domain.models.Track
 import java.util.Date
+import java.util.UUID
 
-class TrackConvertor {
+class Convertor {
 
     fun map(track: Track): TrackEntity {
 
@@ -38,6 +42,20 @@ class TrackConvertor {
             previewUrl = track.previewUrl,
             isFavorite = track.isFavorite
         )
+    }
+
+    fun mapAlbum(album: Album): AlbumEntity{
+
+        val uuid = UUID.randomUUID().toString()
+
+        return AlbumEntity(uuid,album.nameAlbum,album.description,album.uri.toString())
+
+    }
+
+    fun mapAlbum(album: AlbumEntity): Album{
+
+        return Album(album.nameAlbum,album.description, Uri.parse(album.uri))
+
     }
 
 }
