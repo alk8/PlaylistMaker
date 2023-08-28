@@ -25,7 +25,7 @@ import java.util.*
 
 class NewPlaylistFragment : Fragment() {
 
-    private lateinit var uriFile: Uri
+    private var uriFile: Uri = Uri.EMPTY
     private lateinit var binding: FragmentNewplaylistBinding
     private val viewModel: NewPlaylistViewModel by viewModel()
 
@@ -122,8 +122,8 @@ class NewPlaylistFragment : Fragment() {
             // Создание записи в БД по всем необходимым данным
             val nameAlbum = binding.nameAlbum.text.toString()
             val description = binding.description.text.toString()
-            val uri = uriFile
-            viewModel.saveAlbum(nameAlbum,description,uri)
+
+            viewModel.saveAlbum(nameAlbum,description,uriFile)
             Toast.makeText(requireContext(),"Альбом $nameAlbum создан",Toast.LENGTH_SHORT).show()
             findNavController().popBackStack()
         }

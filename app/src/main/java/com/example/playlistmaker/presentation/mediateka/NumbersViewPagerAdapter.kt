@@ -16,8 +16,8 @@ class NumbersViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifec
     override fun createFragment(position: Int): Fragment {
         return when(position) {
             0 -> FavoriteFragment.newInstance()
-            1 -> PlaylistsFragment.newInstance(StateMediatekaFragment.PLAYLISTS)
-            else -> PlaylistsFragment.newInstance(StateMediatekaFragment.DEFAULT)
+            1 -> PlaylistsFragment.newInstance()
+            else -> PlaylistsFragment.newInstance()
         }
     }
 }

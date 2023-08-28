@@ -7,25 +7,24 @@ import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
 import com.example.playlistmaker.presentation.states.StateMediatekaFragment
-import com.example.playlistmaker.presentation.viewmodels.EmptyMediatekaFragmentModel
-import org.koin.android.ext.android.getKoin
+import com.example.playlistmaker.presentation.viewmodels.PlaylistsViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistsFragment : Fragment() {
 
-    private var STATE = StateMediatekaFragment.DEFAULT
 
     companion object {
-        fun newInstance(state: StateMediatekaFragment) = PlaylistsFragment().apply {
-            STATE = state
+        fun newInstance() = PlaylistsFragment().apply {
         }
     }
 
     private var _binding: FragmentPlaylistsBinding? = null
     private val binding get() = _binding!!
-    private val viewModel : EmptyMediatekaFragmentModel = getKoin().get()
+    private val viewModel : PlaylistsViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,37 +32,34 @@ class PlaylistsFragment : Fragment() {
     ): View {
         _binding = FragmentPlaylistsBinding.inflate(inflater, container, false)
 
-        when (STATE) {
+        binding.text.text = getString(R.string.emptyPlayLists)
 
-            StateMediatekaFragment.FAVORITE -> {
-                binding.newPlaylist.isGone = true
-                binding.text.text = getString(R.string.emptyMediateka)
-            }
-            StateMediatekaFragment.PLAYLISTS -> {
-                binding.text.text = getString(R.string.emptyPlayLists)
-            }
-            StateMediatekaFragment.DEFAULT -> {
-
-            }
-        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.newPlaylist.setOnClickListener {
+        val recyclerView = binding.recyclerView
+        recyclerView.layoutManager = GridLayoutManager(requireContext(),2)
 
+        // Получить данные из базы
+        viewModel.getPlaylists().observe(viewLifecycleOwner){
+
+            binding.imageView.isGone = it.isNotEmpty()
+            binding.text.isGone = it.isNotEmpty()
+            recyclerView.adapter = PlaylistAdapter(it)
+        }
+
+        binding.newPlaylist.setOnClickListener {
             findNavController().navigate(
                 R.id.action_mediaFragment_to_newPlaylistFragment
             )
         }
-
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
-
 }

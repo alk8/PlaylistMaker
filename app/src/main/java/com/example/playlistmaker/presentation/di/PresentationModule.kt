@@ -20,7 +20,7 @@ val presentationModule = module {
     }
 
     viewModel {
-        EmptyMediatekaFragmentModel()
+        PlaylistsViewModel(get())
     }
 
     viewModel {
@@ -30,6 +30,7 @@ val presentationModule = module {
     viewModel {
         NewPlaylistViewModel(get())
     }
+
 
     single<TracksInteracator> {
         TracksInteractorImpl(get(), get())
