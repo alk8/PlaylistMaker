@@ -13,4 +13,6 @@ interface AlbumInteractor {
 
     suspend fun addSongToPlaylist(album:Album,track:Track)
 
+    suspend fun included(album: Album, track: Track): Pair<Boolean,String>
+
 }

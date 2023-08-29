@@ -29,19 +29,21 @@ class PlayerViewModel(
     private var timerText = MutableLiveData<String>()
     private var state = MutableLiveData<StateMusicPlayer>()
     private var playlists = MutableLiveData<ArrayList<Album>>()
+    private var included = MutableLiveData<Pair<Boolean,String>>()
     private var refresh: Job
 
     fun getTrackData(): LiveData<Track> = track
     fun getTimerTextData(): LiveData<String> = timerText
     fun getStateData(): LiveData<StateMusicPlayer> = state
     fun getPlaylistData(): LiveData<ArrayList<Album>> = playlists
+    fun getIncludedData(): LiveData<Pair<Boolean,String>> = included
 
     init {
 
         timerText.value = NULL_TIMER
 
         viewModelScope.launch {
-            musicPlayer.playerStateFlow.collect{
+            musicPlayer.playerStateFlow.collect {
                 state.value = it
             }
         }
@@ -67,7 +69,8 @@ class PlayerViewModel(
         }
     }
 
-    private fun refreshTimer() = timerText.postValue(FormatterTime.formatTime(musicPlayer.currentPosition()))
+    private fun refreshTimer() =
+        timerText.postValue(FormatterTime.formatTime(musicPlayer.currentPosition()))
 
     fun controlPlayer() {
 
@@ -91,7 +94,7 @@ class PlayerViewModel(
         refresh.start()
     }
 
-    fun setLike(){
+    fun setLike() {
 
         viewModelScope.launch {
             musicPlayer.setLike(track.value!!)
@@ -101,7 +104,7 @@ class PlayerViewModel(
         track.value!!.isFavorite = true
     }
 
-    fun deleteLike(){
+    fun deleteLike() {
 
         viewModelScope.launch {
             musicPlayer.deleteLike(track.value!!)
@@ -110,17 +113,21 @@ class PlayerViewModel(
         track.value!!.isFavorite = false
     }
 
-    fun getPlaylists(){
+    fun getPlaylists() {
         viewModelScope.launch {
-            albumInteractor.getAlbums().collect{
+            albumInteractor.getAlbums().collect {
                 playlists.value = it
             }
         }
     }
 
-    fun addSongToPlaylist(album:Album,track: Track){
+    fun addSongToPlaylist(album: Album, track: Track) {
         viewModelScope.launch {
-            albumInteractor.addSongToPlaylist(album, track)
+            val result = albumInteractor.included(album, track)
+            if (!result.first) {
+                albumInteractor.addSongToPlaylist(album, track)
+            }
+            included.value = result
         }
     }
 }

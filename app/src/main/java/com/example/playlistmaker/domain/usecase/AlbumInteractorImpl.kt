@@ -16,6 +16,10 @@ class AlbumInteractorImpl(private val albumRepository: AlbumRepository):AlbumInt
         albumRepository.addSongToPlaylist(album,track)
     }
 
+    override suspend fun included(album: Album, track: Track): Pair<Boolean,String> {
+       return albumRepository.included(album,track)
+    }
+
     override fun getAlbums(): Flow<ArrayList<Album>> {
         return albumRepository.getPlaylists()
     }

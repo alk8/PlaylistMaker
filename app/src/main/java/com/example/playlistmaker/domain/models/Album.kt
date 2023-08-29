@@ -6,6 +6,6 @@ data class Album(
     val nameAlbum: String,
     val description: String,
     val uri:Uri,
-    var count: String = "",
+    var countTracks: String = "",
     var UUID: String = ""
 )

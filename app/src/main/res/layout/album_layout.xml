@@ -5,12 +5,12 @@
     android:layout_width="190dp"
     android:layout_height="190dp"
     android:layout_margin="3dp"
-    card_view:cardElevation="5dp">
+    card_view:cardElevation="5dp"
+    android:theme="@style/Theme.PlaylistMaker">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <ImageView
@@ -23,11 +23,11 @@
         <TextView
             android:id="@+id/titlePlaylist"
             android:layout_width="match_parent"
-            android:background="?attr/blackWhiteBar"
             android:layout_height="wrap_content"
             android:textColor="?attr/blackWhiteColor"
             android:textColorHint="?attr/blackWhiteColor"
             android:ellipsize="end"
+            android:paddingStart="5dp"
             android:fontFamily="@font/ys_display_regular"
             android:maxLines="2"
             android:textSize="12sp"
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:background="?attr/blackWhiteBar"
+            android:paddingStart="5dp"
             android:fontFamily="@font/ys_display_regular"
             android:textColor="?attr/blackWhiteColor"
             android:textColorHint="?attr/blackWhiteColor"

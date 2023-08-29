@@ -16,7 +16,7 @@ class PlaylistBottomViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
     fun bind(album: Album){
         nameAlbum.text = album.nameAlbum
-        count.text = album.count
+        count.text = album.countTracks
         if (album.uri != Uri.EMPTY) {
             img.setImageURI(album.uri)
         }

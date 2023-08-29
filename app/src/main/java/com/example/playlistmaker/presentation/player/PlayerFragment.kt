@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -39,8 +40,8 @@ class PlayerFragment : Fragment() {
 
     private lateinit var binding: FragmentPlayerBinding
 
-    private val toast = {
-        Toast.makeText(this.context, R.string.warning, Toast.LENGTH_SHORT).show()
+    val viewModel: PlayerViewModel by viewModel {
+        parametersOf(requireArguments().getString(TRACK))
     }
 
     companion object {
@@ -65,10 +66,6 @@ class PlayerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewModel: PlayerViewModel by viewModel {
-            parametersOf(requireArguments().getString(TRACK))
-        }
-
         timer = binding.timer
         play = binding.playButton
         isDark = isDarkTheme()
@@ -87,6 +84,7 @@ class PlayerFragment : Fragment() {
         val bottomSheetContainer =
             requireActivity().findViewById<LinearLayout>(R.id.standard_bottom_sheet)
         val recycler = requireActivity().findViewById<RecyclerView>(R.id.recyclerViewAlbum)
+        val newPlaylist = requireActivity().findViewById<Button>(R.id.newList)
         recycler.layoutManager = LinearLayoutManager(binding.root.context)
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
@@ -125,7 +123,7 @@ class PlayerFragment : Fragment() {
         viewModel.getStateData().observe(viewLifecycleOwner) {
 
             if (it == StateMusicPlayer.NO_CONTENT) {
-                toast.invoke()
+                Toast.makeText(this.context, R.string.warning, Toast.LENGTH_SHORT).show()
             }
 
             if (isDark) {
@@ -170,8 +168,34 @@ class PlayerFragment : Fragment() {
             adapter.itemClickListener = { _, album ->
                 viewModel.addSongToPlaylist(album, track)
             }
-
             recycler.adapter = adapter
+        }
+
+        viewModel.getIncludedData().observe(viewLifecycleOwner) {
+
+            if (it.first) {
+                // Уже включен в альбом
+                Toast.makeText(
+                    this.context,
+                    "Трек уже добавлен в плейлист ${it.second}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                // не включен
+                Toast.makeText(
+                    this.context,
+                    "Трек добавлен в плейлист ${it.second}",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                //Обновить отображение альбомов
+                viewModel.getPlaylists()
+            }
+
+        }
+
+        newPlaylist.setOnClickListener {
+            findNavController().navigate(R.id.action_playerFragment_to_newPlaylistFragment)
         }
 
         binding.likeButton.setOnClickListener {
@@ -187,8 +211,11 @@ class PlayerFragment : Fragment() {
                 viewModel.deleteLike()
             }
         }
+    }
 
-
+    override fun onResume() {
+        super.onResume()
+        viewModel.getPlaylists()
     }
 
     private fun isDarkTheme(): Boolean {

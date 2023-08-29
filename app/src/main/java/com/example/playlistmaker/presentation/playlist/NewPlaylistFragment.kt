@@ -16,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewplaylistBinding
 import com.example.playlistmaker.presentation.viewmodels.NewPlaylistViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -142,6 +143,8 @@ class NewPlaylistFragment : Fragment() {
             viewModel.saveAlbum(nameAlbum, description, uriFile)
             Toast.makeText(requireContext(), "Альбом $nameAlbum создан", Toast.LENGTH_SHORT).show()
             findNavController().popBackStack()
+        }else{
+            Toast.makeText(this.context, "Не заполнены поля Название и описание", Toast.LENGTH_SHORT).show()
         }
     }
 }

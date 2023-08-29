@@ -11,22 +11,20 @@ import com.example.playlistmaker.data.db.queries.QueryAlbumGroup
 @Dao
 interface AlbumDAO {
 
+    // Добавить альбом
     @Insert(entity = AlbumEntity::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAlbum(albumEntity: AlbumEntity)
 
-    @Query("SELECT * FROM Albums")
-    suspend fun getAlbums():List<AlbumEntity>
-
     // Добавить трек в альбом
-    @Insert(entity = IncludeAlbum::class, onConflict = OnConflictStrategy.IGNORE)
+    @Insert(entity = IncludeAlbum::class, onConflict = OnConflictStrategy.ABORT)
     suspend fun insertIncludeAlbum(includeAlbum: IncludeAlbum)
 
     // Узнать есть ли трек в альбоме
-    @Query("SELECT EXISTS (SELECT 1 FROM IncludeAlbums WHERE UUIDTrack LIKE :UUIDTrack)")
-    suspend fun isFavorite(UUIDTrack:String) : Boolean
+    @Query("SELECT EXISTS (SELECT 1 FROM IncludeAlbums WHERE UUIDTrack LIKE :UUIDTrack AND UUIDAlbum LIKE :UUIDAlbum)")
+    suspend fun included(UUIDTrack: String,UUIDAlbum:String): Boolean
 
-    // Получить количество треков в альбомах
-    @Query("SELECT COUNT(UUIDTrack) AS countTracks, UUIDAlbum FROM IncludeAlbums GROUP BY UUIDAlbum")
-    suspend fun countTracks():List<QueryAlbumGroup>
+    // Собрать информацию об альбомах
+    @Query("SELECT alm.UUID,NameAlbum,description,uri, COUNT(UUIDTrack) as countTracks  FROM Albums alm LEFT JOIN IncludeAlbums inc ON alm.UUID = inc.UUIDAlbum GROUP BY  alm.UUID,NameAlbum,description,uri")
+    suspend fun getAlbumsAndCounts(): List<QueryAlbumGroup>
 
 }
