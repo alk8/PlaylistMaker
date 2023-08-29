@@ -1,11 +1,12 @@
 package com.example.playlistmaker.presentation.playlist
 
-
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -78,10 +79,25 @@ class NewPlaylistFragment : Fragment() {
         binding.back.setOnClickListener {
             if (checkAlbumDialogue()) {
                 findNavController().popBackStack()
-            }else{
+            } else {
                 showDialogue()
             }
         }
+
+        val watcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                binding.create.isEnabled = s.toString().isNotEmpty()
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+        }
+
+        binding.nameAlbum.addTextChangedListener(watcher)
 
         binding.album.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
@@ -118,13 +134,13 @@ class NewPlaylistFragment : Fragment() {
 
     private fun createAlbum() {
 
-        if (checkAlbumDialogue()){
+        if (checkAlbumDialogue()) {
             // Создание записи в БД по всем необходимым данным
             val nameAlbum = binding.nameAlbum.text.toString()
             val description = binding.description.text.toString()
 
-            viewModel.saveAlbum(nameAlbum,description,uriFile)
-            Toast.makeText(requireContext(),"Альбом $nameAlbum создан",Toast.LENGTH_SHORT).show()
+            viewModel.saveAlbum(nameAlbum, description, uriFile)
+            Toast.makeText(requireContext(), "Альбом $nameAlbum создан", Toast.LENGTH_SHORT).show()
             findNavController().popBackStack()
         }
     }

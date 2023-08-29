@@ -9,9 +9,7 @@ import kotlinx.coroutines.launch
 class NewPlaylistViewModel(private val albumInteractor: AlbumInteractor) : ViewModel() {
 
     fun saveAlbum(nameAlbum: String, description:String,uri: Uri){
-
         viewModelScope.launch { albumInteractor.saveAlbum(nameAlbum,description,uri) }
-
     }
 
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="ExtraText">
+
+    android:shape="rectangle">
+
+    <size android:width="312dp"
+        android:height="312dp"/>
+
+    <stroke
+        android:color="#AEAFB4"
+        android:width="2dp"
+        android:dashGap="16dp"
+        android:dashWidth="16dp"/>
+
+    <corners android:radius="10dp" />
+
+</shape>
