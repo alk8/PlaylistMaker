@@ -166,6 +166,11 @@ class PlayerFragment : Fragment() {
 
         viewModel.getPlaylistData().observe(viewLifecycleOwner) {
             adapter = PlaylistBottomAdapter(it)
+
+            adapter.itemClickListener = { _, album ->
+                viewModel.addSongToPlaylist(album, track)
+            }
+
             recycler.adapter = adapter
         }
 
@@ -183,9 +188,6 @@ class PlayerFragment : Fragment() {
             }
         }
 
-        adapter.itemClickListener = { _, album ->
-            viewModel.addSongToPlaylist(album,track)
-        }
 
     }
 

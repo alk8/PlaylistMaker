@@ -25,7 +25,7 @@ interface AlbumDAO {
     suspend fun isFavorite(UUIDTrack:String) : Boolean
 
     // Получить количество треков в альбомах
-    @Query("SELECT COUNT(UUIDTrack), UUIDAlbum FROM IncludeAlbums GROUP BY UUIDAlbum")
+    @Query("SELECT COUNT(UUIDTrack) AS UUIDTrack, UUIDAlbum,COUNT(UUID) AS UUID FROM IncludeAlbums GROUP BY UUIDAlbum")
     suspend fun countTracks():List<IncludeAlbum>
 
 }

@@ -22,7 +22,9 @@ class AlbumRepositoryImpl(private val appDataBase: AppDataBase, private val conv
         val albumsEntity = appDataBase.albumDAO().getAlbums()
 
         // Получить информацию о треках в плейлисте
-        val counts = appDataBase.albumDAO().countTracks()
+        val counts = appDataBase.albumDAO().countTracks().forEach {
+            var a = 0
+        }
 
         albumsEntity.forEach {
             albums.add(convertor.mapAlbum(it))
