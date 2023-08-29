@@ -15,8 +15,8 @@ val presentationModule = module {
         SearchViewModel(get())
     }
 
-    viewModel { (text: String?, toast: () -> Unit) ->
-        MediaViewModel(get(), text, toast)
+    viewModel { (text: String?) ->
+        PlayerViewModel(get(), text,get())
     }
 
     viewModel {

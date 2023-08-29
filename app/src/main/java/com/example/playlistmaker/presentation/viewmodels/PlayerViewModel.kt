@@ -5,17 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.entities.FormatterTime
+import com.example.playlistmaker.domain.models.Album
 import com.example.playlistmaker.domain.models.states.StateMusicPlayer
 import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.presentation.api.AlbumInteractor
 import com.example.playlistmaker.presentation.api.MusicInteractor
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class MediaViewModel(
+class PlayerViewModel(
     private val musicPlayer: MusicInteractor,
     val text: String?,
-    private val toast: () -> Unit
+    private val albumInteractor: AlbumInteractor
 ) : ViewModel() {
 
     companion object {
@@ -26,11 +28,13 @@ class MediaViewModel(
     private var track = MutableLiveData<Track>()
     private var timerText = MutableLiveData<String>()
     private var state = MutableLiveData<StateMusicPlayer>()
+    private var playlists = MutableLiveData<ArrayList<Album>>()
     private var refresh: Job
 
     fun getTrackData(): LiveData<Track> = track
     fun getTimerTextData(): LiveData<String> = timerText
     fun getStateData(): LiveData<StateMusicPlayer> = state
+    fun getPlaylistData(): LiveData<ArrayList<Album>> = playlists
 
     init {
 
@@ -74,9 +78,6 @@ class MediaViewModel(
             StateMusicPlayer.PAUSED, StateMusicPlayer.PREPARED, StateMusicPlayer.DEFAULT -> {
                 startPlayer()
             }
-            StateMusicPlayer.NO_CONTENT -> {
-                toast.invoke()
-            }
             else -> {}
         }
     }
@@ -109,4 +110,17 @@ class MediaViewModel(
         track.value!!.isFavorite = false
     }
 
+    fun getPlaylists(){
+        viewModelScope.launch {
+            albumInteractor.getAlbums().collect{
+                playlists.value = it
+            }
+        }
+    }
+
+    fun addSongToPlaylist(album:Album,track: Track){
+        viewModelScope.launch {
+            albumInteractor.addSongToPlaylist(album, track)
+        }
+    }
 }

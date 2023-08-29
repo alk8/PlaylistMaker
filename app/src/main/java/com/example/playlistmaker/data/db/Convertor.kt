@@ -47,15 +47,12 @@ class Convertor {
     fun mapAlbum(album: Album): AlbumEntity{
 
         val uuid = UUID.randomUUID().toString()
-
         return AlbumEntity(uuid,album.nameAlbum,album.description,album.uri.toString())
 
     }
 
     fun mapAlbum(album: AlbumEntity): Album{
-
-        return Album(album.nameAlbum,album.description, Uri.parse(album.uri),0)
-
+        return Album(album.nameAlbum,album.description, Uri.parse(album.uri),"",album.UUID)
     }
 
 }

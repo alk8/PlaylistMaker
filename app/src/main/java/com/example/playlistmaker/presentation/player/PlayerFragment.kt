@@ -1,5 +1,6 @@
 package com.example.playlistmaker.presentation.player
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,6 +13,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
@@ -19,7 +22,8 @@ import com.example.playlistmaker.databinding.FragmentPlayerBinding
 import com.example.playlistmaker.domain.entities.FormatterTime
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.models.states.StateMusicPlayer
-import com.example.playlistmaker.presentation.viewmodels.MediaViewModel
+import com.example.playlistmaker.presentation.playlist.PlaylistBottomAdapter
+import com.example.playlistmaker.presentation.viewmodels.PlayerViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -31,6 +35,7 @@ class PlayerFragment : Fragment() {
     private lateinit var track: Track
     private lateinit var timer: TextView
     private lateinit var play: ImageView
+    private var adapter = PlaylistBottomAdapter(arrayListOf())
 
     private lateinit var binding: FragmentPlayerBinding
 
@@ -56,11 +61,12 @@ class PlayerFragment : Fragment() {
 
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables", "ResourceType")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewModel: MediaViewModel by viewModel {
-            parametersOf(requireArguments().getString(TRACK), toast)
+        val viewModel: PlayerViewModel by viewModel {
+            parametersOf(requireArguments().getString(TRACK))
         }
 
         timer = binding.timer
@@ -78,7 +84,10 @@ class PlayerFragment : Fragment() {
         val country = binding.countryData
         val picture = binding.album
 
-        val bottomSheetContainer = requireActivity().findViewById<LinearLayout>(R.id.standard_bottom_sheet)
+        val bottomSheetContainer =
+            requireActivity().findViewById<LinearLayout>(R.id.standard_bottom_sheet)
+        val recycler = requireActivity().findViewById<RecyclerView>(R.id.recyclerViewAlbum)
+        recycler.layoutManager = LinearLayoutManager(binding.root.context)
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
         }
@@ -95,35 +104,29 @@ class PlayerFragment : Fragment() {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
 
-        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 // newState — новое состояние BottomSheet
                 when (newState) {
-                    BottomSheetBehavior.STATE_EXPANDED -> {
-                        // загружаем рекламный баннер
-                        //loadAds()
-                    }
                     BottomSheetBehavior.STATE_COLLAPSED -> {
-                        // останавливаем трейлер
-                        //pauseTrailer()
-                    }
-                    BottomSheetBehavior.STATE_HIDDEN -> {
-                        // возобновляем трейлер
-                        //resumeTrailer()
+                        // получаем список альбомов
+                        viewModel.getPlaylists()
                     }
                     else -> {
                         // Остальные состояния не обрабатываем
                     }
                 }
             }
+
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
 
-
-
-
-
         viewModel.getStateData().observe(viewLifecycleOwner) {
+
+            if (it == StateMusicPlayer.NO_CONTENT) {
+                toast.invoke()
+            }
 
             if (isDark) {
                 if (it == StateMusicPlayer.PLAYING) {
@@ -161,6 +164,11 @@ class PlayerFragment : Fragment() {
 
         }
 
+        viewModel.getPlaylistData().observe(viewLifecycleOwner) {
+            adapter = PlaylistBottomAdapter(it)
+            recycler.adapter = adapter
+        }
+
         binding.likeButton.setOnClickListener {
 
             // снять или поставить
@@ -168,12 +176,17 @@ class PlayerFragment : Fragment() {
 
             isFavorite()
 
-            if (track.isFavorite){
+            if (track.isFavorite) {
                 viewModel.setLike()
-            }else{
+            } else {
                 viewModel.deleteLike()
             }
         }
+
+        adapter.itemClickListener = { _, album ->
+            viewModel.addSongToPlaylist(album,track)
+        }
+
     }
 
     private fun isDarkTheme(): Boolean {
@@ -181,11 +194,11 @@ class PlayerFragment : Fragment() {
                 Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
     }
 
-    private fun isFavorite(){
+    private fun isFavorite() {
 
-        if (track.isFavorite){
+        if (track.isFavorite) {
             binding.likeButton.setImageResource(R.drawable.buttonlike)
-        }else{
+        } else {
             binding.likeButton.setImageResource(R.drawable.like_button)
         }
     }
