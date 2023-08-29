@@ -18,13 +18,11 @@ class AlbumRepositoryImpl(private val appDataBase: AppDataBase, private val conv
 
     override fun getPlaylists(): Flow<ArrayList<Album>> = flow{
 
+        val counts = appDataBase.albumDAO().countTracks()
+
         val albums = ArrayList<Album>()
         val albumsEntity = appDataBase.albumDAO().getAlbums()
-
         // Получить информацию о треках в плейлисте
-        val counts = appDataBase.albumDAO().countTracks().forEach {
-            var a = 0
-        }
 
         albumsEntity.forEach {
             albums.add(convertor.mapAlbum(it))
