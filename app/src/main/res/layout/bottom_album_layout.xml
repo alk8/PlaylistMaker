@@ -10,7 +10,7 @@
         android:id="@+id/standard_bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/blackWhiteBar"
+        android:background="@drawable/shape_bottom_view"
         android:orientation="vertical"
         android:paddingHorizontal="16dp"
         app:behavior_hideable="true"
