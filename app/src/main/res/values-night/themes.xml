@@ -20,6 +20,7 @@
         <item name="menuMediateka">@drawable/night_mode_mediateka_mini</item>
         <item name="menuSettings">@drawable/night_mode_settings_mini</item>
         <item name="blackWhiteBar">@color/black</item>
+        <item name="blackWhiteAlbum">@color/black_background</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>
