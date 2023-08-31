@@ -16,6 +16,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewplaylistBinding
 import com.example.playlistmaker.presentation.viewmodels.NewPlaylistViewModel
@@ -71,7 +73,9 @@ class NewPlaylistFragment : Fragment() {
 
                     uriFile = file.toUri()
 
-                    binding.album.setImageURI(uriFile)
+                    Glide.with(binding.album).load(uriFile).centerCrop()
+                        .placeholder(R.drawable.ic_noconnection).transform(RoundedCorners(15))
+                        .into(binding.album)
 
                 }
 
@@ -79,9 +83,9 @@ class NewPlaylistFragment : Fragment() {
 
         binding.back.setOnClickListener {
             if (checkAlbumDialogue()) {
-                findNavController().popBackStack()
-            } else {
                 showDialogue()
+            }else{
+                findNavController().popBackStack()
             }
         }
 
@@ -110,41 +114,35 @@ class NewPlaylistFragment : Fragment() {
     }
 
     private fun checkAlbumDialogue(): Boolean {
-
-        if (binding.nameAlbum.text.isEmpty()) return false
-        if (binding.description.text.isEmpty()) return false
-
-        return true
+        return binding.nameAlbum.text.isNotEmpty() || binding.description.text.isNotEmpty()
     }
 
     private fun showDialogue() {
 
         MaterialAlertDialogBuilder(requireActivity())
-            .setTitle("Внимание")
-            .setMessage("Завершить создание плейлиста?")
+            .setTitle("Завершить создание плейлиста?\"")
+            .setMessage("Все несохранненые данные будут потеряны")
             .setNegativeButton("Отмена") { _, _ ->
-                declineCreateAlbum()
             }.setPositiveButton("Завершить") { _, _ ->
-                createAlbum()
+                findNavController().popBackStack()
             }.show()
-    }
-
-    private fun declineCreateAlbum() {
-        findNavController().popBackStack()
     }
 
     private fun createAlbum() {
 
-        if (checkAlbumDialogue()) {
+        if ( binding.nameAlbum.text.isNotEmpty() || binding.description.text.isNotEmpty()) {
             // Создание записи в БД по всем необходимым данным
             val nameAlbum = binding.nameAlbum.text.toString()
             val description = binding.description.text.toString()
 
             viewModel.saveAlbum(nameAlbum, description, uriFile)
             Toast.makeText(requireContext(), "Альбом $nameAlbum создан", Toast.LENGTH_SHORT).show()
-            findNavController().popBackStack()
-        }else{
-            Toast.makeText(this.context, "Не заполнены поля Название и описание", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(
+                this.context,
+                "Не заполнены поля Название и описание",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }

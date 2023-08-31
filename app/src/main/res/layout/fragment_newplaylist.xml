@@ -34,8 +34,8 @@
 
     <ImageView
         android:id="@+id/album"
-        android:layout_width="312dp"
-        android:layout_height="312dp"
+        android:layout_width="342dp"
+        android:layout_height="342dp"
 
         android:src="@drawable/emptyphoto_180"
         android:background="@drawable/rounded_rectangle"
@@ -48,7 +48,7 @@
 
     <EditText
         android:id="@+id/nameAlbum"
-        android:layout_width="328dp"
+        android:layout_width="366dp"
         android:layout_height="56dp"
         android:hint="@string/name"
         android:padding="@dimen/margin_15"
@@ -66,7 +66,7 @@
 
     <EditText
         android:id="@+id/description"
-        android:layout_width="328dp"
+        android:layout_width="366dp"
         android:padding="@dimen/margin_15"
         android:layout_height="56dp"
         android:inputType="text|textNoSuggestions"
@@ -84,11 +84,11 @@
         app:layout_constraintTop_toBottomOf="@+id/nameAlbum"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/create"
-        android:layout_width="326dp"
-        android:layout_height="44dp"
-        android:backgroundTint="@color/background_screen"
+        android:layout_width="366dp"
+        android:layout_height="54dp"
+        android:background="@drawable/selector_button"
         android:text="@string/Create"
         android:enabled="false"
         android:textAllCaps="false"
@@ -98,8 +98,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description"
         app:layout_constraintVertical_bias="0.74">
-
-    </Button>
-
+    </androidx.appcompat.widget.AppCompatButton>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
