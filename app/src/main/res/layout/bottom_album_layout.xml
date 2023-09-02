@@ -2,7 +2,6 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/standard_bottom_sheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -11,8 +10,7 @@
     android:paddingHorizontal="16dp"
     app:behavior_hideable="true"
     app:behavior_peekHeight="240dp"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    tools:ignore="MissingConstraints">
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <ImageView
         android:layout_width="wrap_content"
