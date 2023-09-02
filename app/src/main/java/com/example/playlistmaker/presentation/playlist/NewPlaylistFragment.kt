@@ -137,6 +137,7 @@ class NewPlaylistFragment : Fragment() {
 
             viewModel.saveAlbum(nameAlbum, description, uriFile)
             Toast.makeText(requireContext(), "Альбом $nameAlbum создан", Toast.LENGTH_SHORT).show()
+            findNavController().popBackStack()
         } else {
             Toast.makeText(
                 this.context,

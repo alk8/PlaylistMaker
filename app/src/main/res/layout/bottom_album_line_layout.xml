@@ -15,6 +15,7 @@
             android:id="@+id/BottomAlbumImage"
             android:layout_width="45dp"
             android:layout_height="45dp"
+            android:scaleType="centerCrop"
             android:layout_gravity="center"
             android:layout_marginStart="13dp"
             android:src="@drawable/ic_noconnection" />

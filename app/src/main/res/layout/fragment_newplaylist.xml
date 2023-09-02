@@ -110,6 +110,7 @@
         android:layout_marginBottom="32dp"
         android:background="@drawable/selector_button"
         android:enabled="false"
+        android:textColor="@color/white"
         android:fontFamily="@font/ys_display_medium"
         android:text="@string/Create"
         android:textAllCaps="false"
