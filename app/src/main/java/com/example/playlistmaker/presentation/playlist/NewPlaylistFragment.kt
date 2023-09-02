@@ -84,7 +84,7 @@ class NewPlaylistFragment : Fragment() {
         binding.back.setOnClickListener {
             if (checkAlbumDialogue()) {
                 showDialogue()
-            }else{
+            } else {
                 findNavController().popBackStack()
             }
         }
@@ -130,7 +130,7 @@ class NewPlaylistFragment : Fragment() {
 
     private fun createAlbum() {
 
-        if ( binding.nameAlbum.text.isNotEmpty() || binding.description.text.isNotEmpty()) {
+        if (binding.nameAlbum.text.isNotEmpty() || binding.description.text.isNotEmpty()) {
             // Создание записи в БД по всем необходимым данным
             val nameAlbum = binding.nameAlbum.text.toString()
             val description = binding.description.text.toString()

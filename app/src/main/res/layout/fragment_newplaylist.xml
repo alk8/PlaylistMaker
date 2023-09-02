@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="764dp"
         android:layout_marginEnd="324dp"
+        android:layout_marginBottom="764dp"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,8 +23,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
-        android:layout_marginEnd="131dp"
         android:layout_marginTop="14dp"
+        android:layout_marginEnd="131dp"
         android:layout_marginBottom="760dp"
         android:fontFamily="@font/ys_display_medium"
         android:text="@string/newplaylist"
@@ -35,20 +35,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/album"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview_add_playlist_cover"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="24dp"
-        android:scaleType="center"
         android:layout_marginTop="82dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="406dp"
-        android:background="@drawable/rounded_rectangle"
-        android:src="@drawable/empty_album"
+        android:layout_marginBottom="402dp"
+        app:cardBackgroundColor="?android:attr/colorBackground"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/album"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="center"
+            android:src="@drawable/background_photo" />
+    </androidx.cardview.widget.CardView>
 
     <EditText
         android:id="@+id/nameAlbum"
@@ -70,40 +80,40 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:layout_marginBottom="246dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/rounded_edit_text"
-            android:fontFamily="@font/ys_display_regular"
-            android:hint="@string/Description"
-            android:inputType="text|textNoSuggestions"
-            android:padding="@dimen/margin_15"
-            android:textColor="?attr/blackWhiteColor"
-            android:textColorHint="?attr/blackWhiteColor"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nameAlbum" />
+    <EditText
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="246dp"
+        android:background="@drawable/rounded_edit_text"
+        android:fontFamily="@font/ys_display_regular"
+        android:hint="@string/Description"
+        android:inputType="text|textNoSuggestions"
+        android:padding="@dimen/margin_15"
+        android:textColor="?attr/blackWhiteColor"
+        android:textColorHint="?attr/blackWhiteColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameAlbum" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/create"
         android:layout_width="366dp"
         android:layout_height="54dp"
-        android:layout_marginTop="171dp"
-        android:layout_marginBottom="32dp"
-        android:fontFamily="@font/ys_display_medium"
-        android:textSize="16sp"
         android:layout_marginStart="17dp"
+        android:layout_marginTop="171dp"
         android:layout_marginEnd="17dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/selector_button"
         android:enabled="false"
+        android:fontFamily="@font/ys_display_medium"
         android:text="@string/Create"
         android:textAllCaps="false"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
