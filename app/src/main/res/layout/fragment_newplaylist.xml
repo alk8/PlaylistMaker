@@ -7,97 +7,106 @@
     <ImageView
         android:id="@+id/back"
         style="@style/strelkaStyle"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="764dp"
+        android:layout_marginEnd="324dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="12dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="131dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="760dp"
         android:fontFamily="@font/ys_display_medium"
         android:text="@string/newplaylist"
         android:textColor="?attr/blackWhiteColor"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.157"
-        app:layout_constraintStart_toEndOf="@+id/back"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.017">
-
-    </TextView>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/album"
-        android:layout_width="342dp"
-        android:layout_height="342dp"
-
-        android:src="@drawable/emptyphoto_180"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:scaleType="center"
+        android:layout_marginTop="82dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="406dp"
         android:background="@drawable/rounded_rectangle"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/empty_album"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/nameAlbum"
-        android:layout_width="366dp"
-        android:layout_height="56dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="427dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="308dp"
+        android:background="@drawable/rounded_edit_text"
+        android:fontFamily="@font/ys_display_regular"
         android:hint="@string/name"
-        android:padding="@dimen/margin_15"
         android:inputType="text|textNoSuggestions"
-        android:background="@drawable/rounded_edit_text"
+        android:padding="@dimen/margin_15"
         android:textColor="?attr/blackWhiteColor"
         android:textColorHint="?attr/blackWhiteColor"
-        android:fontFamily="@font/ys_display_regular"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/album"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/description"
-        android:layout_width="366dp"
-        android:padding="@dimen/margin_15"
-        android:layout_height="56dp"
-        android:inputType="text|textNoSuggestions"
-        android:background="@drawable/rounded_edit_text"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/ys_display_regular"
-        android:textColor="?attr/blackWhiteColor"
-        android:textColorHint="?attr/blackWhiteColor"
-
-        android:hint="@string/Description"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameAlbum"
-        app:layout_constraintVertical_bias="0.0" />
+        <EditText
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="246dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/rounded_edit_text"
+            android:fontFamily="@font/ys_display_regular"
+            android:hint="@string/Description"
+            android:inputType="text|textNoSuggestions"
+            android:padding="@dimen/margin_15"
+            android:textColor="?attr/blackWhiteColor"
+            android:textColorHint="?attr/blackWhiteColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nameAlbum" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/create"
         android:layout_width="366dp"
         android:layout_height="54dp"
+        android:layout_marginTop="171dp"
+        android:layout_marginBottom="32dp"
+        android:fontFamily="@font/ys_display_medium"
+        android:textSize="16sp"
+        android:layout_marginStart="17dp"
+        android:layout_marginEnd="17dp"
         android:background="@drawable/selector_button"
-        android:text="@string/Create"
         android:enabled="false"
+        android:text="@string/Create"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description"
-        app:layout_constraintVertical_bias="0.74">
-    </androidx.appcompat.widget.AppCompatButton>
+        app:layout_constraintTop_toBottomOf="@+id/description" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
