@@ -36,6 +36,9 @@
     <string name="Mediateka">Медиатека</string>
     <string name="FavoriteTracks">Избранные треки</string>
     <string name="Playlists">Плейлисты</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="newplaylist">Новый плейлист</string>
+    <string name="name">Название*</string>
+    <string name="Description">Описание</string>
+    <string name="Create">Создать</string>
+    <string name="addPlaylist">Добавить в плейлист</string>
 </resources>

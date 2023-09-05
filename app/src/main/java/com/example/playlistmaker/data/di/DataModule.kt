@@ -5,10 +5,12 @@ import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.example.playlistmaker.data.db.AppDataBase
-import com.example.playlistmaker.data.db.TrackConvertor
+import com.example.playlistmaker.data.db.Convertor
+import com.example.playlistmaker.data.repository.AlbumRepositoryImpl
 import com.example.playlistmaker.data.repository.FavoriteRepositoryImpl
 import com.example.playlistmaker.data.retrofit.SearchAPI
 import com.example.playlistmaker.data.repository.SerializatorTrackImpl
+import com.example.playlistmaker.domain.api.AlbumRepository
 import com.example.playlistmaker.domain.api.FavoriteRepository
 import com.example.playlistmaker.domain.api.Serializator
 import com.google.gson.Gson
@@ -53,6 +55,10 @@ val dataModule = module {
         FavoriteRepositoryImpl(get(), get())
     }
 
-    factory { TrackConvertor() }
+    single<AlbumRepository> {
+        AlbumRepositoryImpl(get(), get())
+    }
+
+    factory { Convertor() }
 
 }

@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.fragments
+package com.example.playlistmaker.presentation.favorite
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,7 +22,7 @@ class FavoriteFragment : Fragment() {
     private var musicAdapter = MusicAdapter()
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
-    val viewModel: FavoriteViewModel by viewModel()
+    private val viewModel: FavoriteViewModel by viewModel()
 
     companion object {
         fun newInstance() = FavoriteFragment().apply {

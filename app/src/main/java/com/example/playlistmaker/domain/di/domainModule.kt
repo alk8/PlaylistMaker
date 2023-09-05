@@ -7,8 +7,11 @@ import com.example.playlistmaker.domain.api.Base
 import com.example.playlistmaker.domain.api.GettingTracks
 import com.example.playlistmaker.domain.api.PlayerMedia
 import com.example.playlistmaker.domain.models.states.StateMusicPlayer
+import com.example.playlistmaker.domain.usecase.AlbumInteractorImpl
+import com.example.playlistmaker.presentation.api.AlbumInteractor
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.koin.dsl.module
+import kotlin.math.sin
 
 val DomainModule = module {
     single<PlayerMedia> {
@@ -26,5 +29,6 @@ val DomainModule = module {
     single{
         MutableStateFlow(StateMusicPlayer.DEFAULT)
     }
+
 }
 

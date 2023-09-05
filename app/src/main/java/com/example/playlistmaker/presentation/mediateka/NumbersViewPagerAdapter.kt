@@ -2,9 +2,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.playlistmaker.presentation.fragments.FavoriteFragment
+import com.example.playlistmaker.presentation.favorite.FavoriteFragment
 import com.example.playlistmaker.presentation.states.StateMediatekaFragment
-import com.example.playlistmaker.presentation.fragments.PlaylistsFragment
+import com.example.playlistmaker.presentation.playlist.PlaylistsFragment
 
 class NumbersViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle)
     : FragmentStateAdapter(fragmentManager, lifecycle) {
@@ -16,8 +16,8 @@ class NumbersViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifec
     override fun createFragment(position: Int): Fragment {
         return when(position) {
             0 -> FavoriteFragment.newInstance()
-            1 -> PlaylistsFragment.newInstance(StateMediatekaFragment.PLAYLISTS)
-            else -> PlaylistsFragment.newInstance(StateMediatekaFragment.DEFAULT)
+            1 -> PlaylistsFragment.newInstance()
+            else -> PlaylistsFragment.newInstance()
         }
     }
 }

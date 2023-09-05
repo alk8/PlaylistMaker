@@ -37,4 +37,9 @@
     <string name="Mediateka">Mediateka</string>
     <string name="FavoriteTracks">Favorite tracks</string>
     <string name="Playlists">Playlists</string>
+    <string name="newplaylist">New playlist</string>
+    <string name="name">Name of album</string>
+    <string name="Description">Description</string>
+    <string name="Create">Create</string>
+    <string name="addPlaylist">Add playlist</string>
 </resources>
