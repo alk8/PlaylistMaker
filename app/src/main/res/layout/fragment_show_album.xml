@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/photo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="440dp"
+            android:src="@drawable/ic_noconnection"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/nameAlbum"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="169dp"
+            android:hint="Best"
+            android:textColor="@color/black"
+            android:fontFamily="@font/ys_display_bold"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/photo">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="303dp"
+            android:layout_marginBottom="8dp"
+            android:textSize="18sp"
+            android:fontFamily="@font/ys_display_regular"
+            android:hint="description"
+            app:layout_constraintBottom_toTopOf="@+id/minutes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/photo">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/minutes"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="259dp"
+            android:layout_marginTop="89dp"
+            android:hint="minutes"
+            android:textSize="18sp"
+            android:fontFamily="@font/ys_display_regular"
+            android:layout_marginBottom="330dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/photo">
+
+        </TextView>
+
+        <ImageView
+            android:layout_width="3dp"
+            android:layout_height="3dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="46dp"
+            android:layout_marginEnd="251dp"
+            android:layout_marginBottom="339dp"
+            android:src="@drawable/ic_ellipse_1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/minutes"
+            app:layout_constraintTop_toBottomOf="@+id/nameAlbum"
+            >
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/countTracks"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginEnd="168dp"
+            android:layout_marginBottom="330dp"
+            android:layout_marginTop="89dp"
+            android:fontFamily="@font/ys_display_regular"
+            android:hint="tracks"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/minutes"
+            app:layout_constraintTop_toBottomOf="@+id/photo">
+
+        </TextView>
+
+        <ImageView
+            android:id="@+id/share"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="19dp"
+            android:layout_marginBottom="293dp"
+            android:layout_marginEnd="30dp"
+            android:src="@drawable/ic_vectorshare"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/menu"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/minutes"
+            app:tint="@color/black">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/menu"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="294dp"
+            android:layout_marginStart="66dp"
+            android:layout_marginEnd="290dp"
+            android:src="@drawable/points"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/minutes">
+
+        </ImageView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/standard_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_bottom_view"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        app:behavior_peekHeight="266dp"
+        app:behavior_hideable="false"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/pin">
+
+        </ImageView>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewTracks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="13dp" />
+
+    </LinearLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
