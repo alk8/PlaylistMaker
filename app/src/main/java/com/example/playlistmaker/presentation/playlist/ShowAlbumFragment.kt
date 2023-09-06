@@ -91,24 +91,11 @@ class ShowAlbumFragment : Fragment() {
             minutes += it.trackTimeMillis?.toInt() ?: 0
         }
 
-        val minut = SimpleDateFormat("mm", Locale.getDefault()).format(minutes)
+        val minut = SimpleDateFormat("mm", Locale.getDefault()).format(minutes).toInt()
+        val size = tracks.size
 
-        binding?.minutes?.text = "$minut минут"
-        binding?.countTracks?.text = tracks.size.toString()
-
-    }
-
-    private fun getCount(count: Int): String {
-
-        val preLastDigit: Int = count % 100 / 10
-
-        return if (preLastDigit == 1) {
-            "$count треков"
-        } else when (count % 10) {
-            1 -> "$count трек"
-            2, 3, 4 -> "$count трека"
-            else -> "$count треков"
-        }
+        binding?.minutes?.text = resources.getQuantityString(R.plurals.minutes,minut,minut)
+        binding?.countTracks?.text = resources.getQuantityString(R.plurals.tracks,size,size)
 
     }
 
