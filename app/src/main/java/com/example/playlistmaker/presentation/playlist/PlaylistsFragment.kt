@@ -10,12 +10,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
-import com.example.playlistmaker.presentation.states.StateMediatekaFragment
 import com.example.playlistmaker.presentation.viewmodels.PlaylistsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistsFragment : Fragment() {
-
 
     companion object {
         fun newInstance() = PlaylistsFragment().apply {
@@ -48,7 +46,15 @@ class PlaylistsFragment : Fragment() {
 
             binding.imageView.isGone = it.isNotEmpty()
             binding.text.isGone = it.isNotEmpty()
-            recyclerView.adapter = PlaylistAdapter(it)
+            var adapter = PlaylistAdapter(it)
+            recyclerView.adapter = adapter
+            adapter.itemClickListener = {_,album ->
+
+                findNavController().navigate(
+                    R.id.action_mediaFragment_to_showAlbumFragment,
+                    ShowAlbumFragment.createArgs(album.UUID)
+                )
+            }
         }
 
         binding.newPlaylist.setOnClickListener {

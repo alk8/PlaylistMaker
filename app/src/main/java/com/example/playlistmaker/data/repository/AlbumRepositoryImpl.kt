@@ -7,6 +7,8 @@ import com.example.playlistmaker.data.db.entity.IncludeAlbum
 import com.example.playlistmaker.domain.api.AlbumRepository
 import com.example.playlistmaker.domain.models.Album
 import com.example.playlistmaker.domain.models.Track
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.util.*
@@ -28,13 +30,39 @@ class AlbumRepositoryImpl(private val appDataBase: AppDataBase, private val conv
         emit(albums)
     }
 
-    override suspend fun included(album: Album, track: Track): Pair<Boolean,String> {
-        return appDataBase.albumDAO().included(track.artworkUrl100,album.UUID) to album.nameAlbum
+    override suspend fun included(album: Album, track: Track): Pair<Boolean, String> {
+        return appDataBase.albumDAO().included(track.artworkUrl100, album.UUID) to album.nameAlbum
+    }
+
+    override suspend fun getDataAlbum(UUID: String): Album {
+        return convertor.mapAlbum(appDataBase.albumDAO().getDataAlbum(UUID))
+    }
+
+    override suspend fun getIncludedTracks(UUID: String): List<Track> {
+
+        val gson = Gson()
+        val tracks = kotlin.collections.ArrayList<Track>()
+        val type = object : TypeToken<Track>() {}.type
+
+        appDataBase.albumDAO().getIncludedTrack(UUID).forEach {
+            tracks.add(gson.fromJson(it.track, type))
+        }
+
+        return tracks
+
     }
 
     override suspend fun addSongToPlaylist(album: Album, track: Track) {
+
+        val gson = Gson()
+
         val includeAlbum =
-            IncludeAlbum(UUID.randomUUID().toString(), album.UUID, track.artworkUrl100)
+            IncludeAlbum(
+                UUID.randomUUID().toString(),
+                album.UUID,
+                track.artworkUrl100,
+                gson.toJson(track)
+            )
         appDataBase.albumDAO().insertIncludeAlbum(includeAlbum)
     }
 }

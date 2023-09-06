@@ -7,6 +7,7 @@ import androidx.room.Query
 import com.example.playlistmaker.data.db.entity.AlbumEntity
 import com.example.playlistmaker.data.db.entity.IncludeAlbum
 import com.example.playlistmaker.data.db.queries.QueryAlbumGroup
+import com.example.playlistmaker.data.db.queries.QueryTracks
 
 @Dao
 interface AlbumDAO {
@@ -26,5 +27,11 @@ interface AlbumDAO {
     // Собрать информацию об альбомах
     @Query("SELECT alm.UUID,NameAlbum,description,uri, COUNT(UUIDTrack) as countTracks  FROM Albums alm LEFT JOIN IncludeAlbums inc ON alm.UUID = inc.UUIDAlbum GROUP BY  alm.UUID,NameAlbum,description,uri")
     suspend fun getAlbumsAndCounts(): List<QueryAlbumGroup>
+
+    @Query("SELECT * FROM Albums WHERE UUID LIKE :UUID")
+    suspend fun getDataAlbum(UUID:String) :AlbumEntity
+
+    @Query("SELECT track FROM IncludeAlbums  WHERE UUIDAlbum LIKE :UUIDAlbum")
+    suspend fun getIncludedTrack(UUIDAlbum: String) : List<QueryTracks>
 
 }

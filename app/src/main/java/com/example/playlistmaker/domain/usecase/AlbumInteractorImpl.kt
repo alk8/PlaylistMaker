@@ -1,6 +1,7 @@
 package com.example.playlistmaker.domain.usecase
 
 import android.net.Uri
+import com.example.playlistmaker.data.db.entity.AlbumEntity
 import com.example.playlistmaker.domain.api.AlbumRepository
 import com.example.playlistmaker.domain.models.Album
 import com.example.playlistmaker.domain.models.Track
@@ -18,6 +19,14 @@ class AlbumInteractorImpl(private val albumRepository: AlbumRepository):AlbumInt
 
     override suspend fun included(album: Album, track: Track): Pair<Boolean,String> {
        return albumRepository.included(album,track)
+    }
+
+    override suspend fun getDataAlbum(UUID: String): Album {
+        return albumRepository.getDataAlbum(UUID)
+    }
+
+    override suspend fun getIncludedTracks(UUID: String): List<Track> {
+        return albumRepository.getIncludedTracks(UUID)
     }
 
     override fun getAlbums(): Flow<ArrayList<Album>> {

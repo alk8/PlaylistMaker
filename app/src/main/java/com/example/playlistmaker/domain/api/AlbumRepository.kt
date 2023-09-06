@@ -9,4 +9,6 @@ interface AlbumRepository {
     fun getPlaylists() : Flow<ArrayList<Album>>
     suspend fun addSongToPlaylist(album:Album,track: Track)
     suspend fun included(album: Album, track: Track):Pair<Boolean,String>
+    suspend fun getDataAlbum(UUID:String): Album
+    suspend fun getIncludedTracks(UUID:String):List<Track>
 }

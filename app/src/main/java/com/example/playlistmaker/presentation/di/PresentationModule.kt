@@ -31,6 +31,10 @@ val presentationModule = module {
         NewPlaylistViewModel(get())
     }
 
+    viewModel {
+        ShowAlbumViewModel(get())
+    }
+
 
     single<TracksInteracator> {
         TracksInteractorImpl(get(), get())

@@ -61,6 +61,16 @@ class Convertor {
         )
     }
 
+    fun mapAlbum(album: AlbumEntity): Album {
+        return Album(
+            album.nameAlbum,
+            album.description,
+            Uri.parse(album.uri),
+            0.toString(),
+            album.UUID
+        )
+    }
+
     private fun getCount(count: Int): String {
 
         val preLastDigit: Int = count % 100 / 10
