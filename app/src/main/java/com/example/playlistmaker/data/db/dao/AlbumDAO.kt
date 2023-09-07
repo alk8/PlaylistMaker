@@ -22,16 +22,19 @@ interface AlbumDAO {
 
     // Узнать есть ли трек в альбоме
     @Query("SELECT EXISTS (SELECT 1 FROM IncludeAlbums WHERE UUIDTrack LIKE :UUIDTrack AND UUIDAlbum LIKE :UUIDAlbum)")
-    suspend fun included(UUIDTrack: String,UUIDAlbum:String): Boolean
+    suspend fun included(UUIDTrack: String, UUIDAlbum: String): Boolean
 
     // Собрать информацию об альбомах
     @Query("SELECT alm.UUID,NameAlbum,description,uri, COUNT(UUIDTrack) as countTracks  FROM Albums alm LEFT JOIN IncludeAlbums inc ON alm.UUID = inc.UUIDAlbum GROUP BY  alm.UUID,NameAlbum,description,uri")
     suspend fun getAlbumsAndCounts(): List<QueryAlbumGroup>
 
     @Query("SELECT * FROM Albums WHERE UUID LIKE :UUID")
-    suspend fun getDataAlbum(UUID:String) :AlbumEntity
+    suspend fun getDataAlbum(UUID: String): AlbumEntity
 
     @Query("SELECT track FROM IncludeAlbums  WHERE UUIDAlbum LIKE :UUIDAlbum")
-    suspend fun getIncludedTrack(UUIDAlbum: String) : List<QueryTracks>
+    suspend fun getIncludedTrack(UUIDAlbum: String): List<QueryTracks>
+
+    @Query("DELETE FROM IncludeAlbums WHERE UUIDAlbum LIKE :UUIDAlbum AND UUIDTrack LIKE :UUIDTrack")
+    suspend fun deleteIncludedTrack(UUIDTrack: String,UUIDAlbum: String)
 
 }

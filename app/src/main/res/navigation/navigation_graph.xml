@@ -50,5 +50,9 @@
     <fragment
         android:id="@+id/showAlbumFragment"
         android:name="com.example.playlistmaker.presentation.playlist.ShowAlbumFragment"
-        android:label="ShowAlbumFragment" />
+        android:label="ShowAlbumFragment" >
+        <action
+            android:id="@+id/action_showAlbumFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+    </fragment>
 </navigation>

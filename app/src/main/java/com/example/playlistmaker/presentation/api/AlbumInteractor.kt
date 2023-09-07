@@ -20,4 +20,6 @@ interface AlbumInteractor {
 
     suspend fun included(album: Album, track: Track): Pair<Boolean,String>
 
+    suspend fun removeTrackFromAlbum(UUIDTrack:String,UUIDAlbum: String)
+
 }

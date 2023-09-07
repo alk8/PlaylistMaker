@@ -29,6 +29,10 @@ class AlbumInteractorImpl(private val albumRepository: AlbumRepository):AlbumInt
         return albumRepository.getIncludedTracks(UUID)
     }
 
+    override suspend fun removeTrackFromAlbum(UUIDTrack: String, UUIDAlbum: String) {
+        albumRepository.removeTrackFromAlbum(UUIDTrack,UUIDAlbum)
+    }
+
     override fun getAlbums(): Flow<ArrayList<Album>> {
         return albumRepository.getPlaylists()
     }

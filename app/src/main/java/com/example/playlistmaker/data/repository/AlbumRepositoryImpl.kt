@@ -34,6 +34,10 @@ class AlbumRepositoryImpl(private val appDataBase: AppDataBase, private val conv
         return appDataBase.albumDAO().included(track.artworkUrl100, album.UUID) to album.nameAlbum
     }
 
+    override suspend fun removeTrackFromAlbum(UUIDTrack: String, UUIDAlbum: String) {
+        appDataBase.albumDAO().deleteIncludedTrack(UUIDTrack,UUIDAlbum)
+    }
+
     override suspend fun getDataAlbum(UUID: String): Album {
         return convertor.mapAlbum(appDataBase.albumDAO().getDataAlbum(UUID))
     }

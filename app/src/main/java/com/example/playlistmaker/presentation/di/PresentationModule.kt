@@ -32,7 +32,7 @@ val presentationModule = module {
     }
 
     viewModel {
-        ShowAlbumViewModel(get())
+        ShowAlbumViewModel(get(),get())
     }
 
 
