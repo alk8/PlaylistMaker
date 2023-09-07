@@ -43,4 +43,9 @@ class ShowAlbumViewModel(
 
     }
 
+    fun deleteAlbum(UUIDAlbum:String){
+        viewModelScope.launch {
+            albumInteractor.deleteAlbum(UUIDAlbum)
+        }
+    }
 }

@@ -12,4 +12,5 @@ interface AlbumRepository {
     suspend fun getDataAlbum(UUID:String): Album
     suspend fun getIncludedTracks(UUID:String):List<Track>
     suspend fun removeTrackFromAlbum(UUIDTrack:String,UUIDAlbum: String)
+    suspend fun deleteAlbum(UUIDAlbum: String)
 }

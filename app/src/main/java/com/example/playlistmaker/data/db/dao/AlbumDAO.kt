@@ -37,4 +37,10 @@ interface AlbumDAO {
     @Query("DELETE FROM IncludeAlbums WHERE UUIDAlbum LIKE :UUIDAlbum AND UUIDTrack LIKE :UUIDTrack")
     suspend fun deleteIncludedTrack(UUIDTrack: String,UUIDAlbum: String)
 
+    @Query("DELETE FROM IncludeAlbums WHERE UUIDAlbum LIKE :UUIDAlbum")
+    suspend fun deleteIncludedTracks(UUIDTrack: String)
+
+    @Query("DELETE FROM Albums WHERE UUID LIKE :UUIDAlbum")
+    suspend fun deleteAlbum(UUIDTrack: String)
+
 }

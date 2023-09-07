@@ -22,4 +22,6 @@ interface AlbumInteractor {
 
     suspend fun removeTrackFromAlbum(UUIDTrack:String,UUIDAlbum: String)
 
+    suspend fun deleteAlbum(UUIDAlbum: String)
+
 }

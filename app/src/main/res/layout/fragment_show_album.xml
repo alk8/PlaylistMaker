@@ -166,7 +166,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
-        android:id="@+id/standard_bottom_sheet"
+        android:id="@+id/standard_bottom_sheet_tracks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_bottom_view"
@@ -193,6 +193,120 @@
             android:layout_marginStart="13dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="13dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_bottom_view"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        app:behavior_peekHeight="266dp"
+        app:behavior_hideable="true"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/pin">
+        </ImageView>
+
+        <LinearLayout
+            android:id="@+id/Track"
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints">
+
+            <ImageView
+                android:id="@+id/BottomAlbumImage"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:scaleType="centerCrop"
+                android:layout_gravity="center"
+                android:layout_marginStart="13dp"
+                android:src="@drawable/ic_noconnection" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="13dp"
+                android:layout_marginBottom="14dp"
+                android:layout_weight="30"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/bottomAlbumName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ys_display_regular"
+                    android:singleLine="true"
+                    android:textColor="?attr/blackWhiteColor"
+                    android:textSize="16sp"
+                    android:hint="Имя плейлиста"/>
+
+                <TextView
+                    android:id="@+id/BottomCountAlbum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/ys_display_regular"
+                    android:textColor="?attr/blackWhiteColor"
+                    android:textSize="11sp"
+                    android:hint="Количество треков"/>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Поделиться"
+            android:id="@+id/shareCommand"
+            android:textColorHint="?attr/blackWhiteColor"
+            android:textSize="16sp"
+            android:textColor="?attr/blackWhiteColor"
+            android:fontFamily="@font/ys_display_regular"
+            android:layout_marginTop="29dp"
+            android:layout_marginStart="16dp">
+
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/edit"
+            android:layout_height="wrap_content"
+            android:hint="Редактировать плейлист"
+            android:textColorHint="?attr/blackWhiteColor"
+            android:textSize="16sp"
+            android:textColor="?attr/blackWhiteColor"
+            android:fontFamily="@font/ys_display_regular"
+            android:layout_marginTop="29dp"
+            android:layout_marginStart="16dp">
+
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/delete"
+            android:layout_height="wrap_content"
+            android:hint="Удалить плейлист"
+            android:layout_marginBottom="128dp"
+            android:textColorHint="?attr/blackWhiteColor"
+            android:textSize="16sp"
+            android:textColor="?attr/blackWhiteColor"
+            android:fontFamily="@font/ys_display_regular"
+            android:layout_marginTop="29dp"
+            android:layout_marginStart="16dp">
+
+        </TextView>
 
     </LinearLayout>
 
