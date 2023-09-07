@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -29,9 +30,21 @@ import java.util.*
 
 class NewPlaylistFragment : Fragment() {
 
+    companion object {
+
+        const val ALBUM = "album"
+
+        fun createArgs(album: String?): Bundle {
+            return bundleOf(ALBUM to album)
+        }
+    }
+
     private var uriFile: Uri = Uri.EMPTY
     private lateinit var binding: FragmentNewplaylistBinding
     private val viewModel: NewPlaylistViewModel by viewModel()
+    private var isEdit: Boolean = false
+    private lateinit var uid: String
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +57,26 @@ class NewPlaylistFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        uid = requireArguments().getString(ALBUM)!!
+
+        isEdit = uid != ""
+
+        if (isEdit) {
+            uid.let { viewModel.getAlbum(it) }
+            binding.create.text = "Сохранить"
+            viewModel.getAlbumData().observe(viewLifecycleOwner) {
+
+                binding.nameAlbum.setText(it.nameAlbum)
+                binding.description.setText(it.description)
+                uriFile = it.uri
+
+                Glide.with(binding.album).load(it.uri).centerCrop()
+                    .placeholder(R.drawable.ic_noconnection).transform(RoundedCorners(15))
+                    .into(binding.album)
+            }
+
+        }
 
         // Открытие фотогалереи
         val pickMedia =
@@ -119,25 +152,42 @@ class NewPlaylistFragment : Fragment() {
 
     private fun showDialogue() {
 
-        MaterialAlertDialogBuilder(requireActivity())
-            .setTitle("Завершить создание плейлиста?\"")
-            .setMessage("Все несохранненые данные будут потеряны")
-            .setNegativeButton("Отмена") { _, _ ->
-            }.setPositiveButton("Завершить") { _, _ ->
-                findNavController().popBackStack()
-            }.show()
+        if (isEdit) {
+            findNavController().popBackStack()
+        } else {
+            MaterialAlertDialogBuilder(requireActivity())
+                .setTitle("Завершить создание плейлиста?\"")
+                .setMessage("Все несохранненые данные будут потеряны")
+                .setNegativeButton("Отмена") { _, _ ->
+                }.setPositiveButton("Завершить") { _, _ ->
+                    findNavController().popBackStack()
+                }.show()
+        }
     }
 
     private fun createAlbum() {
 
         if (binding.nameAlbum.text.isNotEmpty() || binding.description.text.isNotEmpty()) {
+
             // Создание записи в БД по всем необходимым данным
             val nameAlbum = binding.nameAlbum.text.toString()
             val description = binding.description.text.toString()
 
-            viewModel.saveAlbum(nameAlbum, description, uriFile)
-            Toast.makeText(requireContext(), "Альбом $nameAlbum создан", Toast.LENGTH_SHORT).show()
+            if (isEdit) {
+                viewModel.updateAlbum(nameAlbum, description, uriFile, uid)
+                Toast.makeText(requireContext(), "Альбом $nameAlbum изменен", Toast.LENGTH_SHORT)
+                    .show()
+
+            } else {
+
+                viewModel.saveAlbum(nameAlbum, description, uriFile)
+                Toast.makeText(requireContext(), "Альбом $nameAlbum создан", Toast.LENGTH_SHORT)
+                    .show()
+
+            }
+
             findNavController().popBackStack()
+
         } else {
             Toast.makeText(
                 this.context,

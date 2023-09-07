@@ -46,7 +46,7 @@ class PlaylistsFragment : Fragment() {
 
             binding.imageView.isGone = it.isNotEmpty()
             binding.text.isGone = it.isNotEmpty()
-            var adapter = PlaylistAdapter(it)
+            val adapter = PlaylistAdapter(it)
             recyclerView.adapter = adapter
             adapter.itemClickListener = {_,album ->
 
@@ -59,7 +59,8 @@ class PlaylistsFragment : Fragment() {
 
         binding.newPlaylist.setOnClickListener {
             findNavController().navigate(
-                R.id.action_mediaFragment_to_newPlaylistFragment
+                R.id.action_mediaFragment_to_newPlaylistFragment,
+                NewPlaylistFragment.createArgs("")
             )
         }
     }

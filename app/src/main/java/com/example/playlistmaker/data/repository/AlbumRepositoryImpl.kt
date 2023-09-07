@@ -1,8 +1,10 @@
 package com.example.playlistmaker.data.repository
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import com.example.playlistmaker.data.db.AppDataBase
 import com.example.playlistmaker.data.db.Convertor
+import com.example.playlistmaker.data.db.entity.AlbumEntity
 import com.example.playlistmaker.data.db.entity.IncludeAlbum
 import com.example.playlistmaker.domain.api.AlbumRepository
 import com.example.playlistmaker.domain.models.Album
@@ -35,12 +37,23 @@ class AlbumRepositoryImpl(private val appDataBase: AppDataBase, private val conv
     }
 
     override suspend fun removeTrackFromAlbum(UUIDTrack: String, UUIDAlbum: String) {
-        appDataBase.albumDAO().deleteIncludedTrack(UUIDTrack,UUIDAlbum)
+        appDataBase.albumDAO().deleteIncludedTrack(UUIDTrack, UUIDAlbum)
     }
 
     override suspend fun deleteAlbum(UUIDAlbum: String) {
         appDataBase.albumDAO().deleteAlbum(UUIDAlbum)
         appDataBase.albumDAO().deleteIncludedTracks(UUIDAlbum)
+    }
+
+    override suspend fun updateAlbum(
+        nameAlbum: String,
+        description: String,
+        uri: Uri,
+        uid: String
+    ) {
+
+        appDataBase.albumDAO().updateAlbum(AlbumEntity(uid, nameAlbum, description, uri.toString()))
+
     }
 
     override suspend fun getDataAlbum(UUID: String): Album {

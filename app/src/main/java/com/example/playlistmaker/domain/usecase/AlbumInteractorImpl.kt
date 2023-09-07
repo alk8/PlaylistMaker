@@ -37,6 +37,15 @@ class AlbumInteractorImpl(private val albumRepository: AlbumRepository):AlbumInt
         albumRepository.deleteAlbum(UUIDAlbum)
     }
 
+    override suspend fun updateAlbum(
+        nameAlbum: String,
+        description: String,
+        uri: Uri,
+        uid: String
+    ) {
+        albumRepository.updateAlbum(nameAlbum,description,uri,uid)
+    }
+
     override fun getAlbums(): Flow<ArrayList<Album>> {
         return albumRepository.getPlaylists()
     }

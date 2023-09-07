@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentShowAlbumBinding
+import com.example.playlistmaker.domain.models.Album
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.presentation.player.PlayerFragment
 import com.example.playlistmaker.presentation.search.MusicAdapter
@@ -35,7 +36,6 @@ class ShowAlbumFragment : Fragment() {
     private val binding get() = _binding
     private val viemModel: ShowAlbumViewModel by viewModel()
     private var tracks: List<Track> = arrayListOf()
-
 
     companion object {
         private const val ALBUM = "album"
@@ -138,13 +138,25 @@ class ShowAlbumFragment : Fragment() {
         binding?.delete?.setOnClickListener {
 
             MaterialAlertDialogBuilder(requireActivity())
-                .setTitle("Хотите удалить плейлист ${binding!!.nameAlbum}?")
+                .setTitle("Хотите удалить плейлист ${binding!!.nameAlbum.text}?")
                 .setNegativeButton("Нет") { _, _ ->
                 }.setPositiveButton("Да") { _, _ ->
                     viemModel.deleteAlbum(UUIDAlbum)
                     findNavController().popBackStack()
                 }.show()
 
+        }
+
+        binding?.edit?.setOnClickListener {
+
+            findNavController().navigate(
+                R.id.action_showAlbumFragment_to_newPlaylistFragment,
+                NewPlaylistFragment.createArgs(UUIDAlbum)
+            )
+        }
+
+        binding?.back?.setOnClickListener {
+            findNavController().popBackStack()
         }
     }
 

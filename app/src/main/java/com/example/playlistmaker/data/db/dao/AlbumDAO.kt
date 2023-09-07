@@ -1,9 +1,6 @@
 package com.example.playlistmaker.data.db.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.playlistmaker.data.db.entity.AlbumEntity
 import com.example.playlistmaker.data.db.entity.IncludeAlbum
 import com.example.playlistmaker.data.db.queries.QueryAlbumGroup
@@ -38,9 +35,12 @@ interface AlbumDAO {
     suspend fun deleteIncludedTrack(UUIDTrack: String,UUIDAlbum: String)
 
     @Query("DELETE FROM IncludeAlbums WHERE UUIDAlbum LIKE :UUIDAlbum")
-    suspend fun deleteIncludedTracks(UUIDTrack: String)
+    suspend fun deleteIncludedTracks(UUIDAlbum: String)
 
     @Query("DELETE FROM Albums WHERE UUID LIKE :UUIDAlbum")
-    suspend fun deleteAlbum(UUIDTrack: String)
+    suspend fun deleteAlbum(UUIDAlbum: String)
+
+    @Update(entity = AlbumEntity::class)
+    suspend fun updateAlbum(albumEntity: AlbumEntity)
 
 }

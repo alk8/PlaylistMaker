@@ -24,4 +24,6 @@ interface AlbumInteractor {
 
     suspend fun deleteAlbum(UUIDAlbum: String)
 
+    suspend fun updateAlbum(nameAlbum: String, description: String, uri: Uri,uid:String)
+
 }

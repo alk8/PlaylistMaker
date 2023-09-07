@@ -23,10 +23,8 @@ class ShowAlbumViewModel(
 
     fun getDataAlbum(UUID: String) {
         viewModelScope.launch {
-
             album.value = albumInteractor.getDataAlbum(UUID)
             tracks.value = albumInteractor.getIncludedTracks(UUID)
-
         }
     }
 
@@ -35,12 +33,9 @@ class ShowAlbumViewModel(
     fun deleteTrack(UUIDTrack:String,UUIDAlbum:String){
 
         viewModelScope.launch {
-
             albumInteractor.removeTrackFromAlbum(UUIDTrack,UUIDAlbum)
             tracks.value = albumInteractor.getIncludedTracks(UUIDAlbum)
-
         }
-
     }
 
     fun deleteAlbum(UUIDAlbum:String){
