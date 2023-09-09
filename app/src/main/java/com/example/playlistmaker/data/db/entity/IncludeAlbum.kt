@@ -10,4 +10,5 @@ data class IncludeAlbum(
     val UUIDAlbum:String = "",
     val UUIDTrack:String = "",
     val track:String = "",
+    val date: Long = 0L
 )

@@ -91,13 +91,13 @@ class ShowAlbumFragment : Fragment() {
 
         viemModel.getTracksData().observe(viewLifecycleOwner) {
 
-            if(it.isEmpty()){
+            if (it.isEmpty()) {
 
-                Toast.makeText(context,"В данном плейлисте нет треков",Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "В данном плейлисте нет треков", Toast.LENGTH_SHORT).show()
 
                 binding?.menu?.isGone = true
 
-            }else {
+            } else {
 
                 recycler = _binding?.recyclerViewTracks!!
                 musicAdapter.music = it
@@ -148,7 +148,8 @@ class ShowAlbumFragment : Fragment() {
         binding?.delete?.setOnClickListener {
 
             MaterialAlertDialogBuilder(requireActivity())
-                .setTitle("Хотите удалить плейлист ${binding!!.nameAlbum.text}?")
+                .setTitle("Удалить плейлист ${binding!!.nameAlbum.text}?").
+                    setMessage("Хотите удалить плейлист?")
                 .setNegativeButton("Нет") { _, _ ->
                 }.setPositiveButton("Да") { _, _ ->
                     viemModel.deleteAlbum(UUIDAlbum)
@@ -178,7 +179,7 @@ class ShowAlbumFragment : Fragment() {
             minutes += it.trackTimeMillis?.toInt() ?: 0
         }
 
-        val minut = SimpleDateFormat("mm:ss", Locale.getDefault()).format(minutes).toInt()
+        val minut = SimpleDateFormat("mm", Locale.getDefault()).format(minutes).toInt()
         val size = tracks.size
 
         binding?.minutes?.text = resources.getQuantityString(R.plurals.minutes, minut, minut)
@@ -202,11 +203,10 @@ class ShowAlbumFragment : Fragment() {
 
             for (t in tracks) {
 
-                val m = SimpleDateFormat("mm", Locale.getDefault()).format(
-                    t.trackTimeMillis?.toInt()
-                        ?: 0
+                val m = SimpleDateFormat("mm:ss", Locale.getDefault()).format(
+                    t.trackTimeMillis?.toLong()
                 )
-                    .toInt()
+
 
                 text += "$count | ${t.artistName} - ${t.trackName} | (${m}) \n"
                 count++

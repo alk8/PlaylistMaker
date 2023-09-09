@@ -28,7 +28,7 @@ interface AlbumDAO {
     @Query("SELECT * FROM Albums WHERE UUID LIKE :UUID")
     suspend fun getDataAlbum(UUID: String): AlbumEntity
 
-    @Query("SELECT track FROM IncludeAlbums  WHERE UUIDAlbum LIKE :UUIDAlbum")
+    @Query("SELECT track FROM IncludeAlbums  WHERE UUIDAlbum LIKE :UUIDAlbum ORDER BY date DESC")
     suspend fun getIncludedTrack(UUIDAlbum: String): List<QueryTracks>
 
     @Query("DELETE FROM IncludeAlbums WHERE UUIDAlbum LIKE :UUIDAlbum AND UUIDTrack LIKE :UUIDTrack")

@@ -83,7 +83,8 @@ class AlbumRepositoryImpl(private val appDataBase: AppDataBase, private val conv
                 UUID.randomUUID().toString(),
                 album.UUID,
                 track.artworkUrl100,
-                gson.toJson(track)
+                gson.toJson(track),
+                Date().time
             )
         appDataBase.albumDAO().insertIncludeAlbum(includeAlbum)
     }
