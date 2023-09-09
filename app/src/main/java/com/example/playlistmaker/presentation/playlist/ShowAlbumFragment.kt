@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.isGone
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -90,11 +91,20 @@ class ShowAlbumFragment : Fragment() {
 
         viemModel.getTracksData().observe(viewLifecycleOwner) {
 
-            recycler = _binding?.recyclerViewTracks!!
-            musicAdapter.music = it
-            recycler.layoutManager = LinearLayoutManager(_binding!!.root.context)
-            recycler.adapter = musicAdapter
-            tracks = it
+            if(it.isEmpty()){
+
+                Toast.makeText(context,"В данном плейлисте нет треков",Toast.LENGTH_SHORT).show()
+
+                binding?.menu?.isGone = true
+
+            }else {
+
+                recycler = _binding?.recyclerViewTracks!!
+                musicAdapter.music = it
+                recycler.layoutManager = LinearLayoutManager(_binding!!.root.context)
+                recycler.adapter = musicAdapter
+                tracks = it
+            }
 
             countAlbums(it)
 
@@ -168,7 +178,7 @@ class ShowAlbumFragment : Fragment() {
             minutes += it.trackTimeMillis?.toInt() ?: 0
         }
 
-        val minut = SimpleDateFormat("mm", Locale.getDefault()).format(minutes).toInt()
+        val minut = SimpleDateFormat("mm:ss", Locale.getDefault()).format(minutes).toInt()
         val size = tracks.size
 
         binding?.minutes?.text = resources.getQuantityString(R.plurals.minutes, minut, minut)
