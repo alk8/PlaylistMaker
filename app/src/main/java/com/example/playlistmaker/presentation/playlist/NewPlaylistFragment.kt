@@ -32,7 +32,7 @@ class NewPlaylistFragment : Fragment() {
 
     companion object {
 
-        const val ALBUM = "album"
+        private const val ALBUM = "album"
 
         fun createArgs(album: String?): Bundle {
             return bundleOf(ALBUM to album)

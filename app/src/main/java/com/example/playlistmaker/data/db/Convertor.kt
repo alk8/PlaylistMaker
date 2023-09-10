@@ -66,7 +66,7 @@ class Convertor {
             album.nameAlbum,
             album.description,
             Uri.parse(album.uri),
-            0.toString(),
+            "0",
             album.UUID
         )
     }

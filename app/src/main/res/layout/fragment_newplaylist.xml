@@ -23,13 +23,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:layout_marginTop="14dp"
-        android:layout_marginEnd="131dp"
-        android:layout_marginBottom="42dp"
         android:fontFamily="@font/ys_display_medium"
         android:text="@string/newplaylist"
         android:textColor="?attr/blackWhiteColor"
         android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
