@@ -95,8 +95,6 @@ class ShowAlbumFragment : Fragment() {
 
                 Toast.makeText(context, "В данном плейлисте нет треков", Toast.LENGTH_SHORT).show()
 
-                binding?.menu?.isGone = true
-
             } else {
 
                 recycler = _binding?.recyclerViewTracks!!
@@ -146,6 +144,8 @@ class ShowAlbumFragment : Fragment() {
         }
 
         binding?.delete?.setOnClickListener {
+
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
             MaterialAlertDialogBuilder(requireActivity())
                 .setTitle("Удалить плейлист ${binding!!.nameAlbum.text}?").
