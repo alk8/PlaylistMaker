@@ -17,9 +17,9 @@
             android:id="@+id/photo"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:scaleType="centerCrop"
             android:layout_marginBottom="440dp"
             android:background="@color/grey_light"
-            android:scaleType="centerCrop"
             android:src="@drawable/ic_noconnection"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -30,15 +30,11 @@
 
         <ImageView
             android:id="@+id/back"
-            style="@style/strelkaStyle"
+            android:background="@drawable/ic_vectorstrelka"
             android:layout_width="16dp"
             android:layout_height="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="330dp"
-            android:layout_marginBottom="344dp"
-            app:layout_constraintBottom_toTopOf="@+id/nameAlbum"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -102,10 +98,13 @@
             android:layout_width="3dp"
             android:layout_height="3dp"
             android:layout_marginStart="5dp"
+            android:layout_marginTop="17dp"
+            android:layout_marginBottom="28dp"
+
             android:src="@drawable/ic_ellipse_1"
+            app:layout_constraintBottom_toTopOf="@+id/share"
             app:layout_constraintStart_toEndOf="@+id/minutes"
-            tools:layout_editor_absoluteY="466dp"
-            tools:ignore="MissingConstraints"
+            app:layout_constraintTop_toBottomOf="@+id/description"
             app:tint="@color/black">
 
         </ImageView>
@@ -129,16 +128,14 @@
 
         <ImageView
             android:id="@+id/share"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="19dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="293dp"
             android:background="@color/grey_light"
             android:src="@drawable/ic_vectorshare"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/menu"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/minutes"
             app:tint="@color/black">
@@ -147,16 +144,14 @@
 
         <ImageView
             android:id="@+id/menu"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginStart="66dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="290dp"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="294dp"
             android:background="@color/grey_light"
             android:src="@drawable/points"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/minutes">
 
