@@ -23,6 +23,7 @@ import com.example.playlistmaker.databinding.FragmentPlayerBinding
 import com.example.playlistmaker.domain.entities.FormatterTime
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.models.states.StateMusicPlayer
+import com.example.playlistmaker.presentation.playlist.NewPlaylistFragment
 import com.example.playlistmaker.presentation.playlist.PlaylistBottomAdapter
 import com.example.playlistmaker.presentation.viewmodels.PlayerViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -195,7 +196,10 @@ class PlayerFragment : Fragment() {
         }
 
         newPlaylist.setOnClickListener {
-            findNavController().navigate(R.id.action_playerFragment_to_newPlaylistFragment)
+            findNavController().navigate(
+                R.id.action_playerFragment_to_newPlaylistFragment,
+                NewPlaylistFragment.createArgs("")
+            )
         }
 
         binding.likeButton.setOnClickListener {
