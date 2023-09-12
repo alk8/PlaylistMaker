@@ -8,6 +8,7 @@ import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
 import com.example.playlistmaker.presentation.viewmodels.PlaylistsViewModel
@@ -38,8 +39,13 @@ class PlaylistsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val spanCount = 2
+        val spacing = 8
+
         val recyclerView = binding.recyclerView
-        recyclerView.layoutManager = GridLayoutManager(requireContext(),2)
+        recyclerView.layoutManager = GridLayoutManager(requireContext(),spanCount)
+
+        recyclerView.addItemDecoration(GridSpacingItemDecoration(spanCount,spacing,false))
 
         // Получить данные из базы
         viewModel.getPlaylists().observe(viewLifecycleOwner){

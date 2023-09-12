@@ -86,6 +86,8 @@ class ShowAlbumFragment : Fragment() {
                     .placeholder(R.drawable.ic_noconnection).transform(RoundedCorners(15))
                     .into(binding?.BottomAlbumImage!!)
 
+            } else {
+                binding?.standardBottomSheetTracks?.isGone = true
             }
         }
 
@@ -130,7 +132,11 @@ class ShowAlbumFragment : Fragment() {
 
         }
 
-        binding?.share?.setOnClickListener { share() }
+        binding?.share?.setOnClickListener {
+            val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer)
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            share()
+        }
 
         binding?.menu?.setOnClickListener {
 
@@ -140,6 +146,8 @@ class ShowAlbumFragment : Fragment() {
         }
 
         binding?.shareCommand?.setOnClickListener {
+            val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer)
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             share()
         }
 
@@ -148,8 +156,8 @@ class ShowAlbumFragment : Fragment() {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
             MaterialAlertDialogBuilder(requireActivity())
-                .setTitle("Удалить плейлист ${binding!!.nameAlbum.text}?").
-                    setMessage("Хотите удалить плейлист?")
+                .setTitle("Удалить плейлист ${binding!!.nameAlbum.text}?")
+                .setMessage("Хотите удалить плейлист?")
                 .setNegativeButton("Нет") { _, _ ->
                 }.setPositiveButton("Да") { _, _ ->
                     viemModel.deleteAlbum(UUIDAlbum)
@@ -191,6 +199,7 @@ class ShowAlbumFragment : Fragment() {
     private fun share() {
 
         if (tracks.isEmpty()) {
+
             Toast.makeText(
                 context,
                 "В этом плейлисте нет списка треков, которым можно поделиться",
@@ -206,7 +215,6 @@ class ShowAlbumFragment : Fragment() {
                 val m = SimpleDateFormat("mm:ss", Locale.getDefault()).format(
                     t.trackTimeMillis?.toLong()
                 )
-
 
                 text += "$count | ${t.artistName} - ${t.trackName} | (${m}) \n"
                 count++
