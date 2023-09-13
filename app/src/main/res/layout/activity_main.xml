@@ -23,9 +23,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:backgroundTint="?attr/blackWhiteBar"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:itemIconTint="@drawable/selector_navigation"
+        app:itemTextColor ="@drawable/selector_navigation"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_menu"/>
 
