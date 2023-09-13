@@ -75,7 +75,7 @@ class ShowAlbumFragment : Fragment() {
             binding?.bottomAlbumName?.text = it.nameAlbum
 
             if (it.description.isEmpty()) {
-                binding?.description?.isGone = true
+                binding?.description?.visibility = View.GONE
             } else {
                 binding?.description?.text = it.description
             }
