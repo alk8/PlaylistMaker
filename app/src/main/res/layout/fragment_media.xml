@@ -38,11 +38,11 @@
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             app:tabIndicatorColor="?attr/blackWhiteColor"
             app:tabTextAppearance="@style/font_style"
-            app:tabTextColor="?attr/blackWhiteColor"
-            app:tabIndicatorFullWidth="false"
-            app:tabMode="fixed"/>
+            app:tabTextColor="?attr/blackWhiteColor" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"

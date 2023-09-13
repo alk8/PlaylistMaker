@@ -73,7 +73,13 @@ class ShowAlbumFragment : Fragment() {
 
             binding?.nameAlbum?.text = it.nameAlbum
             binding?.bottomAlbumName?.text = it.nameAlbum
-            binding?.description?.text = it.description
+
+            if (it.description.isEmpty()) {
+                binding?.description?.isGone = true
+            } else {
+                binding?.description?.text = it.description
+            }
+
             UUIDAlbum = it.UUID
 
             if (it.uri != Uri.EMPTY) {
