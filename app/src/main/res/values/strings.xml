@@ -43,21 +43,15 @@
     <string name="addPlaylist">Добавить в плейлист</string>
 
     <plurals name="tracks" translatable="false">
-        <item quantity="zero">нет треков</item>
         <item quantity="one">%1$d трек</item>
-        <item quantity="two">%1$d трека</item>
         <item quantity="few">%1$d трека</item>
-        <item quantity="many">%1$d трека</item>
-        <item quantity="other">%1$d треков</item>
+        <item quantity="many">%1$d треков</item>
     </plurals>
 
     <plurals name="minutes" translatable="false">
-        <item quantity="zero">0 минут</item>
         <item quantity="one">%1$d минута</item>
-        <item quantity="two">%1$d минуты</item>
         <item quantity="few">%1$d минуты</item>
         <item quantity="many">%1$d минут</item>
-        <item quantity="other">%1$d минут</item>
     </plurals>
 
 </resources>
