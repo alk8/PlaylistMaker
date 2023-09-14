@@ -39,16 +39,14 @@
         <TextView
             android:id="@+id/nameAlbum"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="169dp"
-            android:layout_marginBottom="388dp"
             android:background="@color/grey_light"
             android:fontFamily="@font/ys_display_bold"
             android:textColor="@color/black"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/photo">
@@ -58,19 +56,15 @@
         <TextView
             android:id="@+id/description"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="60dp"
-            android:layout_marginEnd="259dp"
-            android:layout_marginBottom="359dp"
             android:background="@color/grey_light"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/ys_display_regular"
             android:textColor="@color/black"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/photo">
+            app:layout_constraintTop_toBottomOf="@+id/nameAlbum">
 
         </TextView>
 
@@ -79,15 +73,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="89dp"
-            android:layout_marginBottom="330dp"
+            android:layout_marginTop="8dp"
             android:background="@color/grey_light"
             android:fontFamily="@font/ys_display_regular"
             android:textColor="@color/black"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/photo">
+            app:layout_constraintTop_toBottomOf="@+id/description">
 
         </TextView>
 
@@ -97,10 +89,7 @@
             android:layout_height="3dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="17dp"
-            android:layout_marginBottom="28dp"
-
             android:src="@drawable/ic_ellipse_1"
-            app:layout_constraintBottom_toTopOf="@+id/share"
             app:layout_constraintStart_toEndOf="@+id/minutes"
             app:layout_constraintTop_toBottomOf="@+id/description"
             app:tint="@color/black">
@@ -111,16 +100,14 @@
             android:id="@+id/countTracks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="89dp"
-            android:layout_marginBottom="330dp"
             android:layout_marginStart="5dp"
+            android:layout_marginTop="8dp"
             android:background="@color/grey_light"
             android:fontFamily="@font/ys_display_regular"
             android:textColor="@color/black"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView2"
-            app:layout_constraintTop_toBottomOf="@+id/photo">
+            app:layout_constraintTop_toBottomOf="@+id/description">
 
         </TextView>
 
@@ -130,10 +117,8 @@
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="293dp"
             android:background="@color/grey_light"
             android:src="@drawable/ic_vectorshare"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/minutes"
             app:tint="@color/black">
@@ -146,10 +131,8 @@
             android:layout_height="0dp"
             android:layout_marginStart="66dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="294dp"
             android:background="@color/grey_light"
             android:src="@drawable/points"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/minutes">
 
@@ -263,6 +246,7 @@
             android:layout_height="wrap_content"
             android:hint="Поделиться"
             android:id="@+id/shareCommand"
+
             android:textColorHint="?attr/blackWhiteColor"
             android:textSize="16sp"
             android:textColor="?attr/blackWhiteColor"
