@@ -92,9 +92,8 @@ class ShowAlbumFragment : Fragment() {
                     .placeholder(R.drawable.ic_noconnection).transform(RoundedCorners(15))
                     .into(binding?.BottomAlbumImage!!)
 
-            } else {
-                binding?.standardBottomSheetTracks?.isGone = true
             }
+
         }
 
         viemModel.getTracksData().observe(viewLifecycleOwner) {
@@ -102,6 +101,8 @@ class ShowAlbumFragment : Fragment() {
             if (it.isEmpty()) {
 
                 Toast.makeText(context, "В данном плейлисте нет треков", Toast.LENGTH_SHORT).show()
+
+                binding?.standardBottomSheetTracks?.isGone = true
 
             } else {
 
