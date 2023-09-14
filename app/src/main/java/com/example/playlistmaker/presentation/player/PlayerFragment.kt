@@ -131,14 +131,14 @@ class PlayerFragment : Fragment() {
                 if (it == StateMusicPlayer.PLAYING) {
                     play.setImageResource(R.drawable.pause_nightmode)
                 } else {
-                    play.setImageResource(R.drawable.white_play_button)
+                    play.setImageResource(R.drawable.button_play_white)
                 }
 
             } else {
                 if (it == StateMusicPlayer.PLAYING) {
                     play.setImageResource(R.drawable.pause)
                 } else {
-                    play.setImageResource(R.drawable.play_button)
+                    play.setImageResource(R.drawable.button_play)
                 }
             }
         }

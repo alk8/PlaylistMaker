@@ -112,7 +112,7 @@
     </style>
 
     <style name="playButton">
-        <item name= "android:src">@drawable/white_play_button</item>
+        <item name= "android:src">@drawable/button_play_white</item>
     </style>
 
     <style name="strelkaStyle">
