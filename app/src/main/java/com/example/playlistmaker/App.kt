@@ -2,12 +2,13 @@ package com.example.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.playlistmaker.data.di.MEMORY
 import com.example.playlistmaker.data.di.dataModule
 import com.example.playlistmaker.domain.di.DomainModule
 import com.example.playlistmaker.presentation.di.presentationModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
+
+const val MEMORY = "Memory"
 
 class App: Application() {
 

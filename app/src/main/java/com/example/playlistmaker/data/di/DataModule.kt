@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
+import com.example.playlistmaker.MEMORY
 import com.example.playlistmaker.data.db.AppDataBase
 import com.example.playlistmaker.data.db.Convertor
 import com.example.playlistmaker.data.repository.AlbumRepositoryImpl
@@ -23,7 +24,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 
 private const val URL = "https://itunes.apple.com/"
-const val MEMORY = "Memory"
 
 val dataModule = module {
 
