@@ -45,12 +45,14 @@
     <plurals name="tracks" translatable="false">
         <item quantity="one">%1$d трек</item>
         <item quantity="few">%1$d трека</item>
+        <item quantity="two">%1$d трека</item>
         <item quantity="many">%1$d треков</item>
     </plurals>
 
     <plurals name="minutes" translatable="false">
         <item quantity="one">%1$d минута</item>
         <item quantity="few">%1$d минуты</item>
+        <item quantity="two">%1$d минуты</item>
         <item quantity="many">%1$d минут</item>
     </plurals>
 
