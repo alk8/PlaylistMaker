@@ -78,6 +78,7 @@ class ShowAlbumFragment : Fragment() {
                 binding?.description?.visibility = View.GONE
             } else {
                 binding?.description?.text = it.description
+                binding?.description?.visibility = View.VISIBLE
             }
 
             UUIDAlbum = it.UUID
