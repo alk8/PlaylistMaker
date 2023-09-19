@@ -72,7 +72,7 @@ class NewPlaylistFragment : Fragment() {
                 uriFile = it.uri
 
                 Glide.with(binding.album).load(it.uri).centerCrop()
-                    .placeholder(R.drawable.ic_noconnection).transform(RoundedCorners(15))
+                    .transform(RoundedCorners(15))
                     .into(binding.album)
             }
 
