@@ -102,9 +102,8 @@ class ShowAlbumFragment : Fragment() {
             if (it.isEmpty()) {
 
                 Toast.makeText(context, "В данном плейлисте нет треков", Toast.LENGTH_SHORT).show()
-
                 binding?.standardBottomSheetTracks?.isGone = true
-
+                tracks = it
             } else {
 
                 recycler = _binding?.recyclerViewTracks!!
