@@ -3,12 +3,10 @@ package com.example.playlistmaker.presentation.main
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.playlistmaker.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import org.koin.core.qualifier._q
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -128,7 +128,7 @@ class ShowAlbumFragment : Fragment() {
 
         musicAdapter.longClick = { _, track ->
 
-            MaterialAlertDialogBuilder(requireActivity())
+            MaterialAlertDialogBuilder(requireActivity(),R.style.AlertDialogTheme)
                 .setTitle("Хотите удалить трек?")
                 .setNegativeButton("Отмена") { _, _ ->
                 }.setPositiveButton("Удалить") { _, _ ->
@@ -162,9 +162,8 @@ class ShowAlbumFragment : Fragment() {
 
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
-            MaterialAlertDialogBuilder(requireActivity())
-                .setTitle("Удалить плейлист ${binding!!.nameAlbum.text}?")
-                .setMessage("Хотите удалить плейлист?")
+            MaterialAlertDialogBuilder(requireActivity(),R.style.AlertDialogTheme)
+                .setTitle("Хотите удалить плейлист ${binding!!.nameAlbum.text}?")
                 .setNegativeButton("Нет") { _, _ ->
                 }.setPositiveButton("Да") { _, _ ->
                     viemModel.deleteAlbum(UUIDAlbum)
