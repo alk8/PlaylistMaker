@@ -21,7 +21,6 @@ class SearchViewModel(
     }
 
     private var state = MutableLiveData<Pair<ArrayList<Track>?, StateSearch>>()
-
     private var trackList: ArrayList<Track>? = ArrayList()
     private var historyList: ArrayList<Track> = ArrayList()
     private lateinit var searchInternet: Job

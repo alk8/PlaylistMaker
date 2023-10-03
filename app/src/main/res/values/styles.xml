@@ -113,7 +113,7 @@
     </style>
 
     <style name="playButton">
-        <item name= "android:src">@drawable/play_button</item>
+        <item name= "android:src">@drawable/button_play</item>
     </style>
 
     <style name="strelkaStyle">
@@ -132,6 +132,25 @@
     <style name="font_style" parent="@android:style/TextAppearance.Small">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="android:background">@color/white</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/TitleTextStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+    </style>
+
+    <style name="TitleTextStyle" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/background_screen</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/background_screen</item>
     </style>
 
 </resources>

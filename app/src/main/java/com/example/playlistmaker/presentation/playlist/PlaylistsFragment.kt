@@ -8,14 +8,13 @@ import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
-import com.example.playlistmaker.presentation.states.StateMediatekaFragment
 import com.example.playlistmaker.presentation.viewmodels.PlaylistsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistsFragment : Fragment() {
-
 
     companion object {
         fun newInstance() = PlaylistsFragment().apply {
@@ -40,20 +39,34 @@ class PlaylistsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val spanCount = 2
+        val spacing = 8
+
         val recyclerView = binding.recyclerView
-        recyclerView.layoutManager = GridLayoutManager(requireContext(),2)
+        recyclerView.layoutManager = GridLayoutManager(requireContext(),spanCount)
+
+        recyclerView.addItemDecoration(GridSpacingItemDecoration(spanCount,spacing,false))
 
         // Получить данные из базы
         viewModel.getPlaylists().observe(viewLifecycleOwner){
 
             binding.imageView.isGone = it.isNotEmpty()
             binding.text.isGone = it.isNotEmpty()
-            recyclerView.adapter = PlaylistAdapter(it)
+            val adapter = PlaylistAdapter(it)
+            recyclerView.adapter = adapter
+            adapter.itemClickListener = {_,album ->
+
+                findNavController().navigate(
+                    R.id.action_mediaFragment_to_showAlbumFragment,
+                    ShowAlbumFragment.createArgs(album.UUID)
+                )
+            }
         }
 
         binding.newPlaylist.setOnClickListener {
             findNavController().navigate(
-                R.id.action_mediaFragment_to_newPlaylistFragment
+                R.id.action_mediaFragment_to_newPlaylistFragment,
+                NewPlaylistFragment.createArgs("")
             )
         }
     }

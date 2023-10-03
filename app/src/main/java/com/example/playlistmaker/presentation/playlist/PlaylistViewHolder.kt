@@ -22,7 +22,8 @@ class PlaylistViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         if (album.uri != Uri.EMPTY) {
 
             Glide.with(img).load(album.uri).centerCrop()
-                .placeholder(R.drawable.ic_noconnection).transform(RoundedCorners(15))
+                .placeholder(R.drawable.ic_noconnection)
+                .transform(RoundedCorners(15))
                 .into(img)
 
         }
